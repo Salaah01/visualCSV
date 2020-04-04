@@ -1,0 +1,19 @@
+{
+  "name": "visualcsv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Salaah01/visualCSV.git"
+  },
+  "author": "Salaah Amin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Salaah01/visualCSV/issues"
+  },
+  "homepage": "https://github.com/Salaah01/visualCSV#readme"
+}
