@@ -1,6 +1,6 @@
 export {
-  attemptUploadNewFile,
-  parseCSV,
-  newFileParseSuccess,
-  newFileParseFail,
+  newFileUploadStart,
+  newFileUploadSuccess,
+  newFileUploadFail,
+  splitParsedData
 } from './filesInfo';

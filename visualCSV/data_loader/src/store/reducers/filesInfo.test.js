@@ -7,7 +7,7 @@
 import filesInfoReducer, { fileStates } from './filesInfo';
 import * as actionTypes from '../actions/actionTypes';
 
-describe('ATTEMPT_UPLOAD_NEW_FILE', () => {
+describe('NEW_FILE_UPLOAD_START', () => {
   const state = {
     files: {
       1: { name: 'f1', status: fileStates.PARSING_CSV_IN_PROGRESS },
@@ -15,9 +15,9 @@ describe('ATTEMPT_UPLOAD_NEW_FILE', () => {
     },
   };
   const reducer = filesInfoReducer(state, {
-    type: actionTypes.ATTEMPT_UPLOAD_NEW_FILE,
+    type: actionTypes.NEW_FILE_UPLOAD_START,
     fileName: 'f3',
-    id: 5
+    id: 5,
   });
 
   it('should add an new file to the store and set as processing.', () => {
@@ -36,7 +36,7 @@ describe('ATTEMPT_UPLOAD_NEW_FILE', () => {
   });
 });
 
-describe('ATTEMPT_NEW_FILE_PARSE_SUCCESS', () => {
+describe('NEW_FILE_UPLOAD_SUCCESS', () => {
   const state = {
     files: {
       1: { name: 'f1', status: fileStates.PARSING_CSV_IN_PROGRESS },
@@ -45,13 +45,18 @@ describe('ATTEMPT_NEW_FILE_PARSE_SUCCESS', () => {
     },
   };
   const reducer = filesInfoReducer(state, {
-    type: actionTypes.NEW_FILE_PARSE_SUCCESS,
+    type: actionTypes.NEW_FILE_UPLOAD_SUCCESS,
     id: 1,
+    data: { a: [1, 2, 3], b: [4, 5, 6] },
   });
 
   it('should update file 1 to PARSING_CSV_SUCCESS.', () => {
     expect(reducer.files).toEqual({
-      1: { name: 'f1', status: fileStates.PARSING_CSV_SUCCESS },
+      1: {
+        name: 'f1',
+        status: fileStates.PARSING_CSV_SUCCESS,
+        data: { a: [1, 2, 3], b: [4, 5, 6] },
+      },
       4: { name: 'f2', status: fileStates.PARSING_CSV_FAIL },
       6: { name: 'f3', status: fileStates.PARSING_CSV_SUCCESS },
     });
@@ -66,7 +71,7 @@ describe('ATTEMPT_NEW_FILE_PARSE_SUCCESS', () => {
   });
 });
 
-describe('ATTEMPT_NEW_FILE_PARSE_FAIL', () => {
+describe('NEW_FILE_UPLOAD_FAIL', () => {
   const state = {
     files: {
       1: { name: 'f1', status: fileStates.PARSING_CSV_IN_PROGRESS },
@@ -75,7 +80,7 @@ describe('ATTEMPT_NEW_FILE_PARSE_FAIL', () => {
     },
   };
   const reducer = filesInfoReducer(state, {
-    type: actionTypes.NEW_FILE_PARSE_FAIL,
+    type: actionTypes.NEW_FILE_UPLOAD_FAIL,
     id: 1,
   });
 
@@ -96,22 +101,80 @@ describe('ATTEMPT_NEW_FILE_PARSE_FAIL', () => {
   });
 });
 
-describe('parseCSV', () => {
-  let reader
-  let reducer
+describe('SPLIT_PARSED_DATA', () => {
+  const reducerPassed = () => {
+    const state = {
+      files: {
+        a: {
+          data: [
+            ['a', 'b', 'c'],
+            [1, 2, 3],
+            [4, 5, 6],
+          ],
+        },
+      },
+    };
 
-  const state = {
-    files: {
-      1: { name: 'f1', status: fileStates.PARSING_CSV_IN_PROGRESS },
-      4: { name: 'f2', status: fileStates.PARSING_CSV_FAIL },
-      6: { name: 'f3', status: fileStates.PARSING_CSV_SUCCESS },
-    },
+    return filesInfoReducer(state, {
+      type: actionTypes.SPLIT_PARSED_DATA,
+      id: 'a',
+    });
   };
 
-  beforeEach(() => {
-    reader = new FileReader()
-    reader.onload(
-      re
-    )
-  })
-})
+  const reducerFailed = () => {
+    const state = {
+      files: {
+        a: {
+          data: 'Hello World',
+        },
+      },
+    };
+
+    return filesInfoReducer(state, {
+      type: actionTypes.SPLIT_PARSED_DATA,
+      id: 'a',
+    });
+  };
+
+  it('should split the headers and the data content.', () => {
+    expect(reducerPassed().files.a.header).toEqual(['a', 'b', 'c']);
+    expect(reducerPassed().files.a.content).toEqual([
+      [1, 2, 3],
+      [4, 5, 6],
+    ]);
+  });
+
+  it('should set headers and content to null when there is no content.', () => {
+    const state = {
+      files: {
+        a: {
+          data: [['a', 'b', 'c']],
+        },
+      },
+    };
+
+    const reducer = filesInfoReducer(state, {
+      type: actionTypes.SPLIT_PARSED_DATA,
+      id: 'a',
+    });
+
+    expect(reducer.files.a.header).toEqual(null);
+    expect(reducer.files.a.content).toEqual(null);
+  });
+
+  it('should set headers to null when the data object is not of the expected type.', () => {
+    expect(reducerFailed().files.a.header).toEqual(null);
+  });
+
+  it('should set content to null when the data object is not of the expected type.', () => {
+    expect(reducerFailed().files.a.content).toEqual(null);
+  });
+
+  it('should keep the status as passed if the data is split correctly.', () => {
+    expect((reducerPassed().files.a.status = fileStates.PARSING_CSV_SUCCESS));
+  });
+
+  it('should updated status to indicate that parsing has failed if the data cannot be split.', () => {
+    expect((reducerFailed().files.a.status = fileStates.PARSING_CSV_FAIL));
+  });
+});

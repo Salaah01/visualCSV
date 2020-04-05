@@ -1,59 +1,48 @@
-import csv from 'csv';
+/**Redux actions related to the files being uploaded. These include:
+ *  newFileUploadStart: Starts the upload process for a file. This process
+ *    involves storing the file ID and file name.
+ *  newFileUploadSuccess: Action to indicate that a file has been parsed
+ *    successfully as well as store the data.
+ *  newFileUploadFail: Action to indicate that a file could not be uploaded.
+ *  splitParsedData: Action to split data into the header and the body content.
+ */
+
 import * as actionTypes from './actionTypes';
 
-export const attemptUploadNewFile = (id, fileName) => {
+export const newFileUploadStart = (id, fileName) => {
+  /**Starts the upload process for a file. This process involves storing the
+   * file ID and file name.
+   */
   return {
-    type: actionTypes.ATTEMPT_UPLOAD_NEW_FILE,
+    type: actionTypes.NEW_FILE_UPLOAD_START,
     id: id,
     fileName: fileName,
   };
 };
 
-export const newFileParseSuccess = (id) => {
+export const newFileUploadSuccess = (id, data) => {
+  /** Action to indicate that a file has been parsed successfully as well as
+   * store the data.
+   */
   return {
-    type: actionTypes.NEW_FILE_PARSE_SUCCESS,
+    type: actionTypes.NEW_FILE_UPLOAD_SUCCESS,
+    id: id,
+    data: data,
+  };
+};
+
+export const newFileUploadFail = (id) => {
+  /**Action to indicate that a file could not be uploaded. */
+  return {
+    type: actionTypes.NEW_FILE_UPLOAD_FAIL,
     id: id,
   };
 };
 
-export const newFileParseFail = (id) => {
+export const splitParsedData = (id) => {
+  /**Action to split data into the header and the body content. */
   return {
-    type: actionTypes.NEW_FILE_PARSE_FAIL,
+    type: actionTypes.SPLIT_PARSED_DATA,
     id: id,
-  };
-};
-
-const readCSVData = (reader) => {
-  new Promise((resolve, reject) => {
-    try {
-      csv.parse(reader.result, (err, data) => {
-        if (data) {
-          resolve(data);
-        } else {
-          reject(console.log('failed to parse CSV', err));
-        }
-      });
-    } catch (err) {
-      reject(console.log('Unsupported file.'));
-    }
-  });
-};
-
-export const parseCSV = (id, name) => {
-  return (dispatch) => {
-    dispatch(attemptUploadNewFile(name));
-
-    const reader = new FileReader();
-    console.log('reader load ');
-    reader.onabort = () => console.log('file reading was aborted');
-    reader.onerror = () => console.log('file reading failed');
-    reader.onloadend = () => {
-      console.log('reader loade');
-      readCSVData(reader)
-        .then((result) => {
-          return dispatch(newFileParseSuccess(id));
-        })
-        .catch(dispatch(newFileParseFail(id)));
-    };
   };
 };

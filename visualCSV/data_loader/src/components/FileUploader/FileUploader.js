@@ -12,27 +12,25 @@ import * as actions from '../../store/actions';
 import { fileStates } from '../../store/reducers/filesInfo';
 
 class FileUploader extends Component {
+  // TODO: Is the state even needed?
   state = {
     // As it is possible  that a user may attempt import a file with the same
     // name but from different directory, a id for each file needs to be
     // established.
     files: {},
-    currentId: 1,
   };
 
   onDropHandler = (acceptedFiles) => {
-    const fileId = this.state.currentId;
     acceptedFiles.forEach((file) => {
+      const fileId = ` ${file.size}x__${file.name}`;
       this.setState(
         (prevState) => ({
           files: { ...prevState.files },
           [prevState.currentId + 1]: {
             name: file.name,
           },
-          currentId: prevState.currentId + 1,
         }),
-        () =>
-          this.props.onCSVParseStart(`${file.size}_${file.name}`, file.name),
+        () => this.props.onNewFileUploadStart(fileId, file.name),
       );
 
       const reader = new FileReader();
@@ -41,12 +39,12 @@ class FileUploader extends Component {
       reader.onload = () => {
         this.readData(reader)
           .then((result) => {
-            console.log('filetype: ', file.type);
-            this.props.onCSVParseSuccess(`${file.size}_${file.name}`);
+            this.props.onNewFileUploadSuccess(fileId, result);
+            this.props.onSplitParsedData(fileId)
           })
           .catch((err) => {
             this.setState({ ...this.state.files, [file.name]: 'error' });
-            this.props.onCSVParseFail(`${file.size}_${file.name}`);
+            this.props.onNewFileUploadFail(fileId);
           });
       };
 
@@ -93,14 +91,14 @@ class FileUploader extends Component {
       success: (
         <div className={classes.Content__Success}>
           <span className={`${classes.Icon} ${classes.Icon__Success}`}>
-            <i class="fas fa-check"></i>
+            <i className="fas fa-check"></i>
           </span>
         </div>
       ),
       error: (
         <div className={classes.Content__Error}>
           <span className={`${classes.Icon} ${classes.Icon__Error}`}>
-            <i class="fas fa-exclamation"></i>
+            <i className="fas fa-exclamation"></i>
           </span>
         </div>
       ),
@@ -119,6 +117,7 @@ class FileUploader extends Component {
             icons.success,
             <p className={classes.Content__Success}>{fileName}</p>,
           ]);
+          break;
 
         case fileStates.PARSING_CSV_FAIL:
           filesWithIcons.push([
@@ -178,11 +177,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onTryParseCSV: (id, name) => dispatch(actions.parseCSV(id, name)),
-    onCSVParseSuccess: (id) => dispatch(actions.newFileParseSuccess(id)),
-    onCSVParseFail: (id) => dispatch(actions.newFileParseFail(id)),
-    onCSVParseStart: (id, name) =>
-      dispatch(actions.attemptUploadNewFile(id, name)),
+    onNewFileUploadSuccess: (id, data) =>
+      dispatch(actions.newFileUploadSuccess(id, data)),
+    onNewFileUploadFail: (id) => dispatch(actions.newFileUploadFail(id)),
+    onNewFileUploadStart: (id, name) =>
+      dispatch(actions.newFileUploadStart(id, name)),
+    onSplitParsedData: (id) => dispatch(actions.splitParsedData(id)),
   };
 };
 
