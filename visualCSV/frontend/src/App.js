@@ -1,10 +1,10 @@
 import React, {Component} from "react";
-import ReactDOM from 'react-dom'
 
+import './App.scss'
 
 class App extends Component {
     render() {
-        return <h1>Hello Wor2ld222</h1>
+        return <h1>Hello Wor2ld2</h1>
     }
 }
 

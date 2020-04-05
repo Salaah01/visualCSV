@@ -2,6 +2,7 @@
     "python.pythonPath": "venv\\Scripts\\python.exe",
     "cSpell.words": [
         "Dropzone",
+        "Elems",
         "Uploader"
     ]
 }
