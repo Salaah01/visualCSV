@@ -38,7 +38,7 @@ ALLOWED_HOSTS = []
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if not DEBUG:
-    SECRET_KEY = os.getenv('WEATHER_SERVICE_SECRET_KEY')
+    SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Application definition
 
