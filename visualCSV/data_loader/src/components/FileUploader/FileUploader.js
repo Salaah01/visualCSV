@@ -21,7 +21,7 @@ class FileUploader extends Component {
   };
 
   onDropHandler = (acceptedFiles) => {
-    const fileId = this.state.currentId
+    const fileId = this.state.currentId;
     acceptedFiles.forEach((file) => {
       this.setState(
         (prevState) => ({
@@ -31,12 +31,9 @@ class FileUploader extends Component {
           },
           currentId: prevState.currentId + 1,
         }),
-        () => this.props.onCSVParseStart(`${file.size}_${file.name}`, file.name),
+        () =>
+          this.props.onCSVParseStart(`${file.size}_${file.name}`, file.name),
       );
-
-      // this.setState({
-      //   files: { ...this.state.files, [file.name]: 'processing' },
-      // });
 
       const reader = new FileReader();
       reader.onabort = () => console.log('file reading was aborted');
@@ -44,7 +41,7 @@ class FileUploader extends Component {
       reader.onload = () => {
         this.readData(reader)
           .then((result) => {
-            console.log('then block');
+            console.log('filetype: ', file.type);
             this.props.onCSVParseSuccess(`${file.size}_${file.name}`);
           })
           .catch((err) => {
@@ -59,8 +56,6 @@ class FileUploader extends Component {
       //   files: { ...this.state.files, [file.name]: status },
       // });
     });
-
-    // this.props.onCSVParseStart('abs');
   };
 
   readData = (reader) =>
@@ -95,43 +90,54 @@ class FileUploader extends Component {
 
     const icons = {
       spinner: <Spinner style={spinnerStyle} />,
+      success: (
+        <div className={classes.Content__Success}>
+          <span className={`${classes.Icon} ${classes.Icon__Success}`}>
+            <i class="fas fa-check"></i>
+          </span>
+        </div>
+      ),
       error: (
-        <div>
-          <span>
-            <i class="fas fa-times"></i>
+        <div className={classes.Content__Error}>
+          <span className={`${classes.Icon} ${classes.Icon__Error}`}>
+            <i class="fas fa-exclamation"></i>
           </span>
         </div>
       ),
     };
 
     for (const file of Object.keys(this.props.files)) {
+      const fileName = this.props.files[file].name;
+
       switch (this.props.files[file].status) {
         case fileStates.PARSING_CSV_IN_PROGRESS:
-          filesWithIcons.push([icons.spinner, this.props.files[file].name]);
-          console.log('csv in progress  case');
-
+          filesWithIcons.push([icons.spinner, <p>{fileName}</p>]);
           break;
 
+        case fileStates.PARSING_CSV_SUCCESS:
+          filesWithIcons.push([
+            icons.success,
+            <p className={classes.Content__Success}>{fileName}</p>,
+          ]);
+
         case fileStates.PARSING_CSV_FAIL:
-          filesWithIcons.push([icons.error, this.props.files[file].name]);
+          filesWithIcons.push([
+            icons.error,
+            <p className={classes.Content__Error}>{fileName}</p>,
+          ]);
           break;
 
         default:
           console.log('default');
 
-          filesWithIcons.push([icons.spinner, this.props.files[file].name]);
+          filesWithIcons.push([icons.spinner, <p>{fileName}</p>]);
       }
     }
-
-    for (const fileId of Object.keys(this.props.files)) {
-    }
-
-    console.log('fileswithicons', filesWithIcons);
 
     const fileListElems = filesWithIcons.map((items) => (
       <div className={classes.FileList__Item}>
         {items[0]}
-        <p>{items[1]}</p>
+        {items[1]}
       </div>
     ));
 

@@ -24,3 +24,28 @@
     align-items: center;
   }
 }
+
+.Icon {
+  display: inline-block;
+  width: 20px;
+
+  &__Success {
+    color: #28a745;
+  }
+
+  &__Error {
+    color: #dc3545;
+  }
+}
+
+.Content {
+  &__Success {
+    color: #28a745;
+  }
+
+  &__Error {
+    color: #c82333;
+    text-transform: uppercase;
+    font-style: italic;
+  }
+}
