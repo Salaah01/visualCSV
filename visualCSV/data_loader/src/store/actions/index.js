@@ -1,1 +1,6 @@
-export { attemptUploadNewFile } from "./files";
+export {
+  attemptUploadNewFile,
+  parseCSV,
+  newFileParseSuccess,
+  newFileParseFail,
+} from './filesInfo';

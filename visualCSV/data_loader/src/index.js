@@ -8,8 +8,7 @@ import thunk from "redux-thunk";
 
 // Local Imports
 import App from "./App";
-import "../../sharedJsComponents/UI/icons/icons.scss";
-import filesReducer from "./store/reducers/files";
+import filesInfoReducer from "./store/reducers/filesInfo";
 
 const composeEnhancer =
   process.env.NODE_ENV === "development"
@@ -17,7 +16,7 @@ const composeEnhancer =
     : null || compose;
 
 const rootReducer = combineReducers({
-  files: filesReducer,
+  filesInfo: filesInfoReducer,
 });
 
 const store = createStore(rootReducer, composeEnhancer(applyMiddleware(thunk)));
