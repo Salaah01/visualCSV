@@ -7,12 +7,16 @@
  *  newFileUploadFail: Indicates that the file could not be read.
  *  splitParsedData: Splits the data to two objects, one containing the header
  *    and another containing the body content.
+ *  setFieldTypes: Set an array of field types for each column of data where
+ *    data is a 2x2 array for a given file.
  */
 
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../../../coreFunctions/js/updateObject';
-import { list } from 'postcss';
-
+import {
+  deriveFieldTypes,
+  checkBaseStructure,
+} from '../../../../coreFunctions/js';
 const initialState = {
   files: {},
 };
@@ -27,6 +31,7 @@ const newFileUploadStart = (state, action) => {
   /**Starts the upload process for a file. This process  involves storing the
    * file ID and file name.
    */
+  // TODO: Do I need the first bit?
   const keys = Object.keys(state.files);
   let nextKeyId;
   if (keys.length) {
@@ -89,12 +94,7 @@ const splitParsedData = (state, action) => {
     content = state.files[action.id].data.slice(1);
     status = fileStates.PARSING_CSV_SUCCESS;
 
-    if (
-      !headers.length ||
-      !content.length ||
-      !Array.isArray(headers) ||
-      !Array.isArray(content)
-    ) {
+    if (!checkBaseStructure(headers, content)) {
       headers = null;
       content = null;
       status = fileStates.PARSING_CSV_FAIL;
@@ -115,6 +115,28 @@ const splitParsedData = (state, action) => {
   return updateObject(state, { files: updatedFiles });
 };
 
+const setFieldTypes = (state, action) => {
+  /** Set an array of field types for each column of data where data is a 2x2
+   *  array for a given file.
+   */
+  const file = state.files[action.id];
+  if (file.status === fileStates.PARSING_CSV_FAIL) {
+    return state;
+  } else {
+    const fieldTypes = deriveFieldTypes(file.content);
+    const updatedFile = {
+      ...file,
+      fieldTypes: fieldTypes,
+    };
+
+    const updatedFiles = updateObject(state.files, {
+      [action.id]: updatedFile,
+    });
+
+    return updateObject(state, { files: updatedFiles });
+  }
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.NEW_FILE_UPLOAD_START:
@@ -125,6 +147,8 @@ const reducer = (state = initialState, action) => {
       return newFileUploadFail(state, action);
     case actionTypes.SPLIT_PARSED_DATA:
       return splitParsedData(state, action);
+    case actionTypes.SET_FIELD_TYPES:
+      return setFieldTypes(state, action);
     default:
       return state;
   }

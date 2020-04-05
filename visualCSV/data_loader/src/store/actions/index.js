@@ -2,5 +2,6 @@ export {
   newFileUploadStart,
   newFileUploadSuccess,
   newFileUploadFail,
-  splitParsedData
+  splitParsedData,
+  setFieldTypes,
 } from './filesInfo';

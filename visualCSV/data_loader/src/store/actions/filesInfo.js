@@ -5,6 +5,9 @@
  *    successfully as well as store the data.
  *  newFileUploadFail: Action to indicate that a file could not be uploaded.
  *  splitParsedData: Action to split data into the header and the body content.
+ *  setFieldTypes: Action to set an array of field types for each column of
+ *    data where data is a 2x2 array for a given file.
+ *  validateBaseStructure: Validates the base structure of the imported file.
  */
 
 import * as actionTypes from './actionTypes';
@@ -46,3 +49,14 @@ export const splitParsedData = (id) => {
     id: id,
   };
 };
+
+export const setFieldTypes = (id) => {
+  /**Action to set an array of field types for each column of data where data
+   * is a 2x2 array for a given file.
+   */
+  return {
+    type: actionTypes.SET_FIELD_TYPES,
+    id: id,
+  };
+};
+

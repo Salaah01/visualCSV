@@ -178,3 +178,38 @@ describe('SPLIT_PARSED_DATA', () => {
     expect((reducerFailed().files.a.status = fileStates.PARSING_CSV_FAIL));
   });
 });
+
+describe('SET_FIELD_TYPES', () => {
+  const state = {
+    files: {
+      a: {
+        content: [
+          [1234, 1234, '01/12/2013'],
+          ['01/12/2012', 338412, '05/01/2017'],
+          ['Hello World', 4823, '05/02/2020'],
+        ],
+        status: fileStates.PARSING_CSV_SUCCESS,
+      },
+    },
+  };
+
+  const reducer = filesInfoReducer(state, {
+    type: actionTypes.SET_FIELD_TYPES,
+    id: 'a',
+  });
+
+  it('should return the correct set of file types.', () => {
+    expect(reducer.files.a.fieldTypes).toEqual(['string', 'number', 'date']);
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.files.a).toEqual({
+      content: [
+        [1234, 1234, '01/12/2013'],
+        ['01/12/2012', 338412, '05/01/2017'],
+        ['Hello World', 4823, '05/02/2020'],
+      ],
+      status: fileStates.PARSING_CSV_SUCCESS,
+    });
+  });
+});
