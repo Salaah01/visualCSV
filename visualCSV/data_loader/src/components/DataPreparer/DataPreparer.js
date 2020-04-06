@@ -11,6 +11,7 @@
 // Third Party Imports
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import DjangoCSRFToken from 'django-react-csrftoken';
 
 // Local Imports
 import * as actions from '../../store/actions';
@@ -162,8 +163,35 @@ class DataPreparer extends Component {
         });
       }
     }
+    return (
+      <textarea
+        name="post-data"
+        id="post-data"
+        value={JSON.stringify(jsonResponse)}
+      />
+    );
+  };
 
-    return <textarea value={JSON.stringify(jsonResponse)} />;
+  onButtonClick = () => {
+    /**Click handler for the button element. On click, a post request will be
+     * sent.
+     */
+    const xhr = new XMLHttpRequest();
+    const url = 'http://localhost:8000/';
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.setRequestHeader(
+      'X-CSRFTOKEN',
+      document.querySelector('#csrf>input').value,
+    );
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        const json = JSON.parse(xhr.response);
+        console.log('post set up');
+      }
+    };
+    const data = document.getElementById('post-data');
+    xhr.send(data);
   };
 
   uploadButton = () => {
@@ -188,7 +216,10 @@ class DataPreparer extends Component {
     }
 
     return (
-      <button type="submit" disabled={!this.props.filesReadyToUpload}>
+      <button
+        type="submit"
+        disabled={!this.props.filesReadyToUpload}
+      >
         Upload
       </button>
     );
@@ -199,8 +230,13 @@ class DataPreparer extends Component {
     // core functions that will help with revalidating the fields.
     return (
       <div>
-        {this.uploadButton()}
-        {this.jsonFilesData()}
+        <form method="POST">
+          <div id="csrf">
+            <DjangoCSRFToken />
+          </div>
+          {this.uploadButton()}
+          {this.jsonFilesData()}
+        </form>
       </div>
     );
   }

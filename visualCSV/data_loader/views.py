@@ -17,3 +17,9 @@ class DataLoader(View):
 
         else:
             return HttpResponse('<h1>Redirect to sign up screen</h1>')
+
+    def post(self, request):
+        print('||fffffffffffffffffffffffffffffffffffffffffffffffff|')
+        print(request.POST)
+        print('================================================')
+        return HttpResponse('<h1>Post request<h1>')
