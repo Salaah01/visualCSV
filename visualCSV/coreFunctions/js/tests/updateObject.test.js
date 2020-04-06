@@ -1,4 +1,4 @@
-import { updateObject } from "./updateObject";
+import { updateObject } from "../updateObject";
 
 describe("updateObject", () => {
   let currentObject = { a: 1, b: 2 };

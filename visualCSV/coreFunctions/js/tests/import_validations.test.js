@@ -1,6 +1,6 @@
 /**Unit tests for the import validations. */
 
-import { checkBaseStructure } from './import_validations';
+import { checkBaseStructure } from '../import_validations';
 
 describe('checkBaseStructure', () => {
   it('should fail if headers is null', () => {

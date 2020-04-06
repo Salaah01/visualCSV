@@ -1,4 +1,4 @@
-import { deepCopyGrid } from "./deepCopyGrid";
+import { deepCopyGrid } from "../deepCopyGrid";
 
 describe("deepCopyGrid", () => {
   const grid = { a: [1], b: [2] };

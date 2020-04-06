@@ -17,30 +17,81 @@ import * as actions from '../../store/actions';
 import { fileStates } from '../../store/reducers/filesInfo';
 
 class DataPreparer extends Component {
-  fileHeadersElem = (fileId) => {
+  fileHeadersElem = (fileId, index) => {
+    /**Creates set of form elements for a file. For each header of a given file
+     * the method will create a label and input where the user will be able to
+     * change the field type (pre-populated) for each heading.
+     *
+     * Args:
+     *  fileId: The file ID for a file.
+     *  index: A unique index property to be set as the key for the returning
+     *    div.
+     */
     const file = this.props.files[fileId];
-    if ((file.status = fileStates.PARSING_CSV_SUCCESS)) {
+    // Ensure that all of the properties have been loaded onto the store before
+    // accessing.
+    if (
+      file.status === fileStates.PARSING_CSV_SUCCESS &&
+      file.fieldTypes &&
+      file.header
+    ) {
       const headerElems = [];
-      for (let headIdx = 0; headers < file.headers.length; headIdx++) {
+      for (let headIdx = 0; headIdx < file.header.length; headIdx++) {
+        const fieldTypeOpts = new Set(['string', 'number', 'date']);
+
         const headerId = `${file.id}_${headIdx}`;
+
         headerElems.push(
-          <div>
-            <label for={headerId}>{header}</label>
-            <input
-              type="text"
-              name={headerId}
-              value={file.fieldTypes[headIdx]}
-            />
+          <div key={headerElems.length}>
+            <label htmlFor={headerId}>{file.header[headIdx]}</label>
+            <select id={headerId}>
+              <option
+                value="string"
+                selected={file.fieldTypes[headIdx] === 'string'}
+              >
+                String
+              </option>
+              <option
+                value="number"
+                selected={file.fieldTypes[headIdx] === 'number'}
+              >
+                Number
+              </option>
+              <option
+                value="date"
+                selected={file.fieldTypes[headIdx] === 'date'}
+              >
+                Date
+              </option>
+            </select>
           </div>,
         );
       }
+      return (
+        <div id={`headers_${fileId}`} key={index}>
+          {headerElems}
+        </div>
+      );
     } else {
       return null;
     }
   };
 
+  allFileHeadersElems = () => {
+    //**Returns a collection of input elements for each file. */
+    const fileInputElems = Object.keys(this.props.files)
+      .filter(
+        (fileId) =>
+          this.props.files[fileId].header !== null &&
+          this.props.files[fileId].header !== undefined,
+      )
+      .map((fileId, index) => this.fileHeadersElem(fileId, index));
+
+    return <div>{fileInputElems}</div>;
+  };
+
   render() {
-    return <h1>DataPreparer</h1>;
+    return <div>{this.allFileHeadersElems()}</div>;
   }
 }
 

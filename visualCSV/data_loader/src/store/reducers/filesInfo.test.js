@@ -202,6 +202,10 @@ describe('SET_FIELD_TYPES', () => {
     expect(reducer.files.a.fieldTypes).toEqual(['string', 'number', 'date']);
   });
 
+  it('should set userChangedFields to false.', () => {
+    expect(reducer.files.a.userChangedFields).toEqual(false);
+  });
+
   it('should not mutate the original state.', () => {
     expect(state.files.a).toEqual({
       content: [
@@ -211,5 +215,31 @@ describe('SET_FIELD_TYPES', () => {
       ],
       status: fileStates.PARSING_CSV_SUCCESS,
     });
+  });
+});
+
+describe('UPDATE_USER_DEF_FIELD_TYPES', () => {
+  const state = {
+    files: {
+      a: { userChangedFields: false },
+    },
+  };
+
+  const reducer = filesInfoReducer(state, {
+    type: actionTypes.UPDATE_USER_DEF_FIELD_TYPES,
+    id: 'a',
+    fieldTypes: ['a', 'b', 'c'],
+  });
+
+  it('should set userChangedFields to true', () => {
+    expect(reducer.files.a.userChangedFields).toEqual(true);
+  });
+
+  it('should set userDefFieldTypes to the fieldTypes argument.', () => {
+    expect(reducer.files.a.userDefFieldTypes).toEqual(['a', 'b', 'c']);
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.files.a).toEqual({ userChangedFields: false });
   });
 });

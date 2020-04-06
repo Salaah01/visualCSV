@@ -1,7 +1,7 @@
 /**Function to return a list of field types for each column of data. */
 
 export const deriveFieldTypes = (data) => {
-  /**Iterates each bit of data and crates a list of field types where each
+  /**Traverse the data and creates a list of field types where each
    * element is the field type of the the column in data.
    * The function assumes that all the rows are the same length.
    */

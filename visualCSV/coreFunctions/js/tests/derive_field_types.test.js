@@ -1,6 +1,6 @@
 /**Unit test for the derive_field_types module. */
 
-import { deriveFieldTypes } from './derive_field_types';
+import { deriveFieldTypes } from '../derive_field_types';
 
 describe('deriveFieldTypes', () => {
   const expectedResults = ['string', 'number', 'date'];

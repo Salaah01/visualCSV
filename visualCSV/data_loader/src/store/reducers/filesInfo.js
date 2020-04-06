@@ -9,6 +9,8 @@
  *    and another containing the body content.
  *  setFieldTypes: Set an array of field types for each column of data where
  *    data is a 2x2 array for a given file.
+ *  updateUserDefFieldType: Indicates that the user has changed he the field
+ *    types and store the user defined field types.
  */
 
 import * as actionTypes from '../actions/actionTypes';
@@ -127,6 +129,7 @@ const setFieldTypes = (state, action) => {
     const updatedFile = {
       ...file,
       fieldTypes: fieldTypes,
+      userChangedFields: false,
     };
 
     const updatedFiles = updateObject(state.files, {
@@ -135,6 +138,21 @@ const setFieldTypes = (state, action) => {
 
     return updateObject(state, { files: updatedFiles });
   }
+};
+
+const updateUserDefFieldType = (state, action) => {
+  const file = state.files[action.id];
+  const updatedFile = {
+    ...file,
+    userChangedFields: true,
+    userDefFieldTypes: action.fieldTypes,
+  };
+
+  const updatedFiles = updateObject(state.files, {
+    [action.id]: updatedFile,
+  });
+
+  return updateObject(state, { files: updatedFiles });
 };
 
 const reducer = (state = initialState, action) => {
@@ -149,6 +167,8 @@ const reducer = (state = initialState, action) => {
       return splitParsedData(state, action);
     case actionTypes.SET_FIELD_TYPES:
       return setFieldTypes(state, action);
+    case actionTypes.UPDATE_USER_DEF_FIELD_TYPES:
+      return updateUserDefFieldType(state, action);
     default:
       return state;
   }

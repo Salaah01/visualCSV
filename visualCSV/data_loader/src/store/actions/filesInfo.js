@@ -8,6 +8,8 @@
  *  setFieldTypes: Action to set an array of field types for each column of
  *    data where data is a 2x2 array for a given file.
  *  validateBaseStructure: Validates the base structure of the imported file.
+ *  updateUserDefFieldType: Action to indicate that the user has changed a
+ *    field type and to add the store with the user defined fields.
  */
 
 import * as actionTypes from './actionTypes';
@@ -60,3 +62,13 @@ export const setFieldTypes = (id) => {
   };
 };
 
+export const updateUserDefFieldType = (id, fieldTypes) => {
+  /**Action to indicate that the user has changed a field type and to add the
+   * user defined fields to the store.
+   */
+  return {
+    type: actionTypes.UPDATE_USER_DEF_FIELD_TYPES,
+    id: id,
+    fieldTypes: fieldTypes,
+  };
+};
