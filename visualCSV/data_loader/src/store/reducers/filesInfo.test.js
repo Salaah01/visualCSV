@@ -6,6 +6,7 @@
 // Local Imports
 import filesInfoReducer, { fileStates } from './filesInfo';
 import * as actionTypes from '../actions/actionTypes';
+import reducer from './filesInfo';
 
 describe('NEW_FILE_UPLOAD_START', () => {
   const state = {
@@ -177,6 +178,67 @@ describe('SPLIT_PARSED_DATA', () => {
   it('should updated status to indicate that parsing has failed if the data cannot be split.', () => {
     expect((reducerFailed().files.a.status = fileStates.PARSING_CSV_FAIL));
   });
+
+  it('should set up headers if the headers are empty string', () => {
+    const state = {
+      files: {
+        a: {
+          data: [
+            ['', 'b', ''],
+            [1, 2, 3],
+            [4, 5, 6],
+          ],
+        },
+      },
+    };
+
+    const reducer = filesInfoReducer(state, {
+      type: actionTypes.SPLIT_PARSED_DATA,
+      id: 'a',
+    });
+
+    expect(reducer.files.a.header).toEqual(['header_1', 'b', 'header_3']);
+  });
+
+  it('should handle duplicate headers.', () => {
+    const state = {
+      files: {
+        a: {
+          data: [
+            ['a', 'a', 'c'],
+            [1, 2, 3],
+            [4, 5, 6],
+          ],
+        },
+      },
+    };
+
+    const reducer = filesInfoReducer(state, {
+      type: actionTypes.SPLIT_PARSED_DATA,
+      id: 'a',
+    });
+    expect(reducer.files.a.header).toEqual(['a', 'a_1', 'c']);
+  });
+
+  it('should handle multiple duplicate headers.', () => {
+    const state = {
+      files: {
+        a: {
+          data: [
+            ['a', 'a', 'a'],
+            [1, 2, 3],
+            [4, 5, 6],
+          ],
+        },
+      },
+    };
+
+    const reducer = filesInfoReducer(state, {
+      type: actionTypes.SPLIT_PARSED_DATA,
+      id: 'a',
+    });
+    expect(reducer.files.a.header).toEqual(['a', 'a_1', 'a_2']);
+  });
 });
 
 describe('SET_FIELD_TYPES', () => {
@@ -242,4 +304,24 @@ describe('UPDATE_USER_DEF_FIELD_TYPES', () => {
   it('should not mutate the original state.', () => {
     expect(state.files.a).toEqual({ userChangedFields: false });
   });
+});
+
+describe('FILES_READY_TO_UPLOAD', () => {
+  const state = {
+    filesReadyToUpload: false,
+  };
+  const reducer = filesInfoReducer(state, {
+    type: actionTypes.FILES_READY_TO_UPLOAD,
+  });
+  expect(reducer.filesReadyToUpload).toEqual(true);
+});
+
+describe('FILES_NOT_READY_TO_UPLOAD', () => {
+  const state = {
+    filesReadyToUpload: true,
+  };
+  const reducer = filesInfoReducer(state, {
+    type: actionTypes.FILES_NOT_READY_TO_UPLOAD,
+  });
+  expect(reducer.filesReadyToUpload).toEqual(false);
 });

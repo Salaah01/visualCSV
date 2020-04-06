@@ -4,4 +4,6 @@ export {
   newFileUploadFail,
   splitParsedData,
   setFieldTypes,
+  filesReadyToUpload,
+  filesNotReadyToUpload,
 } from './filesInfo';

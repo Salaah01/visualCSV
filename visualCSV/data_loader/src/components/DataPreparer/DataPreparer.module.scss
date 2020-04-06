@@ -1,0 +1,19 @@
+.FileHeadings {
+  display: flex;
+
+  &__Heading {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px;
+
+    &__Label {
+      margin-bottom: 2px;
+      text-align: center;
+    }
+
+    &__Select {
+      border-radius: 5px;
+      padding: 5px;
+    }
+  }
+}

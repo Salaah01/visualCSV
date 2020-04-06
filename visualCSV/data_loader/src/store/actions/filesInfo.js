@@ -10,6 +10,9 @@
  *  validateBaseStructure: Validates the base structure of the imported file.
  *  updateUserDefFieldType: Action to indicate that the user has changed a
  *    field type and to add the store with the user defined fields.
+ *  filesReadyToImport: Action to indicate that files are ready to upload.
+ *  filesNotReadyToImport: Action to indicate that files are not ready to
+ *    upload.
  */
 
 import * as actionTypes from './actionTypes';
@@ -70,5 +73,19 @@ export const updateUserDefFieldType = (id, fieldTypes) => {
     type: actionTypes.UPDATE_USER_DEF_FIELD_TYPES,
     id: id,
     fieldTypes: fieldTypes,
+  };
+};
+
+export const filesReadyToUpload = () => {
+  /**Action to indicate that files are ready to upload. */
+  return {
+    type: actionTypes.FILES_READY_TO_UPLOAD,
+  };
+};
+
+export const filesNotReadyToUpload = () => {
+  /**Action to indicate that files are not ready to upload. */
+  return {
+    type: actionTypes.FILES_NOT_READY_TO_UPLOAD,
   };
 };

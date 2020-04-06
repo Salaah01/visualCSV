@@ -11,6 +11,10 @@
  *    data is a 2x2 array for a given file.
  *  updateUserDefFieldType: Indicates that the user has changed he the field
  *    types and store the user defined field types.
+ *  filesReadyToUpload: Update the store to indicate that files are ready to
+ *    be uploaded.
+ *  filesNotReadyToUpload: Update the store to indicate that files are not
+ *    ready to be uploaded.
  */
 
 import * as actionTypes from '../actions/actionTypes';
@@ -18,9 +22,11 @@ import { updateObject } from '../../../../coreFunctions/js/updateObject';
 import {
   deriveFieldTypes,
   checkBaseStructure,
+  PrepareHeadersForDB,
 } from '../../../../coreFunctions/js';
 const initialState = {
   files: {},
+  filesReadyToUpload: false,
 };
 
 export const fileStates = {
@@ -33,19 +39,6 @@ const newFileUploadStart = (state, action) => {
   /**Starts the upload process for a file. This process  involves storing the
    * file ID and file name.
    */
-  // TODO: Do I need the first bit?
-  const keys = Object.keys(state.files);
-  let nextKeyId;
-  if (keys.length) {
-    nextKeyId =
-      Math.max.apply(
-        null,
-        keys.map((key) => +key),
-      ) + 1;
-  } else {
-    nextKeyId = 1;
-  }
-
   const updatedFiles = updateObject(state.files, {
     [action.id]: {
       name: action.fileName,
@@ -96,7 +89,9 @@ const splitParsedData = (state, action) => {
     content = state.files[action.id].data.slice(1);
     status = fileStates.PARSING_CSV_SUCCESS;
 
-    if (!checkBaseStructure(headers, content)) {
+    if (checkBaseStructure(headers, content)) {
+      headers = new PrepareHeadersForDB(headers).run_all_conversions();
+    } else {
       headers = null;
       content = null;
       status = fileStates.PARSING_CSV_FAIL;
@@ -106,6 +101,7 @@ const splitParsedData = (state, action) => {
     content = null;
     status = fileStates.PARSING_CSV_FAIL;
   }
+
   const updatedFile = {
     ...state.files[action.id],
     header: headers,
@@ -141,6 +137,9 @@ const setFieldTypes = (state, action) => {
 };
 
 const updateUserDefFieldType = (state, action) => {
+  /**Indicates that the user has changed he the field types and store the user
+   * defined field types.
+   */
   const file = state.files[action.id];
   const updatedFile = {
     ...file,
@@ -153,6 +152,16 @@ const updateUserDefFieldType = (state, action) => {
   });
 
   return updateObject(state, { files: updatedFiles });
+};
+
+const filesReadyToUpload = (state) => {
+  /**Update the store to indicate that files are ready to be uploaded. */
+  return updateObject(state, { filesReadyToUpload: true });
+};
+
+const filesNotReadyToUpload = (state) => {
+  /**Update the store to indicate that files are not ready to be uploaded. */
+  return updateObject(state, { filesReadyToUpload: false });
 };
 
 const reducer = (state = initialState, action) => {
@@ -169,6 +178,10 @@ const reducer = (state = initialState, action) => {
       return setFieldTypes(state, action);
     case actionTypes.UPDATE_USER_DEF_FIELD_TYPES:
       return updateUserDefFieldType(state, action);
+    case actionTypes.FILES_READY_TO_UPLOAD:
+      return filesReadyToUpload(state);
+    case actionTypes.FILES_NOT_READY_TO_UPLOAD:
+      return filesNotReadyToUpload(state);
     default:
       return state;
   }
