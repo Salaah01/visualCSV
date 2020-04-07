@@ -2,8 +2,8 @@
 import React, { Component, Fragment } from 'react';
 
 // Local Imports
-import FileUploader from './components/FileUploader/FileUploader';
-import DataPreparer from './components/DataPreparer/DataPreparer';
+import FileUploader from './containers/FileUploader/FileUploader';
+import DataPreparer from './containers/DataPreparer/DataPreparer';
 
 class App extends Component {
   render() {

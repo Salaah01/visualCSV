@@ -17,8 +17,35 @@ import DjangoCSRFToken from 'django-react-csrftoken';
 import * as actions from '../../store/actions';
 import { fileStates } from '../../store/reducers/filesInfo';
 import classes from './DataPreparer.module.scss';
+import SubmitButton from '../../components/SubmitButton/SubmitButton';
+import HtmlElemsPK from '../../components/FileAttributeOptions/HtmlElemsPK/HtmlElemsPK';
 
 class DataPreparer extends Component {
+  componentDidUpdate() {
+    /**Evaluate if files are ready to be uploaded. */
+    if (
+      !Object.keys(this.props.files).length &&
+      this.props.filesReadyToUpload
+    ) {
+      this.props.onFilesNotReadyToUpload();
+    } else if (
+      // If any of the files are still processing, then disable the button.
+      Object.keys(this.props.files).filter(
+        (fileId) =>
+          this.props.files[fileId].status ===
+          fileStates.PARSING_CSV_IN_PROGRESS,
+      ).length
+    ) {
+      if (this.props.filesReadyToUpload) {
+        this.props.onFilesNotReadyToUpload();
+      }
+    } else {
+      if (!this.props.filesReadyToUpload) {
+        this.props.onFilesReadyToUpload();
+      }
+    }
+  }
+
   fileHeadersElem = (fileId, index) => {
     /**Creates set of form elements for a file. For each header of a given file
      * the method will create a label and input where the user will be able to
@@ -138,12 +165,21 @@ class DataPreparer extends Component {
 
       // Level 2
       jsonResponse[fileId].table_data = [];
-      jsonResponse[fileId].primary_key = '';
+
+      const primaryKeyElem = document.getElementById(
+        `data-primary-key__${fileId}`,
+      );
+      let primaryKey;
+      if (primaryKeyElem && primaryKeyElem.innerText) {
+        primaryKey = JSON.parse(primaryKeyElem.innerText);
+      } else {
+        primaryKey = '';
+      }
+      jsonResponse[fileId].primary_key = primaryKey;
       jsonResponse[fileId].foreign_keys = [];
 
       // Level 3 - table data
       const headerLen = file.header ? file.header.length : 0;
-      console.log(file.header, headerLen);
       for (let headIdx = 0; headIdx < headerLen; headIdx++) {
         // Prepare the contents (level 5)
         const contents = [];
@@ -167,75 +203,38 @@ class DataPreparer extends Component {
       <textarea
         name="post-data"
         id="post-data"
+        readOnly
         value={JSON.stringify(jsonResponse)}
       />
     );
   };
 
-  onButtonClick = () => {
-    /**Click handler for the button element. On click, a post request will be
-     * sent.
-     */
-    const xhr = new XMLHttpRequest();
-    const url = 'http://localhost:8000/';
-    xhr.open('POST', url, true);
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.setRequestHeader(
-      'X-CSRFTOKEN',
-      document.querySelector('#csrf>input').value,
-    );
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        const json = JSON.parse(xhr.response);
-        console.log('post set up');
-      }
-    };
-    const data = document.getElementById('post-data');
-    xhr.send(data);
+  singlePKAndFKElem = (fileID) => {
+    return <HtmlElemsPK file={this.props.files[fileID]} fileID={fileID} />;
   };
 
-  uploadButton = () => {
-    /**Returns a upload button which will either be clickable or disabled
-     * depending on the progress of all the files.
-     */
-
-    // if there are no files, disable the button.
-    if (!Object.keys(this.props.files).length) {
-      this.props.onFilesNotReadyToUpload();
-    } else if (
-      // If any of the files are still processing, then disable the button.
-      Object.keys(this.props.files).filter(
-        (fileId) =>
-          this.props.files[fileId].status ===
-          fileStates.PARSING_CSV_IN_PROGRESS,
-      ).length
-    ) {
-      this.props.onFilesNotReadyToUpload();
-    } else {
-      this.props.onFilesReadyToUpload();
+  allPKAndFkElems = () => {
+    let htmlElems = null;
+    const fileIDs = Object.keys(this.props.files);
+    if (fileIDs.length) {
+      htmlElems = fileIDs.map((fileID) => this.singlePKAndFKElem(fileID));
     }
-
-    return (
-      <button
-        type="submit"
-        disabled={!this.props.filesReadyToUpload}
-      >
-        Upload
-      </button>
-    );
+    return htmlElems;
   };
 
   render() {
     // TODO: Build this.allFileHeadersElems() and allow on change. There is a
     // core functions that will help with revalidating the fields.
+
     return (
       <div>
         <form method="POST">
           <div id="csrf">
             <DjangoCSRFToken />
           </div>
-          {this.uploadButton()}
+          <SubmitButton disabled={!this.props.filesReadyToUpload} />
           {this.jsonFilesData()}
+          {this.allPKAndFkElems()}
         </form>
       </div>
     );

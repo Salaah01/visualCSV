@@ -145,3 +145,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'visualCSV/static')
 ]
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880

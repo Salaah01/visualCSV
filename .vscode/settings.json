@@ -1,9 +1,17 @@
 {
-    "python.pythonPath": "venv\\Scripts\\python.exe",
-    "cSpell.words": [
-        "Dropzone",
-        "Elems",
-        "Uploader",
-        "csvs"
-    ]
+  "python.pythonPath": "venv\\Scripts\\python.exe",
+  "cSpell.words": [
+    "Btns",
+    "Dropzone",
+    "Elems",
+    "Uploader",
+    "csvs"
+  ],
+  "editor.tabSize": 4,
+  "[javascript]": {
+    "editor.tabSize": 2
+  },
+  "[python]": {
+    "editor.tabSize": 4
+  }
 }

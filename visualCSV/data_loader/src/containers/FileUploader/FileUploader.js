@@ -11,7 +11,7 @@ import csv from 'csv';
 import { connect } from 'react-redux';
 
 // Local Imports
-import Spinner from '../../../../sharedJsComponents/UI/spinners/spinner1/Spinner';
+import Spinner from '../../../../shared_js_components/UI/spinners/spinner1/Spinner';
 import classes from './FileUploader.module.scss';
 import * as actions from '../../store/actions';
 import { fileStates } from '../../store/reducers/filesInfo';

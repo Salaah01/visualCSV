@@ -18,12 +18,12 @@
  */
 
 import * as actionTypes from '../actions/actionTypes';
-import { updateObject } from '../../../../coreFunctions/js/updateObject';
+import { updateObject } from '../../../../core_functions/js/updateObject';
 import {
   deriveFieldTypes,
   checkBaseStructure,
   PrepareHeadersForDB,
-} from '../../../../coreFunctions/js';
+} from '../../../../core_functions/js';
 const initialState = {
   files: {},
   filesReadyToUpload: false,
