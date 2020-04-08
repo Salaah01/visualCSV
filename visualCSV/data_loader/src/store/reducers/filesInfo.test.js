@@ -6,7 +6,6 @@
 // Local Imports
 import filesInfoReducer, { fileStates } from './filesInfo';
 import * as actionTypes from '../actions/actionTypes';
-import reducer from './filesInfo';
 
 describe('NEW_FILE_UPLOAD_START', () => {
   const state = {

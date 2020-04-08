@@ -36,7 +36,8 @@ class DataLoader(View):
         if request.user.is_authenticated:
             userTables = self._user_tables(request.user.id)
             context = {
-                'userTables': userTables if userTables else None
+                'userTables': userTables if userTables else None,
+                'userID': request.user.id
             }
 
             return render(request, 'data_loader/data_loader.html', context)

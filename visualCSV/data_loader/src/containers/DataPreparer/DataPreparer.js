@@ -19,8 +19,14 @@ import { fileStates } from '../../store/reducers/filesInfo';
 import classes from './DataPreparer.module.scss';
 import SubmitButton from '../../components/SubmitButton/SubmitButton';
 import HtmlElemsPK from '../../components/FileAttributeOptions/HtmlElemsPK/HtmlElemsPK';
+import PostDataElem from '../../components/PostDataElem/PostDataElem';
+import { CONTENT_FOR_FILE_PK_NAME } from '../../constants';
 
 class DataPreparer extends Component {
+  state = {
+    dummyCounter: 0,
+  };
+
   componentDidUpdate() {
     /**Evaluate if files are ready to be uploaded. */
     if (
@@ -136,79 +142,6 @@ class DataPreparer extends Component {
     return <form encType="application/json">{fileInputElems}</form>;
   };
 
-  jsonFilesData = () => {
-    /**Stringified JSON which contains data to be passed to the server. The
-     * following structure will be created (a single file):
-     * {
-     *   file_id1: {
-     *     table_data: [{
-     *       col1: {
-     *         field_type: string,
-     *         contents: [1, 2, 4, 5, 6 7]
-     *       }
-     *     ]},
-     *     primary_key: primary_key_field_name,
-     *     foreign_keys: [{
-     *      field1: table_name,
-     *      field2: table_name
-     *     }]
-     *   }
-     * }
-     */
-
-    const jsonResponse = {};
-    const fileIds = Object.keys(this.props.files);
-    for (const fileId of fileIds) {
-      const file = this.props.files[fileId];
-      // Level 1.
-      jsonResponse[fileId] = {};
-
-      // Level 2
-      jsonResponse[fileId].table_data = [];
-
-      const primaryKeyElem = document.getElementById(
-        `data-primary-key__${fileId}`,
-      );
-      let primaryKey;
-      if (primaryKeyElem && primaryKeyElem.innerText) {
-        primaryKey = JSON.parse(primaryKeyElem.innerText);
-      } else {
-        primaryKey = '';
-      }
-      jsonResponse[fileId].primary_key = primaryKey;
-      jsonResponse[fileId].foreign_keys = [];
-
-      // Level 3 - table data
-      const headerLen = file.header ? file.header.length : 0;
-      for (let headIdx = 0; headIdx < headerLen; headIdx++) {
-        // Prepare the contents (level 5)
-        const contents = [];
-        const contentLen = file.content ? file.content.length : 0;
-        for (let row = 0; row < contentLen; row++) {
-          contents.push(file.content[row][headIdx]);
-        }
-
-        jsonResponse[fileId].table_data.push({
-          // Level 4 - column
-          [file.header[headIdx]]: {
-            // Level 5 - field type
-            fieldType: file.fieldTypes ? file.fieldTypes[headIdx] : '',
-            // Level 5 - contents
-            contents: contents,
-          },
-        });
-      }
-    }
-    return (
-      <textarea
-        name="post-data"
-        id="post-data"
-        readOnly
-        value={JSON.stringify(jsonResponse)}
-      />
-    );
-  };
-
   singlePKAndFKElem = (fileID) => {
     return <HtmlElemsPK file={this.props.files[fileID]} fileID={fileID} />;
   };
@@ -226,6 +159,15 @@ class DataPreparer extends Component {
     // TODO: Build this.allFileHeadersElems() and allow on change. There is a
     // core functions that will help with revalidating the fields.
 
+    const PKInfoElems = document.querySelectorAll(
+      `[contentfor=${CONTENT_FOR_FILE_PK_NAME}]`,
+    );
+
+    for (const PKInfoElem of PKInfoElems) {
+      PKInfoElem.addEventListener('click', () => {
+        this.setState({ dummyCounter: Math.random() });
+      });
+    }
     return (
       <div>
         <form method="POST">
@@ -233,8 +175,8 @@ class DataPreparer extends Component {
             <DjangoCSRFToken />
           </div>
           <SubmitButton disabled={!this.props.filesReadyToUpload} />
-          {this.jsonFilesData()}
           {this.allPKAndFkElems()}
+          <PostDataElem files={this.props.files} />
         </form>
       </div>
     );

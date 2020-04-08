@@ -24,6 +24,7 @@ import {
   checkBaseStructure,
   PrepareHeadersForDB,
 } from '../../../../core_functions/js';
+
 const initialState = {
   files: {},
   filesReadyToUpload: false,

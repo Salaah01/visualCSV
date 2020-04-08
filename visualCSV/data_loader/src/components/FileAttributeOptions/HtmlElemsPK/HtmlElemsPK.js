@@ -6,6 +6,7 @@
 import React from 'react';
 
 // Local Imports
+import { CONTENT_FOR_FILE_PK_NAME } from '../../../constants';
 
 const htmlElemsPK = (props) => {
   /**Creates a set of form elements which hte user can interact with to the
@@ -44,6 +45,7 @@ const htmlElemsPK = (props) => {
           name={props.fileID}
           heading={singleHeader}
           value={singleHeader}
+          contentfor={CONTENT_FOR_FILE_PK_NAME}
           onClick={() => onClickHandler(singleHeader)}
         />
       </div>
