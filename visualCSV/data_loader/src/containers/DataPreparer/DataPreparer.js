@@ -18,7 +18,6 @@ import * as actions from '../../store/actions';
 import { fileStates } from '../../store/reducers/filesInfo';
 import classes from './DataPreparer.module.scss';
 import SubmitButton from '../../components/SubmitButton/SubmitButton';
-import HtmlElemsPK from '../../components/FileAttributeOptions/HtmlElemsPK/HtmlElemsPK';
 import PostDataElem from '../../components/PostDataElem/PostDataElem';
 import HeaderAttributes from '../../components/FileAttributeOptions/HeaderAttributes/HeaderAttributes';
 import { CONTENT_FOR_FILE_PK_NAME } from '../../constants';
@@ -55,31 +54,6 @@ class DataPreparer extends Component {
     }
   }
 
-  allFileHeadersElems = () => {
-    //**Returns a collection of input elements for each file. */
-    const fileInputElems = Object.keys(this.props.files)
-      .filter(
-        (fileId) =>
-          this.props.files[fileId].header !== null &&
-          this.props.files[fileId].header !== undefined,
-      )
-      .map((fileId, index) => this.fileHeadersElem(fileId, index));
-
-    return <form encType="application/json">{fileInputElems}</form>;
-  };
-
-  singlePKAndFKElem = (fileID) => {
-    return <HtmlElemsPK file={this.props.files[fileID]} fileID={fileID} />;
-  };
-
-  allPKAndFkElems = () => {
-    let htmlElems = null;
-    const fileIDs = Object.keys(this.props.files);
-    if (fileIDs.length) {
-      htmlElems = fileIDs.map((fileID) => this.singlePKAndFKElem(fileID));
-    }
-    return htmlElems;
-  };
 
   headerAttributes = () =>
     this.fileIDs().map((fileID) => (
@@ -94,9 +68,6 @@ class DataPreparer extends Component {
     ));
 
   render() {
-    // TODO: Build this.allFileHeadersElems() and allow on change. There is a
-    // core functions that will help with revalidating the fields.
-
     const PKInfoElems = document.querySelectorAll(
       `[contentfor=${CONTENT_FOR_FILE_PK_NAME}]`,
     );
@@ -115,7 +86,6 @@ class DataPreparer extends Component {
             <DjangoCSRFToken />
           </div>
           <SubmitButton disabled={!this.props.filesReadyToUpload} />
-          {this.allPKAndFkElems()}
           <PostDataElem files={this.props.files} />
         </form>
         {this.headerAttributes()}
