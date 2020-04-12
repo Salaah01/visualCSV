@@ -13,6 +13,9 @@
  *  filesReadyToImport: Action to indicate that files are ready to upload.
  *  filesNotReadyToImport: Action to indicate that files are not ready to
  *    upload.
+ *  setPrimaryKey: Action to set a the primary key for a file.
+ *  setForeignKey: Action to set a foreign key for a header of a file.
+ *  removeForeignKey: Action to remove a foreign key from a header of a file.
  */
 
 import * as actionTypes from './actionTypes';
@@ -87,5 +90,33 @@ export const filesNotReadyToUpload = () => {
   /**Action to indicate that files are not ready to upload. */
   return {
     type: actionTypes.FILES_NOT_READY_TO_UPLOAD,
+  };
+};
+
+export const setPrimaryKey = (id, pk) => {
+  /**Action to set a primary key for a file. */
+  return {
+    type: actionTypes.SET_PRIMARY_KEY,
+    id: id,
+    pk: pk,
+  };
+};
+
+export const setForeignKey = (id, header, fk) => {
+  /**Action to set a foreign key for a header of a file. */
+  return {
+    type: actionTypes.SET_FOREIGN_KEY,
+    id: id,
+    header: header,
+    fk: fk
+  };
+};
+
+export const removeForeignKey = (id, header) => {
+  /**Action to remove a foreign key for a header of a file. */
+  return {
+    type: actionTypes.REMOVE_FOREIGN_KEY,
+    id: id,
+    header: header,
   };
 };

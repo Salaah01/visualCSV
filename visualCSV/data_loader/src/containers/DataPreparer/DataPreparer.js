@@ -20,12 +20,15 @@ import classes from './DataPreparer.module.scss';
 import SubmitButton from '../../components/SubmitButton/SubmitButton';
 import HtmlElemsPK from '../../components/FileAttributeOptions/HtmlElemsPK/HtmlElemsPK';
 import PostDataElem from '../../components/PostDataElem/PostDataElem';
+import HeaderAttributes from '../../components/FileAttributeOptions/HeaderAttributes/HeaderAttributes';
 import { CONTENT_FOR_FILE_PK_NAME } from '../../constants';
 
 class DataPreparer extends Component {
   state = {
     dummyCounter: 0,
   };
+
+  fileIDs = () => Object.keys(this.props.files);
 
   componentDidUpdate() {
     /**Evaluate if files are ready to be uploaded. */
@@ -51,83 +54,6 @@ class DataPreparer extends Component {
       }
     }
   }
-
-  fileHeadersElem = (fileId, index) => {
-    /**Creates set of form elements for a file. For each header of a given file
-     * the method will create a label and input where the user will be able to
-     * change the field type (pre-populated) for each heading.
-     *
-     * Args:
-     *  fileId: The file ID for a file.
-     *  index: A unique index property to be set as the key for the returning
-     *    div.
-     */
-    const file = this.props.files[fileId];
-    // Ensure that all of the properties have been loaded onto the store before
-    // accessing.
-    if (
-      file.status === fileStates.PARSING_CSV_SUCCESS &&
-      file.fieldTypes &&
-      file.header
-    ) {
-      const headerElems = [];
-      for (let headIdx = 0; headIdx < file.header.length; headIdx++) {
-        const headerId = `${fileId}_${headIdx}`;
-
-        headerElems.push(
-          <div
-            key={headerElems.length}
-            file={fileId}
-            className={classes.FileHeadings__Heading}
-          >
-            <label
-              htmlFor={headerId}
-              className={classes.FileHeadings__Heading__Label}
-            >
-              {file.header[headIdx]}
-            </label>
-            <select
-              id={headerId}
-              col={headIdx}
-              className={classes.FileHeadings__Heading__Select}
-              name={`${fileId}[${file.header[headIdx]}]`}
-            >
-              <option
-                value="string"
-                selected={file.fieldTypes[headIdx] === 'string'}
-              >
-                String
-              </option>
-              <option
-                value="number"
-                selected={file.fieldTypes[headIdx] === 'number'}
-              >
-                Number
-              </option>
-              <option
-                value="date"
-                selected={file.fieldTypes[headIdx] === 'date'}
-              >
-                Date
-              </option>
-            </select>
-          </div>,
-        );
-      }
-      return (
-        <div
-          id={`headers_${fileId}`}
-          key={index}
-          className={classes.FileHeadings}
-          file={fileId}
-        >
-          {headerElems}
-        </div>
-      );
-    } else {
-      return null;
-    }
-  };
 
   allFileHeadersElems = () => {
     //**Returns a collection of input elements for each file. */
@@ -155,6 +81,18 @@ class DataPreparer extends Component {
     return htmlElems;
   };
 
+  headerAttributes = () =>
+    this.fileIDs().map((fileID) => (
+      <HeaderAttributes
+        file={this.props.files ? this.props.files[fileID] : null}
+        tables={this.props.tables}
+        fileID={fileID}
+        setPrimaryKey={this.props.onSetPrimaryKey}
+        setForeignKey={this.props.onSetForeignKey}
+        removeForeignKey={this.props.onRemoveForeignKey}
+      />
+    ));
+
   render() {
     // TODO: Build this.allFileHeadersElems() and allow on change. There is a
     // core functions that will help with revalidating the fields.
@@ -168,6 +106,8 @@ class DataPreparer extends Component {
         this.setState({ dummyCounter: Math.random() });
       });
     }
+
+    let postDataElem = null;
     return (
       <div>
         <form method="POST">
@@ -178,6 +118,7 @@ class DataPreparer extends Component {
           {this.allPKAndFkElems()}
           <PostDataElem files={this.props.files} />
         </form>
+        {this.headerAttributes()}
       </div>
     );
   }
@@ -187,6 +128,7 @@ const mapStateToProps = (state) => {
   return {
     files: state.filesInfo.files,
     filesReadyToUpload: state.filesInfo.filesReadyToUpload,
+    tables: state.filesInfo.tables,
   };
 };
 
@@ -194,6 +136,11 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onFilesReadyToUpload: () => dispatch(actions.filesReadyToUpload()),
     onFilesNotReadyToUpload: () => dispatch(actions.filesNotReadyToUpload()),
+    onSetPrimaryKey: (id, pk) => dispatch(actions.setPrimaryKey(id, pk)),
+    onSetForeignKey: (id, header, fk) =>
+      dispatch(actions.setForeignKey(id, header, fk)),
+    onRemoveForeignKey: (id, header) =>
+      dispatch(actions.removeForeignKey(id, header)),
   };
 };
 

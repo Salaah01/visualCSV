@@ -14,13 +14,13 @@ describe('NEW_FILE_UPLOAD_START', () => {
         name: 'f1',
         status: fileStates.PARSING_CSV_IN_PROGRESS,
         primaryKey: 'name',
-        foreignKeys: [],
+        foreignKeys: {},
       },
       4: {
         name: 'f2',
         status: fileStates.PARSING_CSV_FAIL,
         primaryKey: '',
-        foreignKeys: [],
+        foreignKeys: {},
       },
     },
   };
@@ -36,19 +36,19 @@ describe('NEW_FILE_UPLOAD_START', () => {
         name: 'f1',
         status: fileStates.PARSING_CSV_IN_PROGRESS,
         primaryKey: 'name',
-        foreignKeys: [],
+        foreignKeys: {},
       },
       4: {
         name: 'f2',
         status: fileStates.PARSING_CSV_FAIL,
         primaryKey: '',
-        foreignKeys: [],
+        foreignKeys: {},
       },
       5: {
         name: 'f3',
         status: fileStates.PARSING_CSV_IN_PROGRESS,
         primaryKey: '',
-        foreignKeys: [],
+        foreignKeys: {},
       },
     });
   });
@@ -59,13 +59,13 @@ describe('NEW_FILE_UPLOAD_START', () => {
         name: 'f1',
         status: fileStates.PARSING_CSV_IN_PROGRESS,
         primaryKey: 'name',
-        foreignKeys: [],
+        foreignKeys: {},
       },
       4: {
         name: 'f2',
         status: fileStates.PARSING_CSV_FAIL,
         primaryKey: '',
-        foreignKeys: [],
+        foreignKeys: {},
       },
     });
   });
@@ -180,7 +180,7 @@ describe('SPLIT_PARSED_DATA', () => {
   };
 
   it('should split the headers and the data content.', () => {
-    expect(reducerPassed().files.a.header).toEqual(['a', 'b', 'c']);
+    expect(reducerPassed().files.a.headers).toEqual(['a', 'b', 'c']);
     expect(reducerPassed().files.a.content).toEqual([
       [1, 2, 3],
       [4, 5, 6],
@@ -201,12 +201,12 @@ describe('SPLIT_PARSED_DATA', () => {
       id: 'a',
     });
 
-    expect(reducer.files.a.header).toEqual(null);
+    expect(reducer.files.a.headers).toEqual(null);
     expect(reducer.files.a.content).toEqual(null);
   });
 
   it('should set headers to null when the data object is not of the expected type.', () => {
-    expect(reducerFailed().files.a.header).toEqual(null);
+    expect(reducerFailed().files.a.headers).toEqual(null);
   });
 
   it('should set content to null when the data object is not of the expected type.', () => {
@@ -239,7 +239,7 @@ describe('SPLIT_PARSED_DATA', () => {
       id: 'a',
     });
 
-    expect(reducer.files.a.header).toEqual(['header_1', 'b', 'header_3']);
+    expect(reducer.files.a.headers).toEqual(['header_1', 'b', 'header_3']);
   });
 
   it('should handle duplicate headers.', () => {
@@ -259,7 +259,7 @@ describe('SPLIT_PARSED_DATA', () => {
       type: actionTypes.SPLIT_PARSED_DATA,
       id: 'a',
     });
-    expect(reducer.files.a.header).toEqual(['a', 'a_1', 'c']);
+    expect(reducer.files.a.headers).toEqual(['a', 'a_1', 'c']);
   });
 
   it('should handle multiple duplicate headers.', () => {
@@ -279,7 +279,7 @@ describe('SPLIT_PARSED_DATA', () => {
       type: actionTypes.SPLIT_PARSED_DATA,
       id: 'a',
     });
-    expect(reducer.files.a.header).toEqual(['a', 'a_1', 'a_2']);
+    expect(reducer.files.a.headers).toEqual(['a', 'a_1', 'a_2']);
   });
 });
 
@@ -366,4 +366,133 @@ describe('FILES_NOT_READY_TO_UPLOAD', () => {
     type: actionTypes.FILES_NOT_READY_TO_UPLOAD,
   });
   expect(reducer.filesReadyToUpload).toEqual(false);
+});
+
+describe('SET_PRIMARY_KEY', () => {
+  const state = {
+    files: {
+      a: {
+        primaryKey: 'abc',
+        foreignKeys: '',
+      },
+    },
+  };
+
+  const reducer = filesInfoReducer(state, {
+    type: actionTypes.SET_PRIMARY_KEY,
+    id: 'a',
+    pk: 'def',
+  });
+
+  it('should update the primary key.', () => {
+    expect(reducer).toEqual({
+      files: {
+        a: {
+          primaryKey: 'def',
+          foreignKeys: '',
+        },
+      },
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state).toEqual({
+      files: {
+        a: {
+          primaryKey: 'abc',
+          foreignKeys: '',
+        },
+      },
+    });
+  });
+});
+
+describe('SET_FOREIGN_KEY', () => {
+  const state = {
+    files: {
+      a: {
+        primaryKey: 'abc',
+        foreignKeys: {
+          header1: 'def',
+        },
+      },
+    },
+  };
+
+  const reducer = filesInfoReducer(state, {
+    type: actionTypes.SET_FOREIGN_KEY,
+    header: 'header2',
+    fk: 'ghi',
+    id: 'a',
+  });
+
+  it('should add a new foreign key.', () => {
+    expect(reducer.files.a).toEqual({
+      primaryKey: 'abc',
+      foreignKeys: {
+        header1: 'def',
+        header2: 'ghi',
+      },
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state).toEqual({
+      files: {
+        a: {
+          primaryKey: 'abc',
+          foreignKeys: {
+            header1: 'def',
+          },
+        },
+      },
+    });
+  });
+});
+
+describe('REMOVE_FOREIGN_KEY', () => {
+  const state = {
+    files: {
+      a: {
+        primaryKey: 'abc',
+        foreignKeys: {
+          header1: 'def',
+          header2: 'ghi',
+        },
+      },
+    },
+  };
+
+  const reducer = filesInfoReducer(state, {
+    type: actionTypes.REMOVE_FOREIGN_KEY,
+    id: 'a',
+    header: 'header2',
+  });
+
+  it('should remove the foreign key for header 2.', () => {
+    expect(reducer).toEqual({
+      files: {
+        a: {
+          primaryKey: 'abc',
+          foreignKeys: {
+            header1: 'def',
+          },
+        },
+      },
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state).toEqual({
+      files: {
+        a: {
+          primaryKey: 'abc',
+          foreignKeys: {
+            header1: 'def',
+            header2: 'ghi',
+          },
+        },
+      },
+    });
+  });
 });

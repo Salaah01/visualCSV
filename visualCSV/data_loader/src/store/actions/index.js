@@ -6,4 +6,7 @@ export {
   setFieldTypes,
   filesReadyToUpload,
   filesNotReadyToUpload,
+  setPrimaryKey,
+  setForeignKey,
+  removeForeignKey,
 } from './filesInfo';

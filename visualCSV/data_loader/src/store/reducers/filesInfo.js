@@ -16,6 +16,9 @@
  *    be uploaded.
  *  filesNotReadyToUpload: Update the store to indicate that files are not
  *    ready to be uploaded.
+ *  setPrimaryKey: Updates a file with a new new primary key.
+ *  setForeignKey: Sets a foreign key to a header of a given file.
+ *  removeForeignKey: Removes a foreign key.
  */
 
 import * as actionTypes from '../actions/actionTypes';
@@ -53,7 +56,7 @@ const newFileUploadStart = (state, action) => {
       name: action.fileName,
       status: fileStates.PARSING_CSV_IN_PROGRESS,
       primaryKey: '',
-      foreignKeys: [],
+      foreignKeys: {},
     },
   });
 
@@ -120,7 +123,7 @@ const splitParsedData = (state, action) => {
 
   const updatedFile = {
     ...state.files[action.id],
-    header: headers,
+    headers: headers,
     content: content,
     status: status,
   };
@@ -180,6 +183,39 @@ const filesNotReadyToUpload = (state) => {
   return updateObject(state, { filesReadyToUpload: false });
 };
 
+const setPrimaryKey = (state, action) => {
+  /**Updates a file with a new new primary key. */
+  const updatedPK = { ...state.files[action.id], primaryKey: action.pk };
+
+  const updatedFiles = updateObject(state.files, { [action.id]: updatedPK });
+
+  return updateObject(state, { files: updatedFiles });
+};
+
+const setForeignKey = (state, action) => {
+  /**Sets a foreign key to a header of a given file. */
+  const updatedFK = {
+    ...state.files[action.id].foreignKeys,
+    [action.header]: action.fk,
+  };
+
+  const updatedFile = updateObject(state.files[action.id], {foreignKeys: updatedFK})
+  const updatedFiles = updateObject(state.files, {[action.id]: updatedFile})
+
+  return updateObject(state, {files: updatedFiles})
+};
+
+const removeForeignKey = (state, action) => {
+  /**Removes a foreign key. */
+  const foreignKeysCopy = {...state.files[action.id].foreignKeys}
+  delete(foreignKeysCopy[action.header])
+
+  const updatedFile = updateObject(state.files[action.id], {foreignKeys: foreignKeysCopy})
+  const updatedFiles = updateObject(state.files, {[action.id]: updatedFile})
+
+  return updateObject(state, {files: updatedFiles})
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.NEW_FILE_UPLOAD_START:
@@ -198,6 +234,12 @@ const reducer = (state = initialState, action) => {
       return filesReadyToUpload(state);
     case actionTypes.FILES_NOT_READY_TO_UPLOAD:
       return filesNotReadyToUpload(state);
+    case actionTypes.SET_PRIMARY_KEY:
+      return setPrimaryKey(state, action);
+    case actionTypes.SET_FOREIGN_KEY:
+      return setForeignKey(state, action);
+    case actionTypes.REMOVE_FOREIGN_KEY:
+      return removeForeignKey(state, action)
     default:
       return state;
   }
