@@ -1,9 +1,10 @@
 /**Contains the redux reducers related to the files being uploaded. These
  * include:
  *  newFileUploadStart: Starts the upload process for a file. This process
- *    involves storing the file ID and file name.
+ *    involves storing the file ID and file name s well as instantiating a
+ *    null-ish value for the primary and foreign key.
  *  newFileUploadSuccess: Sets the status to indicate that the file could be
- *    read and stores the data.
+ *    read and stores the data. Also adds the table name to the list of tables.
  *  newFileUploadFail: Indicates that the file could not be read.
  *  splitParsedData: Splits the data to two objects, one containing the header
  *    and another containing the body content.
@@ -28,6 +29,12 @@ import {
 const initialState = {
   files: {},
   filesReadyToUpload: false,
+  tables: {
+    existing: document.getElementById('user-tables-data')
+      ? JSON.parse(document.getElementById('user-tables-data').textContent)
+      : '',
+    new: [],
+  },
 };
 
 export const fileStates = {
@@ -38,12 +45,15 @@ export const fileStates = {
 
 const newFileUploadStart = (state, action) => {
   /**Starts the upload process for a file. This process  involves storing the
-   * file ID and file name.
+   * file ID and file name as well as instantiating a null-ish value for the
+   * primary and foreign key.
    */
   const updatedFiles = updateObject(state.files, {
     [action.id]: {
       name: action.fileName,
       status: fileStates.PARSING_CSV_IN_PROGRESS,
+      primaryKey: '',
+      foreignKeys: [],
     },
   });
 
@@ -52,7 +62,7 @@ const newFileUploadStart = (state, action) => {
 
 const newFileUploadSuccess = (state, action) => {
   /**Sets the status to indicate that the file could be read and stores the
-   * data.
+   * data as well as adding the file name to the list of tables.
    */
   const updatedFile = {
     ...state.files[action.id],
@@ -60,8 +70,13 @@ const newFileUploadSuccess = (state, action) => {
     data: action.data,
   };
   const updatedFiles = updateObject(state.files, { [action.id]: updatedFile });
+  const newTableNames = [...state.tables.new, action.id];
+  const updatedTables = updateObject(state.tables, { new: newTableNames });
 
-  return updateObject(state, { files: updatedFiles });
+  return updateObject(state, {
+    files: updatedFiles,
+    tables: updatedTables,
+  });
 };
 
 const newFileUploadFail = (state, action) => {

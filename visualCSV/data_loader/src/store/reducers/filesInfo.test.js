@@ -10,8 +10,18 @@ import * as actionTypes from '../actions/actionTypes';
 describe('NEW_FILE_UPLOAD_START', () => {
   const state = {
     files: {
-      1: { name: 'f1', status: fileStates.PARSING_CSV_IN_PROGRESS },
-      4: { name: 'f2', status: fileStates.PARSING_CSV_FAIL },
+      1: {
+        name: 'f1',
+        status: fileStates.PARSING_CSV_IN_PROGRESS,
+        primaryKey: 'name',
+        foreignKeys: [],
+      },
+      4: {
+        name: 'f2',
+        status: fileStates.PARSING_CSV_FAIL,
+        primaryKey: '',
+        foreignKeys: [],
+      },
     },
   };
   const reducer = filesInfoReducer(state, {
@@ -22,16 +32,41 @@ describe('NEW_FILE_UPLOAD_START', () => {
 
   it('should add an new file to the store and set as processing.', () => {
     expect(reducer.files).toEqual({
-      1: { name: 'f1', status: fileStates.PARSING_CSV_IN_PROGRESS },
-      4: { name: 'f2', status: fileStates.PARSING_CSV_FAIL },
-      5: { name: 'f3', status: fileStates.PARSING_CSV_IN_PROGRESS },
+      1: {
+        name: 'f1',
+        status: fileStates.PARSING_CSV_IN_PROGRESS,
+        primaryKey: 'name',
+        foreignKeys: [],
+      },
+      4: {
+        name: 'f2',
+        status: fileStates.PARSING_CSV_FAIL,
+        primaryKey: '',
+        foreignKeys: [],
+      },
+      5: {
+        name: 'f3',
+        status: fileStates.PARSING_CSV_IN_PROGRESS,
+        primaryKey: '',
+        foreignKeys: [],
+      },
     });
   });
 
   it('should not mutate the original state.', () => {
     expect(state.files).toEqual({
-      1: { name: 'f1', status: fileStates.PARSING_CSV_IN_PROGRESS },
-      4: { name: 'f2', status: fileStates.PARSING_CSV_FAIL },
+      1: {
+        name: 'f1',
+        status: fileStates.PARSING_CSV_IN_PROGRESS,
+        primaryKey: 'name',
+        foreignKeys: [],
+      },
+      4: {
+        name: 'f2',
+        status: fileStates.PARSING_CSV_FAIL,
+        primaryKey: '',
+        foreignKeys: [],
+      },
     });
   });
 });
@@ -43,6 +78,7 @@ describe('NEW_FILE_UPLOAD_SUCCESS', () => {
       4: { name: 'f2', status: fileStates.PARSING_CSV_FAIL },
       6: { name: 'f3', status: fileStates.PARSING_CSV_SUCCESS },
     },
+    tables: { existing: [], new: ['f2', 'f3'] },
   };
   const reducer = filesInfoReducer(state, {
     type: actionTypes.NEW_FILE_UPLOAD_SUCCESS,
@@ -62,11 +98,18 @@ describe('NEW_FILE_UPLOAD_SUCCESS', () => {
     });
   });
 
+  it('should add the table name as a new table.', () => {
+    expect(reducer.tables.new).toEqual(['f2', 'f3', 1]);
+  });
+
   it('should not mutate the original state.', () => {
-    expect(state.files).toEqual({
-      1: { name: 'f1', status: fileStates.PARSING_CSV_IN_PROGRESS },
-      4: { name: 'f2', status: fileStates.PARSING_CSV_FAIL },
-      6: { name: 'f3', status: fileStates.PARSING_CSV_SUCCESS },
+    expect(state).toEqual({
+      files: {
+        1: { name: 'f1', status: fileStates.PARSING_CSV_IN_PROGRESS },
+        4: { name: 'f2', status: fileStates.PARSING_CSV_FAIL },
+        6: { name: 'f3', status: fileStates.PARSING_CSV_SUCCESS },
+      },
+      tables: { existing: [], new: ['f2', 'f3'] },
     });
   });
 });
