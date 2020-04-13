@@ -50,7 +50,7 @@ export const convertFilesDataToJson = (files) => {
       jsonResponse[fileId].foreign_keys = [];
 
       // Level 3 - table data
-      const headerLen = file.header ? file.header.length : 0;
+      const headerLen = file.headers ? file.headers.length : 0;
       for (let headIdx = 0; headIdx < headerLen; headIdx++) {
         // Prepare the contents (level 5)
         const contents = [];
@@ -61,7 +61,7 @@ export const convertFilesDataToJson = (files) => {
 
         jsonResponse[fileId].table_data.push({
           // Level 4 - column
-          [file.header[headIdx]]: {
+          [file.headers[headIdx]]: {
             // Level 5 - field type
             fieldType: file.fieldTypes ? file.fieldTypes[headIdx] : '',
             // Level 5 - contents
@@ -71,6 +71,7 @@ export const convertFilesDataToJson = (files) => {
       }
     }
   }
+  console.log(jsonResponse);
 
   return jsonResponse;
 };
