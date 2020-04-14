@@ -5,9 +5,9 @@
 from django.urls import path
 
 # Local Imports
-from .views import DataLoader
+from .views import GraphBuilder
 
 
 urlpatterns = [
-    path('', DataLoader.as_view(), name='data_loader')
+    path('', GraphBuilder.as_view(), name='graph_builder')
 ]

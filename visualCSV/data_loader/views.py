@@ -1,3 +1,13 @@
+"""View for the `DataLoader` pages.
+
+The get request loads a template where users will be able to upload their files
+and post them to the backend which should be routed to the `post` method
+in the `DataLoader` class.
+
+The data from the post request would then be used to create tables and to
+populate those tables before redircting the user to te graph loader page.
+"""
+# IMPORTS
 # Python Library Imports
 import json
 import re
@@ -7,14 +17,19 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages, auth
 from django.views import View
-from psycopg2 import sql as psql
+import psycopg2
 
 # Local Imports
 import core_functions
 
 
 class DataLoader(View):
-    """View for the DataLoader pages."""
+    """View for the DataLoader pages. On GET request, user is directed to a
+    template which would give them the ability to upload CSVs. Theses CSVs
+    are transmitted via the POST request. The data obtained is used to create
+    and populate tables based on the data obtained from the request.
+    As a final action, the user is then redirected to the graph loader page.
+    """
 
     @staticmethod
     def _user_tables(userID):
@@ -49,7 +64,6 @@ class DataLoader(View):
             return HttpResponse('<h1>Redirect to sign up screen</h1>')
 
     def post(self, request):
-        #TODO: build a path if there is a error with the import.
         """Post request: validate the import, create database table(s) and
         store the input data before redirecting the user to the graph page.
         The following structure is expected to exist for each file:
@@ -69,6 +83,11 @@ class DataLoader(View):
             }
         }
         """
+
+        # A final report that will indicate whether each file could be uploaded
+        # along with any error messages.
+        report = {}
+
         # TODO: Handle the data validation.
         filesData = json.loads(request.POST['post-data'])
 
@@ -81,101 +100,114 @@ class DataLoader(View):
         cur = conn.cursor()
 
         for fileName in filesData:
-            colsImportData = []
-            primaryKey = filesData[fileName]['primary_key']
-            foreignKeys = filesData[fileName]['foreign_keys']
-            print(filesData[fileName]['table_data'])
-            columnNames = [columnData.keys()
-                           for columnData in filesData[fileName]['table_data']]
-            columnNames = [sanitize_str(list(col)[0]) for col in columnNames]
-            contentsSize = len(
-                filesData[fileName]['table_data'][0][columnNames[0]]['contents']
-            )
+            try:
+                colsImportData = []
+                primaryKey = filesData[fileName]['primary_key']
+                foreignKeys = filesData[fileName]['foreign_keys']
+                print(filesData[fileName]['table_data'])
+                columnNames = [columnData.keys()
+                               for columnData in filesData[fileName]['table_data']]
+                columnNames = [sanitize_str(list(col)[0])
+                               for col in columnNames]
+                contentsSize = len(
+                    filesData[fileName]['table_data'][0][columnNames[0]]['contents']
+                )
 
-            for column in filesData[fileName]['table_data']:
-                for colName, colAttr in column.items():
-                    colsImportData.append([colName, colAttr['fieldType']])
+                for column in filesData[fileName]['table_data']:
+                    for colName, colAttr in column.items():
+                        colsImportData.append([colName, colAttr['fieldType']])
 
-            # Store Data (without foreign key information)
-            tableName = sanitize_str(fileName).replace('.csv', '')
-            tableAlias = re.sub('^user__.*?__', '', tableName)
+                # Store Data (without foreign key information)
+                tableName = sanitize_str(fileName).replace('.csv', '')
+                tableAlias = re.sub('^user__.*?__', '', tableName)
 
-            sqlQuery = f"CREATE TABLE {tableName} (\n"
+                sqlQuery = f"CREATE TABLE {tableName} (\n"
 
-            for colDetails in colsImportData:
-                # column name
-                sqlQuery += f'\n{sanitize_str(colDetails[0])} '
+                for colDetails in colsImportData:
+                    # column name
+                    sqlQuery += f'\n{sanitize_str(colDetails[0])} '
 
-                # column type
-                if colDetails[1] == 'string':
-                    sqlQuery += 'VARCHAR(255)'
-                elif colDetails[1] == 'number':
-                    sqlQuery += 'NUMERIC'
-                else:
-                    sqlQuery += f'{sanitize_str(colDetails[1])}'
+                    # column type
+                    if colDetails[1] == 'string':
+                        sqlQuery += 'VARCHAR(255)'
+                    elif colDetails[1] == 'number':
+                        sqlQuery += 'NUMERIC'
+                    else:
+                        sqlQuery += f'{sanitize_str(colDetails[1])}'
 
-                # primary key
-                if primaryKey == sanitize_str(colDetails[0]):
-                    sqlQuery += ' PRIMARY KEY,\n'
-                else:
-                    sqlQuery += ',\n'
+                    # primary key
+                    if primaryKey == sanitize_str(colDetails[0]):
+                        sqlQuery += ' PRIMARY KEY,\n'
+                    else:
+                        sqlQuery += ',\n'
 
-            # Remove the last comma
-            sqlQuery = sqlQuery[:len(sqlQuery)-2]
-            sqlQuery += "\n);"
-
-            cur.execute(sqlQuery)
-            # conn.commit()
-
-            # Add the foreign keys to the table.
-            for colName, refTableName in foreignKeys.items():
-                sqlQuery = """SELECT a.attname
-                    FROM   pg_index i
-                    JOIN   pg_attribute a ON a.attrelid = i.indrelid
-                                          AND a.attnum = ANY(i.indkey)
-                    WHERE  i.indrelid = %s::regclass
-                    AND    i.indisprimary;
-                """
-                cur.execute(sqlQuery, [tableName])
-
-                # TODO: What happens if no results?
-                result = cur.fetchone()[0]
-                print('result: ', result)
-
-                sqlQuery = f"""ALTER TABLE {sanitize_str(tableName)}
-                    ADD FOREIGN KEY ({sanitize_str(colName)})
-                    REFERENCES {sanitize_str(refTableName)} ({result})
-                    """
+                # Remove the last comma
+                sqlQuery = sqlQuery[:len(sqlQuery)-2]
+                sqlQuery += "\n);"
 
                 cur.execute(sqlQuery)
+                # conn.commit()
 
-            # Load the data from the CSVs.
-            for row in range(contentsSize):
-                sqlQuery = f'INSERT INTO {tableName} ('
-                sqlQuery += ', '.join(columnNames) + ') VALUES ('
-                sqlQuery += '%s, ' * len(columnNames)
-                sqlQuery = sqlQuery[:len(sqlQuery) - 2] + ');'
+                # Add the foreign keys to the table.
+                for colName, refTableName in foreignKeys.items():
+                    sqlQuery = """SELECT a.attname
+                        FROM   pg_index i
+                        JOIN   pg_attribute a ON a.attrelid = i.indrelid
+                                            AND a.attnum = ANY(i.indkey)
+                        WHERE  i.indrelid = %s::regclass
+                        AND    i.indisprimary;
+                    """
+                    cur.execute(sqlQuery, [tableName])
 
-                bindVars = []
-                for colIdx, column in enumerate(columnNames):
-                    bindVars.append(
-                        filesData[fileName]['table_data'][colIdx][column]['contents'][row]
-                    )
+                    # TODO: What happens if no results?
+                    result = cur.fetchone()[0]
+                    print('result: ', result)
 
+                    sqlQuery = f"""ALTER TABLE {sanitize_str(tableName)}
+                        ADD FOREIGN KEY ({sanitize_str(colName)})
+                        REFERENCES {sanitize_str(refTableName)} ({result})
+                        """
+
+                    cur.execute(sqlQuery)
+
+                # Load the data from the CSVs.
+                for row in range(contentsSize):
+                    sqlQuery = f'INSERT INTO {tableName} ('
+                    sqlQuery += ', '.join(columnNames) + ') VALUES ('
+                    sqlQuery += '%s, ' * len(columnNames)
+                    sqlQuery = sqlQuery[:len(sqlQuery) - 2] + ');'
+
+                    bindVars = []
+                    for colIdx, column in enumerate(columnNames):
+                        bindVars.append(
+                            filesData[fileName]['table_data'][colIdx][column]['contents'][row]
+                        )
+
+                    cur.execute(sqlQuery, bindVars)
+
+                sqlQuery = """INSERT INTO user_auth
+                    (user_id, table_name, table_alias)
+                    VALUES (%(userId)s, %(tableName)s, %(tableAlias)s);
+                    """
+                bindVars = {
+                    'userId': request.user.id,
+                    'tableName': tableName,
+                    'tableAlias': tableAlias
+                }
                 cur.execute(sqlQuery, bindVars)
+                conn.commit()
+                core_functions.close(conn)
+                report[tableAlias] = 'SUCCESS'
 
-            sqlQuery = """INSERT INTO user_auth
-                (user_id, table_name, table_alias)
-                VALUES (%(userId)s, %(tableName)s, %(tableAlias)s);
-                """
-            bindVars = {
-                'userId': request.user.id,
-                'tableName': tableName,
-                'tableAlias': tableAlias
-            }
-            cur.execute(sqlQuery, bindVars)
-            conn.commit()
+                return redirect('graph_builder')
 
-        core_functions.close(conn)
+            except psycopg2.errors.DatatypeMismatch:
+                report[tableAlias] = 'Mismatch in foreign key types.'
+            except psycopg2.errors.DuplicateTable:
+                report[tableAlias] = 'This table already exists.'
+            except:
+                report[tableAlias] = 'Unknown error.'
+            finally:
+                core_functions.close(conn)
 
         return HttpResponse('<h1>Post request<h1>')
