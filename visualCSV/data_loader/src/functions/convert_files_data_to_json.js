@@ -44,10 +44,10 @@ export const convertFilesDataToJson = (files) => {
       if (primaryKeyElem && primaryKeyElem.innerText) {
         primaryKey = JSON.parse(primaryKeyElem.innerText);
       } else {
-        primaryKey = '';
+        primaryKey = file.primaryKey;
       }
       jsonResponse[fileId].primary_key = primaryKey;
-      jsonResponse[fileId].foreign_keys = [];
+      jsonResponse[fileId].foreign_keys = file.foreignKeys;
 
       // Level 3 - table data
       const headerLen = file.headers ? file.headers.length : 0;

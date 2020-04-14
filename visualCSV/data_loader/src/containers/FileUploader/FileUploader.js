@@ -22,7 +22,7 @@ class FileUploader extends Component {
      * will be read, parsed if possible and stored into the redux store.
      */
     acceptedFiles.forEach((file) => {
-      const fileId = `${file.size}x__${file.name}`;
+      const fileId = `user__${file.size}x__${file.name}`;
 
       this.props.onNewFileUploadStart(fileId, file.name);
 
