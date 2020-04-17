@@ -142,7 +142,7 @@ class FileUploader extends Component {
         <Dropzone onDrop={this.onDropHandler}>
           {({ getRootProps, getInputProps }) => (
             <section className={classes.Dropzone}>
-              <div {...getRootProps()}>
+              <div {...getRootProps()} className={classes.Dropzone__Target}>
                 <input {...getInputProps()} />
                 <p>Drag 'n' drop some files here, or click to select files</p>
               </div>

@@ -11,6 +11,7 @@ populate those tables before redircting the user to te graph loader page.
 # Python Library Imports
 import json
 import re
+import traceback
 
 # Third Party Imports
 from django.shortcuts import render, redirect
@@ -104,7 +105,6 @@ class DataLoader(View):
                 colsImportData = []
                 primaryKey = filesData[fileName]['primary_key']
                 foreignKeys = filesData[fileName]['foreign_keys']
-                print(filesData[fileName]['table_data'])
                 columnNames = [columnData.keys()
                                for columnData in filesData[fileName]['table_data']]
                 columnNames = [sanitize_str(list(col)[0])
@@ -161,7 +161,6 @@ class DataLoader(View):
 
                     # TODO: What happens if no results?
                     result = cur.fetchone()[0]
-                    print('result: ', result)
 
                     sqlQuery = f"""ALTER TABLE {sanitize_str(tableName)}
                         ADD FOREIGN KEY ({sanitize_str(colName)})
@@ -205,9 +204,10 @@ class DataLoader(View):
                 report[tableAlias] = 'Mismatch in foreign key types.'
             except psycopg2.errors.DuplicateTable:
                 report[tableAlias] = 'This table already exists.'
-            except:
-                report[tableAlias] = 'Unknown error.'
+            # except:
+            #     report[tableAlias] = 'Unknown error.'
             finally:
+                print(traceback.format_exc())
                 core_functions.close(conn)
 
         return HttpResponse('<h1>Post request<h1>')
