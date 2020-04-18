@@ -7,7 +7,12 @@
     "dev:data_loader": "webpack --mode development --watch ./visualCSV/data_loader/src/index.js --output ./visualCSV/data_loader/static/data_loader/main.js",
     "build:data_loader": "webpack --mode production ./visualCSV/data_loader/src/index.js --output ./visualCSV/data_loader/static/data_loader/main.js",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "watch:main_css": "node-sass visualCSV/visualCSV/static/sass/main.scss visualCSV/visualCSV/static/css/main.min.css -w --output-style compressed",
+    "prefix:main_css": "postcss --use autoprefixer -b \"last 10 version\" visualCSV/visualCSV/static/css/main.min.css -o visualCSV/visualCSV/static/css/main.min.css",
+    "compress:main_css": "node-sass visualCSV/visualCSV/static/css/main.min.css visualCSV/visualCSV/static/css/main.min.css --output-style compressed",
+    "build:main_css": "npm-run-all prefix:main_css compress:main_css"
+
   },
   "repository": {
     "type": "git",
@@ -23,7 +28,7 @@
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
-    "autoprefixer": "^9.7.5",
+    "autoprefixer": "^9.7.6",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^3.4.2",
@@ -36,7 +41,9 @@
     "eslint-plugin-react": "^7.19.0",
     "jest": "^25.2.7",
     "node-sass": "^4.13.1",
+    "npm-run-all": "^4.1.5",
     "postcss": "^7.0.27",
+    "postcss-cli": "^7.1.0",
     "postcss-flexbugs-fixes": "^4.2.0",
     "postcss-loader": "^3.0.0",
     "prettier": "^2.0.2",

@@ -1,0 +1,47 @@
+// =============================================================================
+// Date Created:   20/11/2019
+// Created By:     Salaah Amin
+// =============================================================================
+// SASS Mixins.
+// =============================================================================
+
+@mixin absCenter {
+  // Positions an element to the center relative to its closest parent element.
+  // Note: parent element must have its position defined.
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin mediaQuery($maxWidth) {
+  @media only screen and (max-width: ($maxWidth/16) + "em") {
+    @content;
+  }
+}
+
+@mixin padSection {
+  // Padding between two sections
+  padding: 9.5rem 15rem;
+
+  @include mediaQuery(1000) {
+    padding: 8.5rem 10rem;
+  }
+
+  @include mediaQuery(650) {
+    padding: 6rem 7.5rem;
+  }
+
+  @include mediaQuery(550) {
+    padding: 6rem 5rem;
+  }
+
+  @include mediaQuery(460) {
+    padding: 5rem 3.5rem;
+  }
+}
+
+@mixin margHeadSubHead {
+  // Space between a heading and a sub-heading
+  margin-bottom: 2rem;
+}

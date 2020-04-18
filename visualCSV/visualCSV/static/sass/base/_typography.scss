@@ -1,0 +1,69 @@
+// =============================================================================
+// Date Created:   20/11/2019
+// Created By:     Salaah Amin
+// =============================================================================
+// Typography based styling.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// DEFAULTS
+p {
+  color: $colour-grey-dark-1;
+}
+$default-font-family: "Lato", sans-serif;
+$font-size-default: 1.6rem;
+
+// -----------------------------------------------------------------------------
+// FONTS
+.heading-1 {
+  font-size: 6rem;
+  font-weight: 300;
+  letter-spacing: 1.5px;
+  color: $colour-secondary-dark-1;
+
+  @include mediaQuery(1170) {
+    font-size: 5rem;
+  }
+
+  @include mediaQuery(780) {
+    font-size: 4.75rem;
+  }
+
+  @include mediaQuery(500) {
+    text-align: center;
+    font-size: 4rem;
+  }
+}
+
+.heading-2 {
+  font-size: 3.5rem;
+  font-weight: 400;
+  color: $colour-grey-dark-1;
+
+  @include mediaQuery(900) {
+    font-size: 3rem;
+  }
+
+  @include mediaQuery(600) {
+    font-size: 2.25rem;
+  }
+
+  @include mediaQuery(500) {
+    text-align: center;
+  }
+}
+
+.heading-3 {
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: $colour-grey-dark-1;
+
+  @include mediaQuery(1170) {
+    font-size: 2.2rem;
+    line-height: 3rem;
+  }
+
+  @include mediaQuery(500) {
+    text-align: center;
+  }
+}

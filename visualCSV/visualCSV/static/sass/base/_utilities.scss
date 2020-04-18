@@ -1,0 +1,75 @@
+// =============================================================================
+// Date Created:   20/11/2019
+// Created By:     Salaah Amin
+// =============================================================================
+// Utility classes to be added onto element classes for styling.
+// =============================================================================
+
+// =============================================================================
+// TEXT
+.u-center-text {
+  text-align: center;
+}
+
+// =============================================================================
+// MARGINS AND BORDERS
+.u-margin-bottom-small {
+  margin-bottom: 1.5rem;
+}
+.u-margin-bottom-medium {
+  margin-bottom: 4rem;
+}
+.u-margin-bottom-big {
+  margin-bottom: 8rem;
+}
+
+.u-margin-top-small {
+  margin-top: 1.5rem;
+}
+.u-margin-top-big {
+  margin-top: 8rem;
+}
+.u-margin-top-huge {
+  margin-top: 10rem;
+}
+
+// =============================================================================
+// MESSAGE BOXES
+.alert {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+
+  &--danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+  }
+
+  &--success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+  }
+}
+
+// =============================================================================
+// MISC
+.hide {
+  display: none !important;
+}
+
+.hide-400 {
+  @include mediaQuery(400) {
+    display: none;
+  }
+}
+
+.u-italics {
+  font-style: initial;
+}
+
+.all-cols {
+  grid-column: 1 / -1;
+}

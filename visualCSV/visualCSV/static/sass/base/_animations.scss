@@ -1,0 +1,32 @@
+// =============================================================================
+// Date Created:   13/01/2020
+// Created By:     Salaah Amin
+// =============================================================================
+// Contains keyframe information for animations.
+//
+// ANIMATION LIST
+// --------------
+// - fadeOutRem: fades an image from 100% to 0% and then sets the display to
+//               none.
+// =============================================================================
+
+// =============================================================================
+// Fades out an objects and then removes it.
+@keyframes fadeOutRem {
+  0% {
+    opacity: 100%;
+  }
+
+  99% {
+    opacity: 0;
+  }
+
+  100% {
+    display: none;
+    // z-index: inherit;
+    padding: 0;
+    margin: 0;
+    height: 0;
+    overflow: hidden;
+  }
+}

@@ -1,0 +1,47 @@
+// =============================================================================
+// Created By:     Salaah Amin
+// =============================================================================
+// Website styling variables.
+// Changes to this will affect general colour schemes.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// COLOURS
+$colour-white-1: rgb(251, 251, 251);
+$colour-white-2: #F2F5F6;
+
+$colour-notification: rgb(255, 0, 34);
+
+$colour-grey-light-1: rgb(240, 240, 240);
+$colour-grey-light-2: rgb(235, 235, 235);
+$colour-grey-light-3: #c1c1c1;
+$colour-grey-light-4: #f9f9f9;
+$colour-grey-light-5: #fbfbfb;;
+$colour-grey-dark-1: #5A5F6A;
+
+$colour-primary-light-1: #FFAFA1;
+$colour-primary-bright-1: rgb(245, 96, 32);
+$colour-primary: rgb(244, 124, 74);
+$colour-primary-dark-1: #914652;
+
+$colour-secondary-light-1: #68b3ff;
+$colour-secondary: #548FCC;
+$colour-secondary-dark-1: #315B8A;
+$colour-secondary-dark-1-highlighted-1: rgb(40, 78, 122);
+$colour-secondary-high-sat: #0b73de;
+$colour-secondary-high-sat-dark-1: #09539e;
+
+$colour-tertiary: #E9AD79;
+$colour-tertiary-high-sat: rgb(231, 160, 98);
+
+// -----------------------------------------------------------------------------
+// BOX-SHADOW
+$box-shadow-faint-br: 0 1.5rem 4rem rgba(0, 0, 0, .15);
+$box-shadow-faint-br-2: #828282 5px 1px 11px -5px;
+$box-shadow-faint-r: rgba(130, 130, 130, 0.56) 13px 1px 29px -4px;
+
+$box-shadow-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+$box-shadow-2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+$box-shadow-3: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+$box-shadow-4: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+$box-shadow-5: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);

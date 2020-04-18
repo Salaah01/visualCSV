@@ -1,0 +1,219 @@
+// =============================================================================
+// Date Created:   20/11/2019
+// Created By:     Salaah Amin
+// =============================================================================
+// Contains base style for the overall css.
+// Changes on this file should be restricted to colours only where possible as
+// changes on this file will afFect most css properties.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// RESET
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: inherit;
+}
+
+body {
+  box-sizing: border-box;
+  font-family: $default-font-family;
+  font-size: $font-size-default;
+}
+
+svg {
+  width: 10px;
+  height: 10px;
+  fill: black;
+}
+
+// -----------------------------------------------------------------------------
+// LOGO
+.logo__img {
+  background-size: cover;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+// -----------------------------------------------------------------------------
+// BUTTONS
+.btn,
+.btn-inline {
+  outline: none;
+  background-color: transparent;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-out;
+}
+
+.btn {
+  position: relative;
+  padding: 1rem;
+  border-radius: 5px;
+  color: #fff;
+
+  &:active {
+    transform: translate(2px, 2px);
+  }
+
+  &:disabled {
+    background-color: $colour-grey-light-3;
+    color: $colour-grey-dark-1;
+
+    &:hover {
+      background-color: $colour-grey-light-3;
+      color: $colour-grey-dark-1;
+      cursor: not-allowed;
+    }
+  }
+
+  &--primary {
+    background-color: $colour-primary;
+
+    &:hover {
+      background-color: $colour-primary-bright-1;
+    }
+  }
+
+  &--secondary {
+    background-color: $colour-secondary-dark-1;
+
+    &:hover {
+      background-color: $colour-secondary-high-sat;
+    }
+  }
+
+  &--tertiary {
+    background-color: $colour-tertiary;
+
+    &:hover {
+      background-color: $colour-tertiary-high-sat;
+    }
+  }
+
+  &--white {
+    background-color: $colour-white-2;
+    color: #000;
+
+    &:hover {
+      background-color: $colour-white-1;
+    }
+  }
+
+  &--grey {
+    background-color: rgb(194, 191, 191);
+
+    &:hover {
+      background-color: rgb(116, 116, 116);
+    }
+  }
+
+  &--red {
+    background-color: #dc3545;
+
+    &:hover {
+      background-color: #bd2130;
+    }
+  }
+
+  &--green {
+    background-color: #28a745;
+
+    &:hover {
+      background-color: #218838;
+    }
+  }
+}
+
+.btn-inline {
+  text-transform: uppercase;
+  color: currentColor;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid transparent;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  transition: color 0.3s ease, background-color 0.3s ease, border 0.3s ease;
+
+  &--primary,
+  &--primary:link,
+  &--primary:visited,
+  &--primary-b,
+  &--primary-b:link,
+  &--primary-b:visited {
+    color: $colour-primary;
+    border-bottom: 1px solid $colour-primary;
+  }
+
+  &--primary-b:active,
+  &--secondary-b:active {
+    transform: translate(2px, 2px);
+  }
+
+  &--primary {
+    &:hover {
+      color: $colour-primary-dark-1;
+    }
+  }
+
+  &--secondary,
+  &--secondary:link,
+  &--secondary:visited,
+  &--secondary-b,
+  &--secondary-b:link,
+  &--secondary-b:visited {
+    color: $colour-secondary-high-sat;
+    border-bottom: 1px solid $colour-secondary-high-sat;
+  }
+
+  &--secondary {
+    &:hover {
+      color: $colour-secondary-light-1;
+      border-bottom: 1px solid $colour-secondary-light-1;
+    }
+  }
+
+  &--secondary-b {
+    padding: 1rem;
+
+    &:hover {
+      color: $colour-white-1;
+      background-color: $colour-secondary-light-1;
+      border-bottom: 1px solid transparent;
+      padding: 1rem;
+      border-radius: 5px;
+    }
+
+    &:active {
+      background-color: $colour-secondary;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// TEXT LINKS
+.text-link {
+  text-decoration: none;
+  color: $colour-secondary-high-sat-dark-1;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+  width: max-content;
+
+  &:hover {
+    border-bottom: 1px solid $colour-secondary-high-sat;
+    color: $colour-secondary-high-sat;
+  }
+}
