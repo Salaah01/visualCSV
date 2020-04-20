@@ -1,4 +1,4 @@
-"""View for the `DataLoader` pages.
+"""View for the DataLoader pages.
 
 The get request loads a template where users will be able to upload their files
 and post them to the backend which should be routed to the `post` method
