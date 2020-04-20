@@ -1,3 +1,3 @@
 """Imports classes and functions to make referencing easier."""
 
-from .py import connect, close, require_auth
+from .py import connect, close, require_auth, ClientDBTestCase
