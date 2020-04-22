@@ -6,6 +6,10 @@
   "scripts": {
     "dev:data_loader": "webpack --mode development --watch ./visualCSV/data_loader/src/index.js --output ./visualCSV/data_loader/static/data_loader/main.js",
     "build:data_loader": "webpack --mode production ./visualCSV/data_loader/src/index.js --output ./visualCSV/data_loader/static/data_loader/main.js",
+    "dev:graph_builder": "webpack --mode development --watch ./visualCSV/graph_builder/src/index.js --output ./visualCSV/graph_builder/static/graph_builder/main.js",
+    "build:graph_builder": "webpack --mode production ./visualCSV/graph_builder/src/index.js --output ./visualCSV/graph_builder/static/graph_builder/main.js",
+
+
     "test": "jest",
     "test:watch": "jest --watch",
     "watch:main_css": "node-sass visualCSV/visualCSV/static/sass/main.scss visualCSV/visualCSV/static/css/main.min.css -w --output-style compressed",

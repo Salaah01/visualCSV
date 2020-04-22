@@ -23,7 +23,7 @@ class GraphBuilder(View):
     """View for the GraphBuilder page."""
 
     def get(self, request):
-        return HttpResponse('<h1>Graph Builder Page</h1>')
+        return render(request, 'graph_builder/graph_builder.html')
 
 
 class TableMetaDataAPI(View):
