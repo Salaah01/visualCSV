@@ -1,6 +1,11 @@
-"""Functions that grant and close to the client database."""
+"""Functions allowing to connect and close connection to the client database.
+During testing, this will connect to the test database instead.
+"""
 
 # IMPORTS
+# Python Library
+import sys
+
 # Third Party Imports
 import psycopg2
 
@@ -8,7 +13,10 @@ import psycopg2
 from visualCSV import local_settings
 
 # TODO: Change this to use ENV_VARS.
-DATABASE = local_settings.DATABASES['client']
+if sys.argv[-1] == 'test':
+    DATABASE = local_settings.DATABASES['client_test']
+else:
+    DATABASE = local_settings.DATABASES['client']
 
 
 def connect():
@@ -26,6 +34,6 @@ def connect():
 
 def close(conn):
     """Closes the connection to the client database."""
-    if conn is not None:
+    if conn:
         conn.close()
         print(f"Connection to {DATABASE['HOST']}:{DATABASE['NAME']} closed.")

@@ -43,6 +43,16 @@ class ClientDBTestCase(TestCase):
         """
         super().__init__(*args, **kwargs)
 
+        # Delete tables inacase an easier test run failed and the teardown
+        # process did not run properly.
+        self.cur.execute("""
+            drop table if exists user_auth;
+            drop table if exists table_1;
+            drop table if exists table_2;
+            drop table if exists table_3;
+            """)
+
+        # Create the user auth table.
         self.cur.execute("""CREATE TABLE user_auth (
             id INTEGER PRIMARY KEY,
             user_id INTEGER,
