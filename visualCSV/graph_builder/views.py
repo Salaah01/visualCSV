@@ -67,7 +67,10 @@ class TableMetaDataAPI(View):
         # Populate the response object with data from the query.
         for tableName, columnName, dataType in userTableColumns:
             response[tableName]['columns'].update({
-                columnName: {'dataType': dataType},
+                columnName + '__' + tableName: {
+                    'columnName': columnName,
+                    'dataType': dataType
+                },
             })
 
         return HttpResponse(
