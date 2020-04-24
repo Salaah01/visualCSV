@@ -57,8 +57,10 @@ const setUserTablesData = (state, action) => {
     for (const targetColumnName of targetColumnsNames) {
       const targetColumn = targetColumns[targetColumnName];
       columns[targetColumnName] = {
+        id: targetColumnName,
         columnName: targetColumn.columnName,
         dataType: targetColumn.dataType,
+        table: tableName
       };
     }
   }
