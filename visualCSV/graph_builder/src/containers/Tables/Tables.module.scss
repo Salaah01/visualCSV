@@ -1,5 +1,16 @@
-.Tables {
-    width: 100%;
-    height: 100px;
-    background-color: lightblue;
+.tables {
+  width: 100%;
+  height: 100px;
+  background-color: lightblue;
+  display: flex;
+  overflow-x: auto;
+
+  &__table {
+    padding: 10px 20px;
+    background-color: lightcyan;
+
+    &:not(:last-of-type) {
+      margin-right: 10px;
+    }
+  }
 }

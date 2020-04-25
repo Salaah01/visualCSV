@@ -12,20 +12,19 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import classes from './Tables.module.scss';
 import * as actions from '../../store/actions';
 
-class TableList extends PureComponent {
-  render() {
-    const { table, columnsMap, index } = this.props;
+// class TableList extends PureComponent {
+//   render() {
+//     const { table, columnsMap, index } = this.props;
 
+//     const tasks = table.columns.map((column) => (
+//       <li>{columnsMap[column].id}</li>
+//     ));
 
-    const tasks = table.columns.map((column) => (
-      <li>{columnsMap[column].id}</li>
-    ));
-
-    // const tasks = column.columns.map((taskId) => taskMap[taskId]);
-    return <ul>{tasks}</ul>;
-    return <Column column={column} tasks={tasks} index={index} />;
-  }
-}
+//     // const tasks = column.columns.map((taskId) => taskMap[taskId]);
+//     return <ul>{tasks}</ul>;
+//     return <Column column={column} tasks={tasks} index={index} />;
+//   }
+// }
 
 class Tables extends Component {
   componentDidMount() {
@@ -42,39 +41,57 @@ class Tables extends Component {
   };
 
   render() {
-    console.log('ZZZZZZ', this.props.tables, this.props.columns);
-
-    let innerList = null;
+    let tables = <p>Loading Tables</p>;
     if (this.props.tables) {
-      console.log(Object.keys(this.props.tables));
+      tables = Object.keys(this.props.tables).map((tableId) => {
+        const table = this.props.tables[tableId];
 
-      innerList = Object.keys(this.props.tables).map((tableName, idx) => {
-        const table = this.props.tables[tableName];
+        const columns = table.columns.map((columnId, idx) => {
+          const column = this.props.columns[columnId];
+          console.log('column args:', columnId, idx);
+          return (
+            <Draggable draggableId={columnId} key={columnId} index={idx}>
+              {(provided) => (
+                <div
+                  // innerRef={provided.innerRef}
+                  {...provided.draggableProps}
+                  ref={provided.innerRef}
+                  key={columnId}
+                  {...provided.dragHandleProps}
+                >
+                  <div>{column.columnName}</div>
+                </div>
+              )}
+            </Draggable>
+          );
+        });
 
         return (
-          <TableList
-            key={tableName}
-            table={table}
-            columnsMap={this.props.columns}
-            index={idx}
-          />
+          <Droppable droppableId={tableId} key={tableId}>
+            {(provided) => (
+              <div
+                className={classes.tables__table}
+                key={tableId}
+                table={tableId}
+                // innerRef={provided.innerRef}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                <p>{table.tableAlias}</p>
+                {columns}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         );
       });
     }
 
     return (
-      <Droppable droppableId="all-tables">
-        {(provided) => (
-          <div
-            {...provided.droppableProps}
-            innerRef={provided.innerRef}
-            ref={provided.innerRef}
-            className={classes.Tables}
-          >
-            {innerList}
-          </div>
-        )}
-      </Droppable>
+      <div className={classes.tables}>
+        <p>Tables</p>
+        {tables}
+      </div>
     );
   }
 }

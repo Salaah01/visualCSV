@@ -1,5 +1,6 @@
 /**Redux reducer that is used for building the main graph. These include:
  *  setUserTablesData: Stores data on the user's tables once retrieved.
+ *  setColumnAsXAxis: Sets a column as the x-Axis.
  */
 
 // IMPORTS
@@ -49,6 +50,7 @@ const setUserTablesData = (state, action) => {
 
     // Add to the tables objects.
     tables[tableName] = {
+      id: tableName,
       tableAlias: targetTable.tableAlias,
       columns: targetColumnsNames,
     };
@@ -60,7 +62,7 @@ const setUserTablesData = (state, action) => {
         id: targetColumnName,
         columnName: targetColumn.columnName,
         dataType: targetColumn.dataType,
-        table: tableName
+        table: tableName,
       };
     }
   }
@@ -76,10 +78,44 @@ const setUserTablesData = (state, action) => {
   return newState;
 };
 
+const setColumnAsXAxis = (state, action) => {
+  /**Sets a column as the x-Axis. */
+
+  const newState = { ...state };
+
+  // From `state.tables.columns` remove the column.
+  const tableCopy = { ...state.tables[action.tableID] };
+  const updatedTableColumns = [...tableCopy.columns].filter(
+    (column) => column !== action.columnID,
+  );
+
+  const updatedTable = updateObject(state.tables[action.tableID], {
+    columns: updatedTableColumns,
+  });
+
+  const updatedTables = updateObject(state.tables, {
+    [action.tableID]: updatedTable,
+  });
+
+  // Update the x-axis.
+  const updatedXAxis = updateObject(state.sections.xAxis.column, {
+    column: action.columnID,
+  });
+
+  const updatedSections = updateObject(state.sections, { xAxis: updatedXAxis });
+
+  return updateObject(state, {
+    sections: updatedSections,
+    tables: updatedTables,
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_USER_TABLES_DATA:
       return setUserTablesData(state, action);
+    case actionTypes.MOVE_COLUMN_TO_X_AXIS:
+      return setColumnAsXAxis(state, action);
     default:
       return state;
   }
