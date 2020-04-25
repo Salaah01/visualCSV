@@ -35,7 +35,7 @@ class GraphData extends Component {
   legends = () => {
     /**The main container for the legends container. */
     return (
-      <Droppable droppableId="legend" key="legend">
+      <Droppable droppableId="legends" key="legend">
         {(provided) => (
           <div
             {...provided.droppableProps}
