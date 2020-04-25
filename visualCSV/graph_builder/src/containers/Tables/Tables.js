@@ -4,27 +4,13 @@
 
 // IMPORTS
 // Third Party Imports
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 // Local Imports
 import classes from './Tables.module.scss';
 import * as actions from '../../store/actions';
-
-// class TableList extends PureComponent {
-//   render() {
-//     const { table, columnsMap, index } = this.props;
-
-//     const tasks = table.columns.map((column) => (
-//       <li>{columnsMap[column].id}</li>
-//     ));
-
-//     // const tasks = column.columns.map((taskId) => taskMap[taskId]);
-//     return <ul>{tasks}</ul>;
-//     return <Column column={column} tasks={tasks} index={index} />;
-//   }
-// }
 
 class Tables extends Component {
   componentDidMount() {
@@ -48,12 +34,10 @@ class Tables extends Component {
 
         const columns = table.columns.map((columnId, idx) => {
           const column = this.props.columns[columnId];
-          console.log('column args:', columnId, idx);
           return (
             <Draggable draggableId={columnId} key={columnId} index={idx}>
               {(provided) => (
                 <div
-                  // innerRef={provided.innerRef}
                   {...provided.draggableProps}
                   ref={provided.innerRef}
                   key={columnId}
@@ -73,7 +57,6 @@ class Tables extends Component {
                 className={classes.tables__table}
                 key={tableId}
                 table={tableId}
-                // innerRef={provided.innerRef}
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >

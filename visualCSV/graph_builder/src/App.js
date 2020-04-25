@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 // Local Imports
 import GraphData from './containers/GraphData/GraphData';
 import Tables from './containers/Tables/Tables';
+import * as actions from './store/actions';
 
 class App extends Component {
   onDragEnd = (result) => {
@@ -13,6 +14,11 @@ class App extends Component {
     console.log('source', source);
     console.log('destination', destination);
     console.log('draggableId', draggableId);
+    console.log(result);
+
+    if (destination.droppableId === 'xAxis') {
+      this.props.onSetColumnAsXAxis(source.droppableId, draggableId, 'tables');
+    }
   };
 
   render() {
@@ -36,4 +42,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSetColumnAsXAxis: (tableID, columnID, source) =>
+      dispatch(actions.setColumnAsXAxis(tableID, columnID, source)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -16,7 +16,7 @@ const initialState = {
   sections: {
     xAxis: {
       id: 'xAxis',
-      column: null,
+      column: [],
     },
     legends: {
       id: 'legends',
@@ -81,28 +81,63 @@ const setUserTablesData = (state, action) => {
 const setColumnAsXAxis = (state, action) => {
   /**Sets a column as the x-Axis. */
 
-  const newState = { ...state };
+  let updatedTables = { ...state.tables };
+  let updatedSections = { ...state.sections };
 
-  // From `state.tables.columns` remove the column.
-  const tableCopy = { ...state.tables[action.tableID] };
-  const updatedTableColumns = [...tableCopy.columns].filter(
-    (column) => column !== action.columnID,
-  );
+  // Remove the column from `state.tables.columns` if a the column came from
+  // the tables.
+  if (action.source === 'tables') {
+    const updatedTableColumns = [
+      ...state.tables[action.tableID].columns,
+    ].filter((column) => column !== action.columnID);
 
-  const updatedTable = updateObject(state.tables[action.tableID], {
-    columns: updatedTableColumns,
-  });
+    const updatedTable = updateObject(state.tables[action.tableID], {
+      columns: updatedTableColumns,
+    });
 
-  const updatedTables = updateObject(state.tables, {
-    [action.tableID]: updatedTable,
-  });
+    updatedTables = updateObject(state.tables, {
+      [action.tableID]: updatedTable,
+    });
+  }
+
+  // Remove column from `state.sections.legends` if the column came from the
+  // the legends.
+  else if (action.source === 'legend') {
+    const updatedColumns = [...state.sections.legends.columns].filter(
+      (column) => column !== action.columnID,
+    );
+
+    const updatedLegends = updateObject(state.sections.legends, {
+      columns: updatedColumns,
+    });
+
+    updatedSections = updateObject(updatedSections, {
+      legends: updatedLegends,
+    });
+  }
+
+  // If there is an x-axis column present, move it back to the tables.
+  if (state.sections.xAxis.column.length) {
+    const currXColumn = state.sections.xAxis.column[0];
+    const currXTableID = state.columns[currXColumn].table;
+    const updatedTableColumns = [
+      ...updatedTables[currXTableID].columns,
+      currXColumn,
+    ];
+    const updatedTable = updateObject(updatedTables[currXTableID], {
+      columns: updatedTableColumns,
+    });
+    updatedTables = updateObject(updatedTables, {
+      [currXTableID]: updatedTable,
+    });
+  }
 
   // Update the x-axis.
   const updatedXAxis = updateObject(state.sections.xAxis.column, {
-    column: action.columnID,
+    column: [action.columnID],
   });
 
-  const updatedSections = updateObject(state.sections, { xAxis: updatedXAxis });
+  updatedSections = updateObject(updatedSections, { xAxis: updatedXAxis });
 
   return updateObject(state, {
     sections: updatedSections,
@@ -114,7 +149,7 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_USER_TABLES_DATA:
       return setUserTablesData(state, action);
-    case actionTypes.MOVE_COLUMN_TO_X_AXIS:
+    case actionTypes.SET_COLUMN_AS_X_AXIS:
       return setColumnAsXAxis(state, action);
     default:
       return state;
