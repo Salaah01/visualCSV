@@ -15,8 +15,8 @@ from core_functions import ClientDBTestCase
 
 
 class TestTableMetaDataAPI(ClientDBTestCase, TestCase):
-    """Tests that the API returns the corrects for both authenticated and
-    unauthenticated users.
+    """Tests that the API returns the corrects response for both authenticated
+    and unauthenticated users.
     """
 
     maxDiff = None

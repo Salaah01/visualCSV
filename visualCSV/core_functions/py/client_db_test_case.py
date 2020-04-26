@@ -63,21 +63,6 @@ class ClientDBTestCase(TestCase):
         if kwargs.get('populateDummyData') in (None, True):
             self._populateDummyData()
 
-    @classmethod
-    def tearDownClass(cls):
-        """Drops all tables and closes the connection."""
-        if cls.conn:
-            cls.cur.execute("""
-                drop table if exists user_auth;
-                drop table if exists table_1;
-                drop table if exists table_2;
-                drop table if exists table_3;
-            """)
-
-            cls.conn.commit()
-            cls.conn.close()
-            print('Connection to the database has ben closed.')
-
     def _populateDummyData(self):
         """Populates the database with dummy data."""
 
