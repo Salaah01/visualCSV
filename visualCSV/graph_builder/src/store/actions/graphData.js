@@ -4,6 +4,8 @@
  *  setColumnAsXAxis: Action to set a column as the x-axis.
  *  moveColumnToLegends: Action to move a column as the legends.
  *  moveColumnToTables: Action to move a column back to its table.
+ *  setColumnData: Dispatches an action to store `data` belonging to a `column`
+ *    from a `table` to the store.
  */
 
 import * as actionTypes from './actionTypes';
@@ -73,5 +75,21 @@ export const moveColumnToTables = (
     source: source,
     destinationID: destinationID,
     destinationIndex: destinationIndex,
+  };
+};
+
+export const setColumnData = (table, column, data) => {
+  /**Dispatches an action to store `data` belonging to a `column` from a
+   * `table` to the store.
+   * Args:
+   *  table: (str) Name of the table.
+   *  column: (str) Name of the column.
+   *  data: (array) Data to be stored.
+   */
+  return {
+    type: actionTypes.SET_COLUMN_DATA,
+    table: table,
+    column: column,
+    data: data,
   };
 };

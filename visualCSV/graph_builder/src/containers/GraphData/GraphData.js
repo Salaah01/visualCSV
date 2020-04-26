@@ -13,6 +13,9 @@ import classes from './GraphData.module.scss';
 import * as actions from '../../store/actions';
 
 class GraphData extends Component {
+
+  state = {}
+
   xAxis = () => {
     /**The main container for the x-axis column. */
     return (

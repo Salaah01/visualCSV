@@ -3,6 +3,7 @@
  *  setColumnAsXAxis: Sets a column as the x-Axis.
  *  moveColumnToLegends: Moves a column to the legends section.
  *  moveColumnToTables: Moves a column back to its table.
+ *  setColumnData: Stores the data belonging to a column.
  */
 
 // IMPORTS
@@ -231,14 +232,10 @@ const moveColumnToTables = (state, action) => {
   // the index in which it was dropped. Otherwise, append it to the end.
   const tableID = state.columns[action.columnID].table;
 
-  console.log(tableID);
-  console.log(action.destinationID);
-
   const updatedTableColumns = [...state.tables[tableID].columns];
   if (tableID === action.destinationID) {
     updatedTableColumns.splice(action.destinationIndex, 0, action.columnID);
   } else {
-    console.log('here', updatedTableColumns);
     updatedTableColumns.push(action.columnID);
   }
 
@@ -256,6 +253,19 @@ const moveColumnToTables = (state, action) => {
   });
 };
 
+const setColumnData = (state, action) => {
+  /**Store data belonging toa column. */
+  // Matches the keys structure in `state.columns`.
+  const columnID = action.column + '__' + action.table;
+  const updatedColumn = updateObject(state.columns[columnID], {
+    data: action.data,
+  });
+  const updatedColumns = updateObject(state.columns, {
+    [columnID]: updatedColumn,
+  });
+  return updateObject(state, { columns: updatedColumns });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_USER_TABLES_DATA:
@@ -266,6 +276,8 @@ const reducer = (state = initialState, action) => {
       return moveColumnToLegends(state, action);
     case actionTypes.MOVE_COLUMN_TO_TABLES:
       return moveColumnToTables(state, action);
+    case actionTypes.SET_COLUMN_DATA:
+      return setColumnData(state, action);
     default:
       return state;
   }

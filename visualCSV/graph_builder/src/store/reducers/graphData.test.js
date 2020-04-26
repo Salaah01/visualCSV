@@ -652,3 +652,41 @@ describe('MOVE_COLUMN_TO_TABLES', () => {
     });
   });
 });
+
+describe('SET_COLUMN_DATA', () => {
+  const state = {
+    columns: {
+      column_1__table_1: { id: 'column_1__table_1', columnName: 'column 1' },
+      column_2__table_2: { id: 'column_2__table_2', columnName: 'column 2' },
+    },
+  };
+
+  const reducer = graphDataReducer(state, {
+    type: actionTypes.SET_COLUMN_DATA,
+    table: 'table_1',
+    column: 'column_1',
+    data: [1, 2, 3, 4, 5],
+  });
+
+  it('should add the data to `column_1__table_1`', () => {
+    expect(reducer).toEqual({
+      columns: {
+        column_1__table_1: {
+          id: 'column_1__table_1',
+          columnName: 'column 1',
+          data: [1, 2, 3, 4, 5],
+        },
+        column_2__table_2: { id: 'column_2__table_2', columnName: 'column 2' },
+      },
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state).toEqual({
+      columns: {
+        column_1__table_1: { id: 'column_1__table_1', columnName: 'column 1' },
+        column_2__table_2: { id: 'column_2__table_2', columnName: 'column 2' },
+      },
+    });
+  });
+});

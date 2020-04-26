@@ -126,6 +126,8 @@ class ColumnDataAPI(View):
 
         columnData = self.column_data(cur, table, column)
 
+        core_functions.close(conn)
+
         return HttpResponse(
             json.dumps(columnData),
             content_type='application/json',

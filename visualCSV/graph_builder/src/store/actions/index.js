@@ -3,5 +3,6 @@ export {
   setUserTablesData,
   setColumnAsXAxis,
   moveColumnToLegends,
-  moveColumnToTables
+  moveColumnToTables,
+  setColumnData,
 } from './graphData.js';
