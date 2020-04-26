@@ -5,4 +5,5 @@ export {
   moveColumnToLegends,
   moveColumnToTables,
   setColumnData,
+  addDataSet,
 } from './graphData.js';

@@ -690,3 +690,84 @@ describe('SET_COLUMN_DATA', () => {
     });
   });
 });
+
+describe('ADD_DATA_SET', () => {
+  const state = {
+    columns: { column_1: { data: [1, 2, 3, 4], columnName: 'column 1' } },
+    dataSets: {},
+  };
+
+  const reducer = graphDataReducer(state, {
+    type: actionTypes.ADD_DATA_SET,
+    columnID: 'column_1',
+    label: 'new column',
+    bgColour: 'blue',
+    borderColour: 'black',
+    borderWidth: 10,
+  });
+
+  it('should add `column_1` as a dataset.', () => {
+    expect(reducer.dataSets).toEqual({
+      column_1: {
+        label: 'new column',
+        backgroundColor: 'blue',
+        borderColor: 'black',
+        borderWidth: 10,
+        data: [1, 2, 3, 4],
+      },
+    });
+  });
+
+  it('should set the `columnName` as the label.', () => {
+    const reducer = graphDataReducer(state, {
+      type: actionTypes.ADD_DATA_SET,
+      columnID: 'column_1',
+      bgColour: 'blue',
+      borderColour: 'black',
+      borderWidth: 10,
+    });
+
+    expect(reducer.dataSets).toEqual({
+      column_1: {
+        label: 'column 1',
+        backgroundColor: 'blue',
+        borderColor: 'black',
+        borderWidth: 10,
+        data: [1, 2, 3, 4],
+      },
+    });
+  });
+
+  it('should set `dataSets.column_1` as an empty array.', () => {
+    const state = {
+      columns: { column_1: { columnName: 'column 1' } },
+      dataSets: {},
+    };
+
+    const reducer = graphDataReducer(state, {
+      type: actionTypes.ADD_DATA_SET,
+      columnID: 'column_1',
+      bgColour: 'blue',
+      borderColour: 'black',
+      borderWidth: 10,
+      label: 'column 1',
+    });
+
+    expect(reducer.dataSets).toEqual({
+      column_1: {
+        label: 'column 1',
+        backgroundColor: 'blue',
+        borderColor: 'black',
+        borderWidth: 10,
+        data: [],
+      },
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state).toEqual({
+      columns: { column_1: { data: [1, 2, 3, 4], columnName: 'column 1' } },
+      dataSets: {},
+    });
+  });
+});

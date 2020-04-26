@@ -4,8 +4,9 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
 
 // Local Imports
-import GraphData from './containers/GraphData/GraphData';
 import Tables from './containers/Tables/Tables';
+import GraphData from './containers/GraphData/GraphData';
+import Graph from './containers/Graph/Graph';
 import * as actions from './store/actions';
 
 class App extends Component {
@@ -107,6 +108,7 @@ class App extends Component {
       <Fragment>
         <h1>Graph Builder JS</h1>
         <DragDropContext onDragEnd={this.onDragEnd}>
+          <Graph />
           <GraphData />
           <Tables />
         </DragDropContext>

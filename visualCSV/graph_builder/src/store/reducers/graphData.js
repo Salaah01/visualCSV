@@ -17,19 +17,11 @@ const initialState = {
   columns: {},
   tables: {},
   sections: {
-    xAxis: {
-      id: 'xAxis',
-      column: [],
-    },
-    legends: {
-      id: 'legends',
-      columns: [],
-    },
-    tables: {
-      id: 'tables',
-      tables: [],
-    },
+    xAxis: { id: 'xAxis', column: [] },
+    legends: { id: 'legends', columns: [] },
+    tables: { id: 'tables', tables: [] },
   },
+  dataSets: {},
 };
 
 const setUserTablesData = (state, action) => {
@@ -266,6 +258,40 @@ const setColumnData = (state, action) => {
   return updateObject(state, { columns: updatedColumns });
 };
 
+const addDataSet = (state, action) => {
+  /**Adds a new dataset. */
+
+  let bgColour;
+  let borderColour;
+
+  if (action.bgColour) {
+    bgColour = action.bgColour;
+    borderColour = action.borderColour ? action.borderColour : bgColour;
+  } else {
+    const colour = 'rgba(50,60,70,0.7)';
+    bgColour = colour;
+    borderColour = action.borderColour ? action.borderColour : colour;
+  }
+
+  const label = action.label
+    ? action.label
+    : state.columns[action.columnID].columnName;
+
+  const updatedDataSet = updateObject(state.dataSets, {
+    [action.columnID]: {
+      label: label,
+      data: state.columns[action.columnID].data
+        ? state.columns[action.columnID].data
+        : [],
+      backgroundColor: bgColour,
+      borderColor: borderColour,
+      borderWidth: action.borderWidth ? action.borderWidth: 1,
+    },
+  });
+
+  return updateObject(state, { dataSets: updatedDataSet });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_USER_TABLES_DATA:
@@ -278,6 +304,8 @@ const reducer = (state = initialState, action) => {
       return moveColumnToTables(state, action);
     case actionTypes.SET_COLUMN_DATA:
       return setColumnData(state, action);
+    case actionTypes.ADD_DATA_SET:
+      return addDataSet(state, action);
     default:
       return state;
   }

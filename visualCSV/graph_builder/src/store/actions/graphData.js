@@ -6,6 +6,8 @@
  *  moveColumnToTables: Action to move a column back to its table.
  *  setColumnData: Dispatches an action to store `data` belonging to a `column`
  *    from a `table` to the store.
+ *  addDataSet: Action to add a new dataset.
+ *  removeDataSet: Action to remove a dataset.
  */
 
 import * as actionTypes from './actionTypes';
@@ -91,5 +93,30 @@ export const setColumnData = (table, column, data) => {
     table: table,
     column: column,
     data: data,
+  };
+};
+
+export const addDataSet = (
+  /**Adds a new dataset.
+   * Args:
+   *  columnID: (str) Column ID.
+   *  label: (str) Dataset label.
+   *  bgColour: (str) Background colour.
+   *  borderColour: (str) Line colour.
+   *  borderWidth: (int) Border width (px).
+   */
+  columnID,
+  label = null,
+  bgColour = null,
+  borderColour = null,
+  borderWidth = 1,
+) => {
+  return {
+    type: actionTypes.ADD_DATA_SET,
+    columnID: columnID,
+    label: label,
+    bgColour: bgColour,
+    borderColour: borderColour,
+    borderWidth: borderWidth,
   };
 };
