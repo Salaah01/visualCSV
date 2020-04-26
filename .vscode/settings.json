@@ -6,8 +6,12 @@
     "Dropzone",
     "Elems",
     "Uploader",
+    "attnum",
+    "attrelid",
     "contentfor",
-    "csvs"
+    "csvs",
+    "indisprimary",
+    "noqa"
   ],
   "editor.tabSize": 4,
   "[javascript]": {

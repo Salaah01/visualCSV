@@ -92,10 +92,6 @@ class DataLoader(View):
         # TODO: Handle the data validation.
         filesData = json.loads(request.POST['post-data'])
 
-        def sanitize_str(string):
-            """Sanitizes strings to prevent SQL injections."""
-            return re.sub(r'[ \-\;]', '_', string)
-
         # Set up database connection.
         conn = core_functions.connect()
         cur = conn.cursor()
@@ -107,7 +103,7 @@ class DataLoader(View):
                 foreignKeys = filesData[fileName]['foreign_keys']
                 columnNames = [columnData.keys()
                                for columnData in filesData[fileName]['table_data']]
-                columnNames = [sanitize_str(list(col)[0])
+                columnNames = [core_functions.sanitize(list(col)[0], '_')
                                for col in columnNames]
                 contentsSize = len(
                     filesData[fileName]['table_data'][0][columnNames[0]]['contents']
@@ -118,14 +114,17 @@ class DataLoader(View):
                         colsImportData.append([colName, colAttr['fieldType']])
 
                 # Store Data (without foreign key information)
-                tableName = sanitize_str(fileName).replace('.csv', '')
+                tableName = core_functions.sanitize(
+                    fileName,
+                    '_'
+                ).replace('.csv', '')
                 tableAlias = re.sub('^user__.*?__', '', tableName)
 
                 sqlQuery = f"CREATE TABLE {tableName} (\n"
 
                 for colDetails in colsImportData:
                     # column name
-                    sqlQuery += f'\n{sanitize_str(colDetails[0])} '
+                    sqlQuery += f'\n{core_functions.sanitize(colDetails[0], "_")} '
 
                     # column type
                     if colDetails[1] == 'string':
@@ -133,10 +132,10 @@ class DataLoader(View):
                     elif colDetails[1] == 'number':
                         sqlQuery += 'NUMERIC'
                     else:
-                        sqlQuery += f'{sanitize_str(colDetails[1])}'
+                        sqlQuery += f'{core_functions.sanitize(colDetails[1], "_")}'
 
                     # primary key
-                    if primaryKey == sanitize_str(colDetails[0]):
+                    if primaryKey == core_functions.sanitize(colDetails[0], '_'):
                         sqlQuery += ' PRIMARY KEY,\n'
                     else:
                         sqlQuery += ',\n'
@@ -162,9 +161,9 @@ class DataLoader(View):
                     # TODO: What happens if no results?
                     result = cur.fetchone()[0]
 
-                    sqlQuery = f"""ALTER TABLE {sanitize_str(tableName)}
-                        ADD FOREIGN KEY ({sanitize_str(colName)})
-                        REFERENCES {sanitize_str(refTableName)} ({result})
+                    sqlQuery = f"""ALTER TABLE {core_functions.sanitize(tableName, '_')}
+                        ADD FOREIGN KEY ({core_functions.sanitize(colName), '_'})
+                        REFERENCES {core_functions.sanitize(refTableName, '_')} ({result})
                         """
 
                     cur.execute(sqlQuery)

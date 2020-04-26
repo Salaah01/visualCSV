@@ -19,6 +19,8 @@ class TestTableMetaDataAPI(ClientDBTestCase, TestCase):
     unauthenticated users.
     """
 
+    maxDiff = None
+
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(
@@ -71,17 +73,35 @@ class TestTableMetaDataAPI(ClientDBTestCase, TestCase):
             'table_1': {
                 'tableAlias': 'table 1',
                 'columns': {
-                    'id': {'dataType': 'numeric'},
-                    'name': {'dataType': 'character varying'},
-                    'address': {'dataType': 'character varying'}
+                    'id__table_1': {
+                        'columnName': 'id',
+                        'dataType': 'numeric'
+                    },
+                    'name__table_1': {
+                        'columnName': 'name',
+                        'dataType': 'character varying'
+                    },
+                    'address__table_1': {
+                        'columnName': 'address',
+                        'dataType': 'character varying'
+                    }
                 }
             },
             'table_2': {
                 'tableAlias': 'table 2',
                 'columns': {
-                    'id': {'dataType': 'numeric'},
-                    'name': {'dataType': 'character varying'},
-                    'age': {'dataType': 'integer'}
+                    'id__table_2': {
+                        'columnName': 'id',
+                        'dataType': 'numeric'
+                    },
+                    'name__table_2': {
+                        'columnName': 'name',
+                        'dataType': 'character varying'
+                    },
+                    'age__table_2': {
+                        'columnName': 'age',
+                        'dataType': 'integer'
+                    }
                 }
             }
         }

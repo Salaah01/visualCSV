@@ -15,6 +15,5 @@ def require_auth(viewFunc):
                 charset='utf-8'
             )
         else:
-            print(viewFunc(self, request).__dir__())
             return viewFunc(self, request)
     return wrapper

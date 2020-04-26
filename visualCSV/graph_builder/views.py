@@ -78,3 +78,27 @@ class TableMetaDataAPI(View):
             content_type='application/json',
             charset='utf-8'
         )
+
+
+class TablesColumnDataAPI(View):
+    """Returns the contents of a table's column."""
+
+    @core_functions.require_auth
+    def get(self, request):
+        """Returns the contents of a table's column based on the paramaters
+        provided in the GET request.
+        """
+
+        table = request.GET.get('table')
+        column = request.GET.get('column')
+
+        if not table or not column:
+            return HttpResponse(
+                json.dumps({
+                    'error': 'table and/or column paramater not supplied',
+                    'error_type': 'MISSING PARAMETERS'
+                }),
+                content_type='application/json',
+                charset='utf8',
+                status=400
+            )
