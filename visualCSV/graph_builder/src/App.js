@@ -10,7 +10,7 @@ import * as actions from './store/actions';
 
 class App extends Component {
   onDragEnd = (result) => {
-    const { destination, source, draggableId, type } = result;
+    const { destination, source, draggableId } = result;
     console.log('source', source);
     console.log('destination', destination);
     console.log('draggableId', draggableId);
@@ -67,6 +67,39 @@ class App extends Component {
         );
       }
     }
+
+    // Retrieve and store the contents of a column if the user has moved it to
+    // either the x-axis or the legend.
+    if (
+      destination.droppableId == 'xAxis' ||
+      destination.droppableId == 'legends'
+    ) {
+      this.setColumnData(source.droppableId, draggableId);
+    }
+  };
+
+  setColumnData = (table, columnID) => {
+    /**Dispatch an action to the redux store which will update a column with
+     * data if it does not contain any data.
+     * Args:
+     *  table: Table name.
+     *  columnID: A column ID which exists in the redux store. Note: the format
+     *    of this arg is [column name]__[table_name]
+     */
+
+    const column = columnID.split('__' + table)[0];
+
+    if (this.props.columns[columnID].data === undefined) {
+      fetch(`${location.href}column_data_api?table=${table}&column=${column}`)
+        .then((response) => {
+          response
+            .json()
+            .then((data) => this.props.onSetColumnData(table, column, data));
+        })
+        .catch((error) => console.log('error', error));
+    } else {
+      return;
+    }
   };
 
   render() {
@@ -100,6 +133,8 @@ const mapDispatchToProps = (dispatch) => {
       ),
     onMoveColumnToTables: (columnID, source, destID, destIndex) =>
       dispatch(actions.moveColumnToTables(columnID, source, destID, destIndex)),
+    onSetColumnData: (table, column, data) =>
+      dispatch(actions.setColumnData(table, column, data)),
   };
 };
 

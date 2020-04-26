@@ -11,10 +11,10 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 // Local Imports
 import classes from './GraphData.module.scss';
 import * as actions from '../../store/actions';
+import Spinner from '../../../../shared_js_components/UI/spinners/spinner1/Spinner';
 
 class GraphData extends Component {
-
-  state = {}
+  state = {};
 
   xAxis = () => {
     /**The main container for the x-axis column. */
@@ -102,4 +102,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(GraphData);
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GraphData);

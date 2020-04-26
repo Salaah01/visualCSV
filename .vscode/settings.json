@@ -11,7 +11,8 @@
     "contentfor",
     "csvs",
     "indisprimary",
-    "noqa"
+    "noqa",
+    "serializable"
   ],
   "editor.tabSize": 4,
   "[javascript]": {

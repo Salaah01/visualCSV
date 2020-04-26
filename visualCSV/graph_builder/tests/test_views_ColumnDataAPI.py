@@ -20,7 +20,7 @@ class TestColumnDataAPI(ClientDBTestCase, TestCase):
     and unauthenticated users.
     """
 
-    # maxDiff = None
+    maxDiff = None
 
     def setUp(self):
         self.client = Client()

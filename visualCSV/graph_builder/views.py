@@ -128,6 +128,8 @@ class ColumnDataAPI(View):
 
         core_functions.close(conn)
 
+        columnData = core_functions.convert_to_json_serializable(columnData)
+
         return HttpResponse(
             json.dumps(columnData),
             content_type='application/json',
@@ -173,6 +175,32 @@ class ColumnDataAPI(View):
             table: (str) Table name.
             column: (str) Column Name.
         """
-        cursor.execute(f'SELECT {column} FROM {table};')
+
+        pkSql = """SELECT a.attname
+                   FROM pg_index i
+                   JOIN pg_attribute a ON a.attrelid = i.indrelid
+                   AND a.attnum = ANY(i.indkey)
+                   WHERE i.indrelid = %s::regclass
+                   AND i.indisprimary;
+                """
+        cursor.execute(pkSql, (table, ))
+        pk = cursor.fetchone()[0]
+
+        if pk:
+            sql = f"""SELECT {column} FROM {table} ORDER BY {pk};"""
+        else:
+
+            orderBySQL = """SELECT column_name
+                            FROM information_schema.columns
+                            WHERE table_schema = 'public'
+                            AND table_name   = %s;
+                        """
+            cursor.execute(orderBySQL, (table, ))
+            orderByCol = cursor.fetchone()[0]
+
+            sql = f'SELECT {column} FROM {table} ORDER BY {orderByCol};'
+
+        cursor.execute(sql)
+
         data = cursor.fetchall()
         return [col1[0] for col1 in data]

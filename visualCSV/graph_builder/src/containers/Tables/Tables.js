@@ -11,6 +11,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 // Local Imports
 import classes from './Tables.module.scss';
 import * as actions from '../../store/actions';
+import Spinner from '../../../../shared_js_components/UI/spinners/spinner1/Spinner';
 
 class Tables extends Component {
   componentDidMount() {
@@ -27,7 +28,7 @@ class Tables extends Component {
   };
 
   render() {
-    let tables = <p>Loading Tables</p>;
+    let tables = <Spinner />;
     if (this.props.tables) {
       tables = Object.keys(this.props.tables).map((tableId) => {
         const table = this.props.tables[tableId];
