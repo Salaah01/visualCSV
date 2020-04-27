@@ -14,7 +14,7 @@ import Graphs from '../../components/Graphs/Graphs';
 
 class Graph extends Component {
   state = {
-    type: 'Bar',
+    type: 'Line',
     options: {
       maintainAspectRatio: false,
       scales: {

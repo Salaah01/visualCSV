@@ -127,7 +127,6 @@ class ColumnDataAPI(View):
         columnData = self.column_data(cur, table, column)
 
         core_functions.close(conn)
-
         columnData = core_functions.convert_to_json_serializable(columnData)
 
         return HttpResponse(
@@ -184,10 +183,11 @@ class ColumnDataAPI(View):
                    AND i.indisprimary;
                 """
         cursor.execute(pkSql, (table, ))
-        pk = cursor.fetchone()[0]
+
+        pk = cursor.fetchone()
 
         if pk:
-            sql = f"""SELECT {column} FROM {table} ORDER BY {pk};"""
+            sql = f"""SELECT {column} FROM {table} ORDER BY {pk[0]};"""
         else:
 
             orderBySQL = """SELECT column_name
