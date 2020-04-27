@@ -9,6 +9,7 @@ import {
   Line,
   Polar,
   Radar,
+  Scatter,
 } from 'react-chartjs-2';
 
 const graph = (type, graphProps) => {
@@ -27,6 +28,8 @@ const graph = (type, graphProps) => {
       return <Polar {...graphProps} />;
     case 'radar':
       return <Radar {...graphProps} />;
+    case 'scatter':
+      return <Scatter {...graphProps} />;
   }
 };
 

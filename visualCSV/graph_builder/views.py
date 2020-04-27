@@ -188,8 +188,8 @@ class ColumnDataAPI(View):
 
         if pk:
             sql = f"""SELECT {column} FROM {table} ORDER BY {pk[0]};"""
-        else:
 
+        else:
             orderBySQL = """SELECT column_name
                             FROM information_schema.columns
                             WHERE table_schema = 'public'
