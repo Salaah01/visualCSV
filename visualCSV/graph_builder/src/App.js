@@ -17,6 +17,11 @@ class App extends Component {
     console.log('draggableId', draggableId);
     console.log(result);
 
+    // Edge cases
+    if (!destination) {
+      return;
+    }
+
     // Move a column to the x-axis container.
     if (destination.droppableId === 'xAxis') {
       if (source.droppableId === 'legends') {
@@ -70,16 +75,23 @@ class App extends Component {
     }
 
     // Retrieve and store the contents of a column if the user has moved it to
-    // either the x-axis or the legend.
+    // either the x-axis or the legend and then add it as a dataset.
     if (
       destination.droppableId == 'xAxis' ||
       destination.droppableId == 'legends'
     ) {
-      this.setColumnData(source.droppableId, draggableId);
+      this.updateData(source.droppableId, draggableId);
+      // this.props.onAddDataSet(
+      //   draggableId,
+      //   this.props.columns[draggableId].columnName,
+      //   'rgba(30, 40, 50, 0.8)',
+      //   null,
+      //   null,
+      // );
     }
   };
 
-  setColumnData = (table, columnID) => {
+  updateData = (table, columnID) => {
     /**Dispatch an action to the redux store which will update a column with
      * data if it does not contain any data.
      * Args:
@@ -90,16 +102,26 @@ class App extends Component {
 
     const column = columnID.split('__' + table)[0];
 
+    const addDataSet = () =>
+      this.props.onAddDataSet(
+        columnID,
+        this.props.columns[columnID].columnName,
+        null,
+        null,
+        null,
+      );
+
     if (this.props.columns[columnID].data === undefined) {
       fetch(`${location.href}column_data_api?table=${table}&column=${column}`)
         .then((response) => {
-          response
-            .json()
-            .then((data) => this.props.onSetColumnData(table, column, data));
+          response.json().then((data) => {
+            this.props.onSetColumnData(table, column, data);
+            addDataSet();
+          });
         })
         .catch((error) => console.log('error', error));
     } else {
-      return;
+      addDataSet();
     }
   };
 
@@ -137,6 +159,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.moveColumnToTables(columnID, source, destID, destIndex)),
     onSetColumnData: (table, column, data) =>
       dispatch(actions.setColumnData(table, column, data)),
+    onAddDataSet: (columnID, label, bgColour, borderColor, borderWidth) =>
+      dispatch(
+        actions.addDataSet(columnID, label, bgColour, borderColor, borderWidth),
+      ),
   };
 };
 

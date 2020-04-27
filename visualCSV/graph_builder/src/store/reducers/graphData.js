@@ -8,10 +8,12 @@
 
 // IMPORTS
 // Third Party Imports
+import randomFlatColours from 'random-flat-colors';
 
 // Local Imports
 import { updateObject } from '../../../../core_functions/js';
 import * as actionTypes from '../actions/actionTypes';
+import { hexToRgb } from '../../../../core_functions/js';
 
 const initialState = {
   columns: {},
@@ -260,7 +262,6 @@ const setColumnData = (state, action) => {
 
 const addDataSet = (state, action) => {
   /**Adds a new dataset. */
-
   let bgColour;
   let borderColour;
 
@@ -268,9 +269,13 @@ const addDataSet = (state, action) => {
     bgColour = action.bgColour;
     borderColour = action.borderColour ? action.borderColour : bgColour;
   } else {
-    const colour = 'rgba(50,60,70,0.7)';
-    bgColour = colour;
-    borderColour = action.borderColour ? action.borderColour : colour;
+    const colour = hexToRgb(randomFlatColours());
+    const colourPrefix = `rgba(${colour.r}, ${colour.g}, ${colour.b}`;
+    bgColour = `${colourPrefix}, .6)`;
+    borderColour = `${colourPrefix}, 1)`;
+
+    bgColour = bgColour;
+    borderColour = action.borderColour ? action.borderColour : borderColour;
   }
 
   const label = action.label
@@ -285,7 +290,8 @@ const addDataSet = (state, action) => {
         : [],
       backgroundColor: bgColour,
       borderColor: borderColour,
-      borderWidth: action.borderWidth ? action.borderWidth: 1,
+      borderWidth: action.borderWidth ? action.borderWidth : 1,
+      index: Object.keys(state.dataSets).length,
     },
   });
 

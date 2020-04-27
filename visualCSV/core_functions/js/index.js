@@ -11,3 +11,4 @@ export { userDefFieldTypesValidation } from './user_def_field_types_validation';
 export { convertArrayColToNum } from './convert_array_col_to_num';
 export { convertArrayColToStr } from './convert_array_col_to_str';
 export { PrepareHeadersForDB } from './prepare_headers_for_db';
+export { hexToRgb } from './hex_to_rgb';
