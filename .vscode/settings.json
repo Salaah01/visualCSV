@@ -11,6 +11,8 @@
     "chartjs",
     "contentfor",
     "csvs",
+    "datasets",
+    "deepmerge",
     "indisprimary",
     "noqa",
     "serializable"

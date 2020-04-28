@@ -8,18 +8,25 @@ import randomFlatColours from 'random-flat-colors';
 
 // Local Imports
 import classes from './Graph.module.scss';
-import * as actionTypes from '../../store/actions';
 import Spinner from '../../../../shared_js_components/UI/spinners/spinner1/Spinner';
 import Graphs from '../../components/Graphs/Graphs';
 import { hexToRgb } from '../../../../core_functions/js';
 
 class Graph extends Component {
   state = {
-    type: 'pie',
+    type: 'radar',
     options: {
       maintainAspectRatio: false,
       scales: {
         yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+          { stacked: true },
+        ],
+        xAxis: [
           {
             ticks: {
               beginAtZero: true,
@@ -49,12 +56,14 @@ class Graph extends Component {
       const dataSet = this.props.dataSets[column];
       if (dataSet) {
         let data;
-        switch (this.state.type.toLowerCase()) {
+        switch (this.props.graphType) {
           case 'scatter':
             data = this._scatterDataSet(dataSet);
             break;
 
           case 'pie':
+          case 'doughnut':
+          case 'polar':
             data = this._pieDataSet(dataSet);
             break;
 
@@ -67,7 +76,6 @@ class Graph extends Component {
       }
     }
 
-    console.log(dataSets);
     return dataSets;
   };
 
@@ -136,20 +144,22 @@ class Graph extends Component {
     };
   };
 
+  graphOptions = {};
+
   render() {
     const data = {
       labels: this.xAxis(),
       datasets: this.legends(),
     };
 
-    const graph = Graphs(this.state.type, {
+    const graph = Graphs(this.props.graphType, {
       data: data,
       width: 100,
       height: 200,
-      options: this.state.options,
+      options: this.props.options[this.props.graphType],
     });
 
-    return <div>{graph}</div>;
+    return <div className={classes.graph}>{graph}</div>;
   }
 }
 
@@ -158,6 +168,8 @@ const mapStateToProps = (state) => {
     sections: state.graphData.sections,
     columns: state.graphData.columns,
     dataSets: state.graphData.dataSets,
+    graphType: state.graphOptions.graphType,
+    options: state.graphOptions.options,
   };
 };
 

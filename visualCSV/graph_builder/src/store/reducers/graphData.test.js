@@ -6,7 +6,6 @@
 // Local Imports
 import graphDataReducer from './graphData';
 import * as actionTypes from '../actions/actionTypes';
-import reducer from './graphData';
 
 describe('SET_USER_TABLES_DATA', () => {
   const state = {
@@ -774,3 +773,4 @@ describe('ADD_DATA_SET', () => {
     });
   });
 });
+

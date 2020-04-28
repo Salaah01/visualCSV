@@ -1,0 +1,159 @@
+// =============================================================================
+// Date Created:   18/12/2019
+// Created By:     Salaah Amin
+// =============================================================================
+// Styling for the custom drop-down menus.
+//
+// HTML
+// ────
+// The styling will work for dropdown menus in the following format:
+//
+// form
+// │
+// └───── .dropdown_menu
+//        │
+//        └───── .dropdown_menu__selected
+//        │      │
+//        │      └───── span {drop down menu name (initial option)
+//        │
+//        └───── .dropdown_menu__options
+//               │ (multiple children)
+//               │
+//               └───── label {.dropdown_menu__options__label
+//               │             [for="option 1 identifier (unique)"]} {item name}
+//               │
+//               └───── input {.dropdown__menu__options__radio_btn
+//                             [type="radio"]
+//                             [name="{name for GET request}"]
+//                             [id="{option 1 identifier (unique)"]
+//                             [value="{option value for GET request}"]}
+//
+//
+// Repeat the label and input element for each option.
+// The attribute "for" in label must equal to the corresponding id in the input
+// element.
+//
+// EXAMPLE HTML
+// ────────────
+// <form>
+//   ...
+//   <div class="dropdown_menu">
+//     <div class="dropdown_menu__selected">
+//       <span>Colour</span>
+//     </div>
+//     <div class="dropdown_menu__options">
+//       <label class="dropdown_menu__options__label" for="colour-red">
+//         colour
+//       </label>
+//       <input
+//         class="dropdown_menu__options__radio_btn"
+//         type="radio"
+//         name="f-colour"
+//         id=colour-red
+//         value="red"
+//       >
+//     </div>
+//   </div>
+//   ...
+// </form>
+// =============================================================================
+
+/* Imports: */
+@import '../abstracts/variables';
+
+/* Style the arrow inside the select element: */
+.select-selected:after {
+  position: absolute;
+  content: '';
+  top: 1.4rem;
+  right: 1rem;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+.select-items div:hover,
+.same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.dropdown_menu {
+  position: relative;
+
+  &__selected {
+    background-color: $colour-secondary-dark-1;
+    border-radius: 5px;
+    font-size: 1.4rem;
+    width: 12rem;
+    transition: background-color 0.3s;
+    color: $colour-white-1;
+    padding: 0.8rem 1.6rem;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $colour-secondary-dark-1-highlighted-1;
+    }
+
+    &:active {
+      transform: translate(1px, 1px);
+    }
+
+    &:after {
+      position: absolute;
+      content: '';
+      top: 1.4rem;
+      right: 1rem;
+      width: 0;
+      height: 0;
+      border: 6px solid transparent;
+      border-color: #fff transparent transparent transparent;
+    }
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+    background-color: $colour-secondary-dark-1;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    border-radius: 5px;
+    position: absolute;
+    top: 5rem;
+    width: max-content;
+
+    &--hide {
+      display: none;
+    }
+
+    &__label {
+      cursor: pointer;
+      padding: 0.8rem 1.6rem;
+      color: $colour-white-1;
+      border: 1px solid transparent;
+      border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      &--selected {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &__radio_btn {
+      display: none;
+    }
+  }
+}

@@ -8,3 +8,5 @@ export const SET_COLUMN_DATA = 'SET_COLUMN_DATA';
 
 export const ADD_DATA_SET = 'ADD_DATA_SET';
 export const REMOVE_DATA_SET = 'REMOVE_DATA_SET';
+
+export const UPDATE_GRAPH_TYPE = 'UPDATE_GRAPH_TYPE';

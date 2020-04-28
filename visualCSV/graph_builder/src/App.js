@@ -1,12 +1,14 @@
 // Third Party Imports
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
 
 // Local Imports
+import classes from './App.module.scss';
 import Tables from './containers/Tables/Tables';
 import GraphData from './containers/GraphData/GraphData';
 import Graph from './containers/Graph/Graph';
+import GraphOptions from './containers/GraphOptions/GraphOptions';
 import * as actions from './store/actions';
 
 class App extends Component {
@@ -127,14 +129,20 @@ class App extends Component {
 
   render() {
     return (
-      <Fragment>
-        <h1>Graph Builder JS</h1>
+      <div
+        className={classes.app}
+        style={{
+          gridTemplateColumns: this.props.showingOptions ? '1fr 1fr' : null,
+        }}
+      >
+        <h1 className={classes.app__heading}>Graph Builder</h1>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Graph />
           <GraphData />
           <Tables />
+          <GraphOptions />
         </DragDropContext>
-      </Fragment>
+      </div>
     );
   }
 }
@@ -143,7 +151,7 @@ const mapStateToProps = (state) => {
   return {
     columns: state.graphData.columns,
     tables: state.graphData.tables,
-    sections: state.sections,
+    showingOptions: state.graphData.showingOptions,
   };
 };
 

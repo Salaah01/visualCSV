@@ -1,5 +1,7 @@
+// add "minify" to the presents on production. Bug in the module causing it to
+// randomly crash on development.
 {
-  "presets": ["@babel/preset-env", "@babel/preset-react", "minify"],
+  "presets": ["@babel/preset-env", "@babel/preset-react"],
   "plugins": ["transform-class-properties"],
   "comments": false
 }

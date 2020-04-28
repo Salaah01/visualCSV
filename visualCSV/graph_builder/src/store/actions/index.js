@@ -6,4 +6,6 @@ export {
   moveColumnToTables,
   setColumnData,
   addDataSet,
-} from './graphData.js';
+} from './graphData';
+
+export { updateGraphType } from './graphOptions';

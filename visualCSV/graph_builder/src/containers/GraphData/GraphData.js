@@ -25,6 +25,7 @@ class GraphData extends Component {
             {...provided.droppableProps}
             ref={provided.innerRef}
             style={{ minHeight: '50px', backgroundColor: 'green' }}
+            className={classes.x_axis}
           >
             <p>X Axis</p>
             {this.section_contents(this.props.sections.xAxis.column)}
@@ -44,6 +45,7 @@ class GraphData extends Component {
             {...provided.droppableProps}
             ref={provided.innerRef}
             style={{ minHeight: '50px', backgroundColor: 'orangered' }}
+            className={classes.legends}
           >
             <p>Legend</p>
             {this.section_contents(this.props.sections.legends.columns)}
@@ -102,8 +104,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(GraphData);
+export default connect(mapStateToProps)(GraphData);
