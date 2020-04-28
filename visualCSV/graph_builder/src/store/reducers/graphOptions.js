@@ -9,6 +9,7 @@
  *
  * The following reducers are included in the module:
  *  updateGraphType: Updates the graph type.
+ *  updateYAxisStackOpt: Updates the stack option for a graph to true/false.
  */
 
 // IMPORTS
@@ -23,7 +24,7 @@ import * as actionTypes from '../actions/actionTypes';
 const sharedOptions = {
   maintainAspectRatio: false,
   scales: {
-    yAxes: [{ ticks: { beginAtZero: true } }],
+    yAxis: [{ ticks: { beginAtZero: true } }],
     xAxis: [{ ticks: { beginAtZero: true } }],
   },
 };
@@ -35,7 +36,7 @@ const horizontalBar = merge(sharedOptions, {});
 
 const line = merge(sharedOptions, {
   scales: {
-    yAxes: [{ stacked: false }],
+    yAxis: [{ stacked: false }],
   },
 });
 
@@ -63,10 +64,44 @@ const updateGraphType = (state, action) => {
   return updateObject(state, { graphType: action.graphType.toLowerCase() });
 };
 
+const updateYAxisStackOpt = (state, action) => {
+  /**Updates the stack option for a graph to true/false.
+   * Args:
+   *  action.opt: (bool) Option to set the stack property to true or false.
+   *  action.graphType: (str) Name of the graph.
+   */
+
+  const yAxis = [...state.options[action.graphType].scales.yAxis].map(
+    (option) => {
+      if (option.stacked === undefined) {
+        return option;
+      } else {
+        return { stacked: action.opt };
+      }
+    },
+  );
+
+  const updatedScales = updateObject(state.options[action.graphType].scales, {
+    yAxis: yAxis,
+  });
+
+  const updatedLine = updateObject(state.options[action.graphType], {
+    scales: updatedScales,
+  });
+
+  const updatedOptions = updateObject(state.options, {
+    [action.graphType]: updatedLine,
+  });
+
+  return updateObject(state, { options: updatedOptions });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.UPDATE_GRAPH_TYPE:
       return updateGraphType(state, action);
+    case actionTypes.UPDATE_Y_AXIS_STACK_OPT:
+      return updateYAxisStackOpt(state, action);
     default:
       return state;
   }

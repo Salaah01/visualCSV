@@ -9,7 +9,7 @@ import randomFlatColours from 'random-flat-colors';
 // Local Imports
 import classes from './GraphOptions.module.scss';
 import * as actions from '../../store/actions';
-import { hexToRgb } from '../../../../core_functions/js';
+import * as GraphOptions from '../../components/GraphOptions';
 
 class Graph extends Component {
   graphTypeDropdown = () => {
@@ -61,6 +61,7 @@ class Graph extends Component {
       <div>
         <h1>Graph Options</h1>
         <this.graphTypeDropdown />
+        <GraphOptions.line />
       </div>
     );
   }
@@ -75,6 +76,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onUpdateType: (graphType) => dispatch(actions.updateGraphType(graphType)),
+    onUpdateYAxisStackOpt: (opt, graphType) =>
+      dispatch(actions.updateYAxisStackOpt(opt, graphType)),
   };
 };
 

@@ -8,4 +8,4 @@ export {
   addDataSet,
 } from './graphData';
 
-export { updateGraphType } from './graphOptions';
+export { updateGraphType, updateYAxisStackOpt  } from './graphOptions';
