@@ -196,3 +196,7 @@ sketch
 
 .local_settings.py
 venv
+
+### JS Build Files ###
+main.js
+
