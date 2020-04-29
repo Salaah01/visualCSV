@@ -5,3 +5,6 @@
   "plugins": ["transform-class-properties"],
   "comments": false
 }
+// {
+//   "presets": [["react-app", { "flow": false, "typescript": true }]],
+// }

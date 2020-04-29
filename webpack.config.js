@@ -1,3 +1,5 @@
+const TerserPlugin = require('terser-webpack-plugin');
+
 module.exports = {
   devtool: 'inline-source-map',
   module: {
@@ -55,4 +57,7 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
   },
+  optimization: {
+    minimizer: [new TerserPlugin()],
+  }
 };
