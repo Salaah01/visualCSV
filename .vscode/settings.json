@@ -15,6 +15,7 @@
     "deepmerge",
     "indisprimary",
     "noqa",
+    "scrollbar",
     "serializable"
   ],
   "editor.tabSize": 4,

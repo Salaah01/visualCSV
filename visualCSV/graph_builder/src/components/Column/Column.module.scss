@@ -1,0 +1,35 @@
+.column {
+  background-color: rgb(242, 242, 242);
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 12px;
+  margin-bottom: 2px;
+  display: flex;
+  justify-content: space-between;
+  width: fit-content;
+  border: 1px solid rgb(230, 230, 230);
+
+  &:hover {
+    background-color: #e9e9e9;
+  }
+
+  &__name,
+  &__remove_btn {
+    color: rba(24, 24, 24);
+    text-align: center;
+  }
+
+  &__remove_btn {
+    padding-left: 10px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      cursor: pointer;
+      color: #e74c3c;
+    }
+
+    &:active {
+      transform: translate(1px, 1px);
+    }
+  }
+}

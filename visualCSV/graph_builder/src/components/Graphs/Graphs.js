@@ -30,6 +30,8 @@ const graph = (type, graphProps) => {
       return <Radar {...graphProps} />;
     case 'scatter':
       return <Scatter {...graphProps} />;
+    default:
+      throw Error('chart not supported.');
   }
 };
 

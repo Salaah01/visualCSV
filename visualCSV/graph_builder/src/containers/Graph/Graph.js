@@ -11,10 +11,11 @@ import classes from './Graph.module.scss';
 import Spinner from '../../../../shared_js_components/UI/spinners/spinner1/Spinner';
 import Graphs from '../../components/Graphs/Graphs';
 import { hexToRgb } from '../../../../core_functions/js';
+import { Bar } from 'react-chartjs-2';
 
 class Graph extends Component {
   state = {
-    type: 'radar',
+    type: 'line',
     options: {
       maintainAspectRatio: false,
       scales: {
@@ -154,12 +155,21 @@ class Graph extends Component {
 
     const graph = Graphs(this.props.graphType, {
       data: data,
-      width: 100,
-      height: 200,
       options: this.props.options[this.props.graphType],
+      id: 'graph',
     });
 
-    return <div className={classes.graph}>{graph}</div>;
+    return (
+      <div
+        style={{
+          width: window.screen.width * 0.8,
+          height: window.screen.height * 0.4,
+        }}
+        className={classes.graph}
+      >
+        {graph}
+      </div>
+    );
   }
 }
 

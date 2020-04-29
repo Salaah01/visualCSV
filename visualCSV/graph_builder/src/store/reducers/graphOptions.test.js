@@ -26,7 +26,7 @@ describe('UPDATE_GRAPH_TYPE', () => {
 describe('UPDATE_Y_AXIS_STACK_OPT', () => {
   const state = {
     options: {
-      line: { scales: { yAxis: [{ stacked: false }] } },
+      line: { scales: { yAxes: [{ stacked: false }] } },
     },
   };
 
@@ -37,13 +37,13 @@ describe('UPDATE_Y_AXIS_STACK_OPT', () => {
   });
 
   it('should update the y-axis stack for the line graph to true.', () => {
-    expect(reducer.options.line.scales.yAxis).toEqual([{ stacked: true }]);
+    expect(reducer.options.line.scales.yAxes).toEqual([{ stacked: true }]);
   });
 
   it('should update the y-axis stack for the line graph to false.', () => {
     const state = {
       options: {
-        line: { scales: { yAxis: [{ stacked: true }] } },
+        line: { scales: { yAxes: [{ stacked: true }] } },
       },
     };
 
@@ -53,13 +53,13 @@ describe('UPDATE_Y_AXIS_STACK_OPT', () => {
       graphType: 'line',
     });
 
-    expect(reducer.options.line.scales.yAxis).toEqual([{ stacked: false }]);
+    expect(reducer.options.line.scales.yAxes).toEqual([{ stacked: false }]);
   });
 
   it('should not mutate the original state.', () => {
     expect(state).toEqual({
       options: {
-        line: { scales: { yAxis: [{ stacked: false }] } },
+        line: { scales: { yAxes: [{ stacked: false }] } },
       },
     });
   });

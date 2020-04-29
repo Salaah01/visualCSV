@@ -13,4 +13,3 @@ export const SERVER_USER_ID = document.getElementById('user-id').innerText;
 export const SERVER_USER_TABLES = JSON.parse(
   document.getElementById('user-tables-data').innerText,
 );
-

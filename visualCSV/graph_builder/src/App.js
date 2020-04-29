@@ -79,8 +79,8 @@ class App extends Component {
     // Retrieve and store the contents of a column if the user has moved it to
     // either the x-axis or the legend and then add it as a dataset.
     if (
-      destination.droppableId == 'xAxis' ||
-      destination.droppableId == 'legends'
+      destination.droppableId === 'xAxis' ||
+      destination.droppableId === 'legends'
     ) {
       this.updateData(source.droppableId, draggableId);
       // this.props.onAddDataSet(
@@ -114,7 +114,9 @@ class App extends Component {
       );
 
     if (this.props.columns[columnID].data === undefined) {
-      fetch(`${location.href}column_data_api?table=${table}&column=${column}`)
+      fetch(
+        `${window.location.href}column_data_api?table=${table}&column=${column}`,
+      )
         .then((response) => {
           response.json().then((data) => {
             this.props.onSetColumnData(table, column, data);

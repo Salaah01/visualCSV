@@ -14,7 +14,6 @@
 
 // IMPORTS
 // Third Party Imports
-import randomFlatColours from 'random-flat-colors';
 import merge from 'deepmerge';
 
 // Local Imports
@@ -24,8 +23,16 @@ import * as actionTypes from '../actions/actionTypes';
 const sharedOptions = {
   maintainAspectRatio: false,
   scales: {
-    yAxis: [{ ticks: { beginAtZero: true } }],
-    xAxis: [{ ticks: { beginAtZero: true } }],
+    yAxes: [{ ticks: { beginAtZero: true } }],
+    xAxes: [{ ticks: { beginAtZero: true } }],
+  },
+};
+
+const backup = {
+  maintainAspectRatio: false,
+  scales: {
+    yAxes: [{ ticks: { beginAtZero: true } }, { stacked: true }],
+    xAxes: [{ ticks: { beginAtZero: true } }],
   },
 };
 
@@ -35,8 +42,9 @@ const doughnut = merge(sharedOptions, {});
 const horizontalBar = merge(sharedOptions, {});
 
 const line = merge(sharedOptions, {
+  fill: false,
   scales: {
-    yAxis: [{ stacked: false }],
+    yAxes: [{ stacked: false }],
   },
 });
 
@@ -56,6 +64,7 @@ const initialState = {
     polar: polar,
     radar: radar,
     scatter: scatter,
+    dummy: backup
   },
 };
 
@@ -71,7 +80,7 @@ const updateYAxisStackOpt = (state, action) => {
    *  action.graphType: (str) Name of the graph.
    */
 
-  const yAxis = [...state.options[action.graphType].scales.yAxis].map(
+  const yAxes = [...state.options[action.graphType].scales.yAxes].map(
     (option) => {
       if (option.stacked === undefined) {
         return option;
@@ -82,7 +91,7 @@ const updateYAxisStackOpt = (state, action) => {
   );
 
   const updatedScales = updateObject(state.options[action.graphType].scales, {
-    yAxis: yAxis,
+    yAxes: yAxes,
   });
 
   const updatedLine = updateObject(state.options[action.graphType], {

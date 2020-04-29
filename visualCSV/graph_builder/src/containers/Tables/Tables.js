@@ -4,7 +4,7 @@
 
 // IMPORTS
 // Third Party Imports
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -12,6 +12,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import classes from './Tables.module.scss';
 import * as actions from '../../store/actions';
 import Spinner from '../../../../shared_js_components/UI/spinners/spinner1/Spinner';
+import Column from '../../components/Column/Column';
 
 class Tables extends Component {
   componentDidMount() {
@@ -20,7 +21,7 @@ class Tables extends Component {
 
   fetchTableData = () => {
     /**Retrieves the information on the tables that belong to the user. */
-    fetch(location.href + 'table_meta_data_api')
+    fetch(window.location.href + 'table_meta_data_api')
       .then((response) =>
         response.json().then((data) => this.props.onSetUserTablesData(data)),
       )
@@ -44,7 +45,7 @@ class Tables extends Component {
                   key={columnId}
                   {...provided.dragHandleProps}
                 >
-                  <div>{column.columnName}</div>
+                  <Column name={column.columnName} />
                 </div>
               )}
             </Draggable>
@@ -61,7 +62,9 @@ class Tables extends Component {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                <p>{table.tableAlias}</p>
+                <p className={classes.tables__table__name}>
+                  {table.tableAlias}
+                </p>
                 {columns}
                 {provided.placeholder}
               </div>
@@ -72,9 +75,9 @@ class Tables extends Component {
     }
 
     return (
-      <div className={classes.tables}>
-        <p>Tables</p>
-        {tables}
+      <div className={classes.tables_container}>
+        <o>Tables</o>
+        <div className={classes.tables}>{tables}</div>
       </div>
     );
   }

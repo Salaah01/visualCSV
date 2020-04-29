@@ -7,28 +7,50 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import Radium from 'radium';
 
 // Local Imports
 import classes from './GraphData.module.scss';
-import * as actions from '../../store/actions';
-import Spinner from '../../../../shared_js_components/UI/spinners/spinner1/Spinner';
+import Column from '../../components/Column/Column';
 
 class GraphData extends Component {
   state = {};
 
+  dragOverCssOverride = {
+    backgroundColor: '#2471a3',
+  };
+
+  droppableStyle = (isDraggingOver, columnLength) => {
+    /**Styling for the droppable style which dynamically changes based on
+     * certain properties.
+     * Args:
+     *  isDraggingOver: (bool) Is the element being dragged over?
+     *  columnLength: (int) The number of columns in the element.
+     */
+
+    if (isDraggingOver) {
+      return { backgroundColor: 'rgba(36, 113, 163, 0.8)' };
+    } else if (columnLength) {
+      return { backgroundColor: '#2471a3' };
+    } else {
+      return { backgroundColor: '#162a3e' };
+    }
+  };
+
   xAxis = () => {
     /**The main container for the x-axis column. */
+    const column = this.props.sections.xAxis.column;
     return (
       <Droppable droppableId="xAxis" key="xAxis">
-        {(provided) => (
+        {(provided, snapshot) => (
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            style={{ minHeight: '50px', backgroundColor: 'green' }}
             className={classes.x_axis}
+            style={this.droppableStyle(snapshot.isDraggingOver, column.length)}
           >
-            <p>X Axis</p>
-            {this.section_contents(this.props.sections.xAxis.column)}
+            <p className={classes.title}>X Axis</p>
+            {this.section_contents(column)}
             {provided.placeholder}
           </div>
         )}
@@ -38,17 +60,18 @@ class GraphData extends Component {
 
   legends = () => {
     /**The main container for the legends container. */
+    const columns = this.props.sections.legends.columns;
     return (
       <Droppable droppableId="legends" key="legend">
-        {(provided) => (
+        {(provided, snapshot) => (
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            style={{ minHeight: '50px', backgroundColor: 'orangered' }}
             className={classes.legends}
+            style={this.droppableStyle(snapshot.isDraggingOver, columns.length)}
           >
-            <p>Legend</p>
-            {this.section_contents(this.props.sections.legends.columns)}
+            <p className={classes.title}>Legend</p>
+            {this.section_contents(columns)}
             {provided.placeholder}
           </div>
         )}
@@ -76,7 +99,7 @@ class GraphData extends Component {
                 key={columnID}
                 {...provided.dragHandleProps}
               >
-                <div>{column.columnName}</div>
+                <Column name={column.columnName} removeBtn />
               </div>
             )}
           </Draggable>
@@ -104,4 +127,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(GraphData);
+export default connect(mapStateToProps)(Radium(GraphData));

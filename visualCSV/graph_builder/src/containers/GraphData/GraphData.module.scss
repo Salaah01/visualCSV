@@ -1,7 +1,25 @@
-.x_axis {
-    grid-row: 3;
+.x_axis,
+.legends {
+  grid-row: 3;
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  min-width: 250px;
+  width: fit-content;
+  border-radius: 5px;
+  padding: 10px 20px;
+  transition: all 0.3s ease-in-out;
 }
 
 .legends {
-    grid-row: 4;
+  width: 100%;
+
+  & > div {
+    padding: 5px 2.5px;
+  }
+}
+
+.title {
+  color: #ffd91d;
+  margin-right: 11px;
 }

@@ -9,7 +9,7 @@ import randomFlatColours from 'random-flat-colors';
 // Local Imports
 import classes from './GraphOptions.module.scss';
 import * as actions from '../../store/actions';
-import * as GraphOptions from '../../components/GraphOptions';
+import LineOptions from '../../components/GraphOptions/Line';
 
 class Graph extends Component {
   graphTypeDropdown = () => {
@@ -58,10 +58,10 @@ class Graph extends Component {
 
   render() {
     return (
-      <div>
+      <div className={classes.graph_options}>
         <h1>Graph Options</h1>
         <this.graphTypeDropdown />
-        <GraphOptions.line />
+        <LineOptions />
       </div>
     );
   }
