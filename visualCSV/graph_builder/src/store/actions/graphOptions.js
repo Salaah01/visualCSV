@@ -2,8 +2,7 @@
  * included:
  *  updateGraphType: Updates the graph type.
  *  updateYAxisStackOpt: Updates the stack option for a graph to true/false.
- *  setTitleDisplayTrue: Sets the title display option to true.
- *  setTitleDisplayFalse: Sets the title display option to false.
+ *  toggleTitleDisplay: Toggles the title display option.
  */
 
 import * as actionTypes from './actionTypes';
@@ -32,16 +31,9 @@ export const updateYAxisStackOpt = (opt, graphType) => {
   };
 };
 
-export const setTitleDisplayTrue = () => {
-  /**Sets the title display option to true. */
+export const toggleTitleDisplay = () => {
+  /**Toggles the title display option. */
   return {
-    type: actionTypes.SET_TITLE_DISPLAY_TRUE,
-  };
-};
-
-export const setTitleDisplayFalse = () => {
-  /**Sets the title display option to false. */
-  return {
-    type: actionTypes.SET_TITLE_DISPLAY_FALSE,
+    type: actionTypes.TOGGLE_TITLE_DISPLAY,
   };
 };

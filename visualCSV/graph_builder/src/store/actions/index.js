@@ -11,6 +11,5 @@ export {
 export {
   updateGraphType,
   updateYAxisStackOpt,
-  setTitleDisplayTrue,
-  setTitleDisplayFalse,
+  toggleTitleDisplay,
 } from './graphOptions';

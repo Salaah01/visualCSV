@@ -43,7 +43,7 @@ class Graph extends Component {
     ));
 
     return (
-      <form>
+      <form style={{width: 'fit-content'}}>
         <div className="dropdown_menu">
           <div className="dropdown_menu__selected">
             <span>Bar</span>

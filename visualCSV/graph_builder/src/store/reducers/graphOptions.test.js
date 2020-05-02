@@ -65,52 +65,7 @@ describe('UPDATE_Y_AXIS_STACK_OPT', () => {
   });
 });
 
-describe('SET_TITLE_DISPLAY_TRUE', () => {
-  const state = {
-    options: {
-      bar: { title: { display: false } },
-      line: { title: { display: false } },
-      pie: { title: { display: false } },
-      doughnut: { title: { display: false } },
-      'horizontal bar': { title: { display: false } },
-      polar: { title: { display: false } },
-      radar: { title: { display: false } },
-      scatter: { title: { display: false } },
-    },
-  };
-
-  const reducer = graphOptionsReducer(state, {
-    type: actionTypes.SET_TITLE_DISPLAY_TRUE,
-  });
-
-  it('should update the display to true for each graph type.', () => {
-    expect(reducer.options).toEqual({
-      bar: { title: { display: true } },
-      line: { title: { display: true } },
-      pie: { title: { display: true } },
-      doughnut: { title: { display: true } },
-      'horizontal bar': { title: { display: true } },
-      polar: { title: { display: true } },
-      radar: { title: { display: true } },
-      scatter: { title: { display: true } },
-    });
-  });
-
-  it('should not mutate the original state.', () => {
-    expect(state.options).toEqual({
-      bar: { title: { display: false } },
-      line: { title: { display: false } },
-      pie: { title: { display: false } },
-      doughnut: { title: { display: false } },
-      'horizontal bar': { title: { display: false } },
-      polar: { title: { display: false } },
-      radar: { title: { display: false } },
-      scatter: { title: { display: false } },
-    });
-  });
-});
-
-describe('SET_TITLE_DISPLAY_FALSE', () => {
+describe('TOGGLE_TITLE_DISPLAY', () => {
   const state = {
     options: {
       bar: { title: { display: true } },
@@ -125,10 +80,10 @@ describe('SET_TITLE_DISPLAY_FALSE', () => {
   };
 
   const reducer = graphOptionsReducer(state, {
-    type: actionTypes.SET_TITLE_DISPLAY_FALSE,
+    type: actionTypes.TOGGLE_TITLE_DISPLAY,
   });
 
-  it('should update the display to true for each graph type.', () => {
+  it('should update the display to `false` for each graph type.', () => {
     expect(reducer.options).toEqual({
       bar: { title: { display: false } },
       line: { title: { display: false } },
@@ -138,6 +93,38 @@ describe('SET_TITLE_DISPLAY_FALSE', () => {
       polar: { title: { display: false } },
       radar: { title: { display: false } },
       scatter: { title: { display: false } },
+    });
+  });
+
+  it('should update the display to `true` for each graph type.', () => {
+    const state = {
+      options: {
+        bar: { title: { display: false } },
+        line: { title: { display: false } },
+        pie: { title: { display: false } },
+        doughnut: { title: { display: false } },
+        'horizontal bar': { title: { display: false } },
+        polar: { title: { display: false } },
+        radar: { title: { display: false } },
+        scatter: { title: { display: false } },
+      },
+    };
+
+
+
+    const updatedReducer = graphOptionsReducer(reducer, {
+      type: actionTypes.TOGGLE_TITLE_DISPLAY,
+    });
+
+    expect(updatedReducer.options).toEqual({
+      bar: { title: { display: true } },
+      line: { title: { display: true } },
+      pie: { title: { display: true } },
+      doughnut: { title: { display: true } },
+      'horizontal bar': { title: { display: true } },
+      polar: { title: { display: true } },
+      radar: { title: { display: true } },
+      scatter: { title: { display: true } },
     });
   });
 

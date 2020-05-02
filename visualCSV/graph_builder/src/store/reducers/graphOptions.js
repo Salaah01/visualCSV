@@ -10,10 +10,7 @@
  * The following reducers are included in the module:
  *  updateGraphType: Updates the graph type.
  *  updateYAxisStackOpt: Updates the stack option for a graph to true/false.
- *  setTitleDisplayTrue: Dispatches an action to set the title display option
- *    to true.
- *  setTitleDisplayFalse: Dispatches an action to set the title display option
- *    to false.
+ *  toggleTitleDisplay: Toggles the title display option.
  */
 
 // IMPORTS
@@ -105,33 +102,14 @@ const updateYAxisStackOpt = (state, action) => {
   return updateObject(state, { options: updatedOptions });
 };
 
-const setTitleDisplayTrue = (state) => {
-  /**Dispatches an action to set the title display option to true. */
+const toggleTitleDisplay = (state) => {
+  /**Toggles the title display option. */
   const graphTypes = Object.keys(initialState.options);
-
   let graphOptions = { ...state.options };
+
   for (const graphType of graphTypes) {
     const updatedTitle = updateObject(graphOptions[graphType].title, {
-      display: true,
-    });
-
-    const updatedGraph = updateObject(graphOptions[graphType], {
-      title: updatedTitle,
-    });
-
-    graphOptions = updateObject(graphOptions, { [graphType]: updatedGraph });
-  }
-  return updateObject(state, { options: graphOptions });
-};
-
-const setTitleDisplayFalse = (state) => {
-  /**Dispatches an action to set the title display option to false. */
-  const graphTypes = Object.keys(initialState.options);
-
-  let graphOptions = { ...state.options };
-  for (const graphType of graphTypes) {
-    const updatedTitle = updateObject(graphOptions[graphType].title, {
-      display: false,
+      display: !graphOptions[graphType].title.display,
     });
 
     const updatedGraph = updateObject(graphOptions[graphType], {
@@ -149,10 +127,8 @@ const reducer = (state = initialState, action) => {
       return updateGraphType(state, action);
     case actionTypes.UPDATE_Y_AXIS_STACK_OPT:
       return updateYAxisStackOpt(state, action);
-    case actionTypes.SET_TITLE_DISPLAY_TRUE:
-      return setTitleDisplayTrue(state);
-    case actionTypes.SET_TITLE_DISPLAY_FALSE:
-      return setTitleDisplayFalse(state);
+    case actionTypes.TOGGLE_TITLE_DISPLAY:
+      return toggleTitleDisplay(state);
     default:
       return state;
   }

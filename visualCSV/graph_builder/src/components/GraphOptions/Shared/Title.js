@@ -12,7 +12,7 @@ class Title extends PureComponent {
   /**Creates the tile and options for the graph. */
 
   handleDisplayChange = () => {
-    console.log(this.props.options[this.props.graphType].title.display);
+    /**On change handler for the display checkbox. */
     if (this.props.options[this.props.graphType].title.display) {
       this.props.onSetTitleDisplayFalse();
     } else {
@@ -21,6 +21,7 @@ class Title extends PureComponent {
   };
 
   display = () => (
+    /**Returns the display checkbox. */
     <div>
       <label for="title-display-option">Display Title</label>
       <input
@@ -47,8 +48,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSetTitleDisplayTrue: () => dispatch(actions.setTitleDisplayTrue()),
-    onSetTitleDisplayFalse: () => dispatch(actions.setTitleDisplayFalse()),
+    onSetTitleDisplayTrue: () => dispatch(actions.toggleTitleDisplay()),
+    onSetTitleDisplayFalse: () => dispatch(actions.toggleTitleDisplay()),
   };
 };
 
