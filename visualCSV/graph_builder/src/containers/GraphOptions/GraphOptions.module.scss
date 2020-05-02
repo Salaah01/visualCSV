@@ -1,3 +1,5 @@
+@import '../../../../visualCSV/static/sass/abstracts/_variables';
+
 .graph_options {
   grid-row: 3 / span 2;
   background-color: lightgrey;
@@ -8,21 +10,8 @@
     font-size: 20px;
     font-weight: 300;
     letter-spacing: 1px;
-    margin-bottom: 10px;
-  }
-}
-
-.options_container {
-
-  &__heading {
-    display: flex;
-    justify-content: space-between;
-    cursor: pointer;
-  }
-
-  &__options {
-    max-height: 200px;
-    overflow: hidden;
-    transition: all .2s ease;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    color: $colour-secondary;
   }
 }

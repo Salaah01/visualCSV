@@ -8,7 +8,7 @@ import { SketchPicker } from 'react-color';
 
 // Local Imports
 import * as actions from '../../../../store/actions';
-import sharedClasses from '../Shared.module.scss'
+import sharedClasses from '../Shared.module.scss';
 import classes from './Title.module.scss';
 
 class Title extends PureComponent {
@@ -24,9 +24,15 @@ class Title extends PureComponent {
 
   displayOption = () => (
     /**Returns the display checkbox. */
-    <div>
-      <label htmlFor="title-display-option">Show Title</label>
+    <div className={sharedClasses.option}>
+      <label
+        htmlFor="title-display-option"
+        className={sharedClasses.option__label}
+      >
+        Show Title
+      </label>
       <input
+        className={sharedClasses.option__input}
         type="checkbox"
         name="display-title"
         id="title-display-option "
@@ -38,13 +44,19 @@ class Title extends PureComponent {
 
   text = () => (
     /**Returns the display text input box element. */
-    <div>
-      <label htmlFor="title-display-text">Display Text</label>
+    <div className={sharedClasses.option}>
+      <label
+        htmlFor="title-display-text"
+        className={sharedClasses.option__label}
+      >
+        Display Text
+      </label>
       <input
         type="input"
         name="display-text"
         id="title-display-text"
         placeholder="Display Text"
+        className={sharedClasses.option__input}
         value={this.graphTitleOptions().text}
         onChange={(event) => this.props.onUpdateText(event.target.value)}
       />
@@ -53,8 +65,13 @@ class Title extends PureComponent {
 
   position = () => (
     /**Set of options allowing the user to update the display position. */
-    <div>
-      <label htmlFor="title-display-position">Position</label>
+    <div className={sharedClasses.option}>
+      <label
+        htmlFor="title-display-position"
+        className={sharedClasses.option__label}
+      >
+        Position
+      </label>
       <select
         onChange={(event) => this.props.onUpdatePosition(event.target.value)}
       >
@@ -68,22 +85,23 @@ class Title extends PureComponent {
 
   fontSize = () => {
     /**Set of options allowing the user to update the display font size. */
-    const fontSize = this.graphTitleOptions().fontSize;
     const options = [8, 9, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72];
     const optionElems = options.map((optionElem) => (
-      <option
-        key={optionElem}
-        value={optionElem}
-        selected={optionElem === fontSize}
-      >
+      <option key={optionElem} value={optionElem}>
         {optionElem}
       </option>
     ));
 
     return (
-      <div>
-        <label htmlFor="title-display-font-size">Size</label>
+      <div className={sharedClasses.option}>
+        <label
+          htmlFor="title-display-font-size"
+          className={sharedClasses.option__label}
+        >
+          Size
+        </label>
         <select
+          defaultValue={this.graphTitleOptions().fontSize}
           onChange={(event) => this.props.onUpdateFontSize(+event.target.value)}
         >
           {optionElems}
@@ -107,7 +125,6 @@ class Title extends PureComponent {
     if (!this.node.contains(event.target)) {
       this.setState({ showColourPicker: false });
       document.removeEventListener('click', this.onClickOutColourPicker, false);
-      console.log('clicked outside');
     }
   };
 
@@ -140,7 +157,8 @@ class Title extends PureComponent {
     }
 
     return (
-      <div className={classes.colour}>
+      <div className={`${classes.colour} ${sharedClasses.option}`}>
+        <label className={sharedClasses.option__label}>Colour</label>
         {currentColour}
         {colourPicker}
       </div>
@@ -155,16 +173,22 @@ class Title extends PureComponent {
     const headingText = this.props.showOptions
       ? 'Hide Title Options'
       : 'Show Title Options';
+    const headingIcon = this.props.showOptions ? '-' : '+';
 
-    const headingIcon = this.props.showOptions ? '+' : '-';
-
-    const optionsStyle = this.props.showOptions ? null : { maxHeight: 0 };
+    // Style overrides
+    const headingStyle = this.props.showOptions
+      ? { borderBottom: '1px solid transparent' }
+      : null;
+    const optionsStyle = this.props.showOptions
+      ? null
+      : { maxHeight: 0, padding: 0, borderBottom: 'none' };
 
     const options = (
       <div className={sharedClasses.options_container}>
         <h3
           className={sharedClasses.options_container__heading}
           onClick={this.props.onToggleShowOptions}
+          style={headingStyle}
         >
           <span className={sharedClasses.options_container__heading__text}>
             {headingText}
@@ -188,18 +212,6 @@ class Title extends PureComponent {
 
     return options;
   };
-
-  // render() {
-  //   return (
-  //     <div>
-  //       {this.displayOption()}
-  //       {this.text()}
-  //       {this.position()}
-  //       {this.fontSize()}
-  //       {this.colour()}
-  //     </div>
-  //   );
-  // }
 
   render() {
     return this.titleOptions();
