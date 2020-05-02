@@ -4,12 +4,12 @@
 // Third Party Imports
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import randomFlatColours from 'random-flat-colors';
 
 // Local Imports
 import classes from './GraphOptions.module.scss';
 import * as actions from '../../store/actions';
 import LineOptions from '../../components/GraphOptions/Line';
+import TitleOptions from '../../components/GraphOptions/Shared/Title'
 
 class Graph extends Component {
   graphTypeDropdown = () => {
@@ -59,9 +59,10 @@ class Graph extends Component {
   render() {
     return (
       <div className={classes.graph_options}>
-        <h1>Graph Options</h1>
+        <h1 className={classes.graph_options__heading}>Graph Options</h1>
         <this.graphTypeDropdown />
         <LineOptions />
+        <TitleOptions />
       </div>
     );
   }

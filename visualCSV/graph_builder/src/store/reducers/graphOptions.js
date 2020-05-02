@@ -10,6 +10,10 @@
  * The following reducers are included in the module:
  *  updateGraphType: Updates the graph type.
  *  updateYAxisStackOpt: Updates the stack option for a graph to true/false.
+ *  setTitleDisplayTrue: Dispatches an action to set the title display option
+ *    to true.
+ *  setTitleDisplayFalse: Dispatches an action to set the title display option
+ *    to false.
  */
 
 // IMPORTS
@@ -26,13 +30,10 @@ const sharedOptions = {
     yAxes: [{ ticks: { beginAtZero: true } }],
     xAxes: [{ ticks: { beginAtZero: true } }],
   },
-};
-
-const backup = {
-  maintainAspectRatio: false,
-  scales: {
-    yAxes: [{ ticks: { beginAtZero: true } }, { stacked: true }],
-    xAxes: [{ ticks: { beginAtZero: true } }],
+  title: {
+    display: true,
+    text: '',
+    position: 'top',
   },
 };
 
@@ -64,7 +65,6 @@ const initialState = {
     polar: polar,
     radar: radar,
     scatter: scatter,
-    dummy: backup
   },
 };
 
@@ -105,12 +105,54 @@ const updateYAxisStackOpt = (state, action) => {
   return updateObject(state, { options: updatedOptions });
 };
 
+const setTitleDisplayTrue = (state) => {
+  /**Dispatches an action to set the title display option to true. */
+  const graphTypes = Object.keys(initialState.options);
+
+  let graphOptions = { ...state.options };
+  for (const graphType of graphTypes) {
+    const updatedTitle = updateObject(graphOptions[graphType].title, {
+      display: true,
+    });
+
+    const updatedGraph = updateObject(graphOptions[graphType], {
+      title: updatedTitle,
+    });
+
+    graphOptions = updateObject(graphOptions, { [graphType]: updatedGraph });
+  }
+  return updateObject(state, { options: graphOptions });
+};
+
+const setTitleDisplayFalse = (state) => {
+  /**Dispatches an action to set the title display option to false. */
+  const graphTypes = Object.keys(initialState.options);
+
+  let graphOptions = { ...state.options };
+  for (const graphType of graphTypes) {
+    const updatedTitle = updateObject(graphOptions[graphType].title, {
+      display: false,
+    });
+
+    const updatedGraph = updateObject(graphOptions[graphType], {
+      title: updatedTitle,
+    });
+
+    graphOptions = updateObject(graphOptions, { [graphType]: updatedGraph });
+  }
+  return updateObject(state, { options: graphOptions });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.UPDATE_GRAPH_TYPE:
       return updateGraphType(state, action);
     case actionTypes.UPDATE_Y_AXIS_STACK_OPT:
       return updateYAxisStackOpt(state, action);
+    case actionTypes.SET_TITLE_DISPLAY_TRUE:
+      return setTitleDisplayTrue(state);
+    case actionTypes.SET_TITLE_DISPLAY_FALSE:
+      return setTitleDisplayFalse(state);
     default:
       return state;
   }

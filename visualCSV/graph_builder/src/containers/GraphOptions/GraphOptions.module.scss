@@ -1,3 +1,13 @@
 .graph_options {
   grid-row: 3 / span 2;
+  background-color: lightgrey;
+  padding: 25px 30px;
+  border-radius: 5px;
+
+  &__heading {
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
 }

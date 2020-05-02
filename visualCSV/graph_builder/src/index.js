@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 
 // Local Imports
 import '../../visualCSV/static/sass/components/_dropdown_menu.scss';
+import './index.scss';
 import App from './App';
 import graphDataReducer from './store/reducers/graphData';
 import graphOptionsReducer from './store/reducers/graphOptions';
