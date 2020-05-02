@@ -17,6 +17,10 @@
     &:hover {
       color: $colour-primary-bright-1;
       border-bottom: 1px solid $colour-primary-bright-1;
+
+      & + div {
+        border-bottom: 1px solid $colour-primary-bright-1;
+      }
     }
 
     &__icon {
@@ -46,6 +50,7 @@
   }
 
   &__input {
+    font-size: inherit;
     &[type='checkbox'] {
       position: relative;
       -webkit-appearance: none;
@@ -57,9 +62,12 @@
       outline: none;
       color: #fff;
       transition: all 0.25s ease;
+      cursor: pointer;
 
       &:hover {
         background-color: rgba($colour-primary-bright-1, 0.75);
+        filter: brightness(1.1);
+        transform: scale(1.1);
       }
 
       &:checked {
@@ -84,9 +92,8 @@
       outline: none;
       width: 100%;
       background: #fff;
-      //   margin-bottom: 4%;
       padding: 10px;
-      color: #555;
+      color: #272626;
       box-shadow: 0 0 5px transparent;
       border: 1px solid transparent;
       transition: all 0.3s ease;
@@ -95,6 +102,25 @@
         box-shadow: 0 0 5px $colour-primary-bright-1;
         border: 1px solid $colour-primary-bright-1;
       }
+    }
+  }
+
+  &__select {
+    font-size: inherit;
+    max-width: 400px;
+    background-color: #f7f7f7;
+    outline: none;
+    width: 100%;
+    background: #fff;
+    padding: 10px;
+    color: #272626;
+    box-shadow: 0 0 5px transparent;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+
+    &:focus {
+      box-shadow: 0 0 5px $colour-primary-bright-1;
+      border: 1px solid $colour-primary-bright-1;
     }
   }
 }

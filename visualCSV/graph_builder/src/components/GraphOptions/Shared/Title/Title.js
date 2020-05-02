@@ -2,7 +2,7 @@
 
 // IMPORTS
 // Third Party Import
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { SketchPicker } from 'react-color';
 
@@ -73,6 +73,7 @@ class Title extends PureComponent {
         Position
       </label>
       <select
+        className={sharedClasses.option__select}
         onChange={(event) => this.props.onUpdatePosition(event.target.value)}
       >
         <option value="top">Top</option>
@@ -82,6 +83,47 @@ class Title extends PureComponent {
       </select>
     </div>
   );
+
+  // position = () => {
+  //   const options = ['Top', 'Left', 'Right', 'Bottom'].map((option) => (
+  //     <Fragment key={option}>
+  //       <label
+  //         className="dropdown_menu__options__label"
+  //         htmlFor={`position_opt_${option}`}
+  //       >
+  //         {option}
+  //       </label>
+  //       <input
+  //         className="dropdown_menu__options__radio_btn"
+  //         type="radio"
+  //         id={`position_opt_${option}`}
+  //         value={option}
+  //         onClick={() => this.props.onUpdatePosition(option)}
+  //       />
+  //     </Fragment>
+  //   ));
+
+  //   return (
+  //     <form style={{ width: 'fit-content' }}>
+  //       <label
+  //         htmlFor="title-display-position"
+  //         className={sharedClasses.option__label}
+  //       >
+  //         Position
+  //       </label>
+  //       <div className="dropdown_menu">
+  //         <div className={`dropdown_menu__selected`}>
+  //           <span>Top</span>
+  //         </div>
+  //         <div
+  //           className={`dropdown_menu__options dropdown_menu__options--hide`}
+  //         >
+  //           {options}
+  //         </div>
+  //       </div>
+  //     </form>
+  //   );
+  // };
 
   fontSize = () => {
     /**Set of options allowing the user to update the display font size. */
@@ -101,6 +143,7 @@ class Title extends PureComponent {
           Size
         </label>
         <select
+          className={sharedClasses.option__select}
           defaultValue={this.graphTitleOptions().fontSize}
           onChange={(event) => this.props.onUpdateFontSize(+event.target.value)}
         >
@@ -110,18 +153,24 @@ class Title extends PureComponent {
     );
   };
 
+  onColourPickerClick = () => {
+    /**Click handler for when the user clicks on the colour picker. */
+    this.setState({ showColourPicker: true });
+    document.addEventListener('click', this.onClickOutColourPicker, false);
+  };
+
   onColourChangeHandler = (colour) => {
     /**Change handler for when the user chooses a new colour. */
     const rgba = colour.rgb;
-
-    document.addEventListener('click', this.onClickOutColourPicker, false);
-
     return this.props.onUpdateColour(
       `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`,
     );
   };
 
   onClickOutColourPicker = (event) => {
+    /**Click handler for when the user clicks outside anywhere the colour
+     * picker.
+     */
     if (!this.node.contains(event.target)) {
       this.setState({ showColourPicker: false });
       document.removeEventListener('click', this.onClickOutColourPicker, false);
@@ -134,7 +183,7 @@ class Title extends PureComponent {
       <span
         className={classes.colour__current}
         style={{ backgroundColor: this.graphTitleOptions().fontColor }}
-        onClick={() => this.setState({ showColourPicker: true })}
+        onClick={this.onColourPickerClick}
       />
     );
 
