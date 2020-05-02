@@ -76,7 +76,7 @@ class Tables extends Component {
 
     return (
       <div className={classes.tables_container}>
-        <o>Tables</o>
+        <p>Tables</p>
         <div className={classes.tables}>{tables}</div>
       </div>
     );

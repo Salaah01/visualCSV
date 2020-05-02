@@ -8,61 +8,31 @@ import { connect } from 'react-redux';
 // Local Imports
 import classes from './GraphOptions.module.scss';
 import * as actions from '../../store/actions';
-import LineOptions from '../../components/GraphOptions/Line';
-import TitleOptions from '../../components/GraphOptions/Shared/Title'
+import GraphTypeDropDown from '../../components/GraphOptions/GraphTypeDropDown/GraphTypeDropDown';
+import TitleOptions from '../../components/GraphOptions/Shared/Title/Title';
 
 class Graph extends Component {
-  graphTypeDropdown = () => {
-    /**Drop down menu where users can select the graph type. */
-    const options = [
-      'Bar',
-      'Line',
-      'Pie',
-      'Doughnut',
-      'Horizontal Bar',
-      'Polar',
-      'Scatter',
-      'Radar',
-    ].map((option) => (
-      <Fragment key={option}>
-        <label
-          className="dropdown_menu__options__label"
-          htmlFor={`graph_option_${option}`}
-        >
-          {option}
-        </label>
-        <input
-          className="dropdown_menu__options__radio_btn"
-          type="radio"
-          name={option}
-          id={`graph_option_${option}`}
-          value={option}
-          onClick={() => this.props.onUpdateType(option)}
-        />
-      </Fragment>
-    ));
-
-    return (
-      <form style={{width: 'fit-content'}}>
-        <div className="dropdown_menu">
-          <div className="dropdown_menu__selected">
-            <span>Bar</span>
-          </div>
-          <div className="dropdown_menu__options dropdown_menu__options--hide">
-            {options}
-          </div>
-        </div>
-      </form>
-    );
+  state = {
+    showTitleOpts: true,
+    showLegendOpts: true,
   };
+
+  toggleShowOptions = (option) =>
+    /**Toggles the state's value. for a particular option.
+     * Args:
+     *  option: (str) Name of the option to toggle.
+     */
+    this.setState((prevState) => ({ [option]: !prevState[option] }));
 
   render() {
     return (
       <div className={classes.graph_options}>
-        <h1 className={classes.graph_options__heading}>Graph Options</h1>
-        <this.graphTypeDropdown />
-        <LineOptions />
-        <TitleOptions />
+        <h2 className={classes.graph_options__heading}>Graph Options</h2>
+        <GraphTypeDropDown onUpdateType={this.props.onUpdateType} />
+        <TitleOptions
+          showOptions={this.state.showTitleOpts}
+          onToggleShowOptions={() => this.toggleShowOptions('showTitleOpts')}
+        />
       </div>
     );
   }

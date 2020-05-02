@@ -1,0 +1,13 @@
+.options_container {
+  &__heading {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  &__options {
+    max-height: 200px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+}

@@ -11,6 +11,10 @@
  *  updateGraphType: Updates the graph type.
  *  updateYAxisStackOpt: Updates the stack option for a graph to true/false.
  *  toggleTitleDisplay: Toggles the title display option.
+ *  updateDisplayText: Updates the display text.
+ *  updateDisplayPosition: Updates the display position.
+ *  updateDisplayFontSize: Updates the display font size.
+ *  updateDisplayFontColour: Updates the font colour.
  */
 
 // IMPORTS
@@ -31,6 +35,8 @@ const sharedOptions = {
     display: true,
     text: '',
     position: 'top',
+    fontSize: 12,
+    fontColor: '#616161',
   },
 };
 
@@ -102,14 +108,20 @@ const updateYAxisStackOpt = (state, action) => {
   return updateObject(state, { options: updatedOptions });
 };
 
-const toggleTitleDisplay = (state) => {
-  /**Toggles the title display option. */
+const updateGraphTitleProps = (state, propName, propValue) => {
+  /**Updates the display property for each graph with by updating the title
+   * object with a new value for a particular property.
+   * Args:
+   *  state: Current state.
+   *  propName: Name of property (object key) to update.
+   *  propValue: new value to assign to the property being updated.
+   */
   const graphTypes = Object.keys(initialState.options);
   let graphOptions = { ...state.options };
 
   for (const graphType of graphTypes) {
     const updatedTitle = updateObject(graphOptions[graphType].title, {
-      display: !graphOptions[graphType].title.display,
+      [propName]: propValue,
     });
 
     const updatedGraph = updateObject(graphOptions[graphType], {
@@ -121,6 +133,35 @@ const toggleTitleDisplay = (state) => {
   return updateObject(state, { options: graphOptions });
 };
 
+const toggleTitleDisplay = (state) => {
+  /**Toggles the title display option. */
+  return updateGraphTitleProps(
+    state,
+    'display',
+    !state.options.bar.title.display,
+  );
+};
+
+const updateDisplayText = (state, action) => {
+  /**Updates the display text. */
+  return updateGraphTitleProps(state, 'text', action.text);
+};
+
+const updateDisplayPosition = (state, action) => {
+  /**Updates the display position. */
+  return updateGraphTitleProps(state, 'position', action.position);
+};
+
+const updateDisplayFontSize = (state, action) => {
+  /**Updates the display font size. */
+  return updateGraphTitleProps(state, 'fontSize', action.size);
+};
+
+const updateDisplayFontColour = (state, action) => {
+  /**Updates the font colour. */
+  return updateGraphTitleProps(state, 'fontColor', action.colour)
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.UPDATE_GRAPH_TYPE:
@@ -129,6 +170,14 @@ const reducer = (state = initialState, action) => {
       return updateYAxisStackOpt(state, action);
     case actionTypes.TOGGLE_TITLE_DISPLAY:
       return toggleTitleDisplay(state);
+    case actionTypes.UPDATE_DISPLAY_TEXT:
+      return updateDisplayText(state, action);
+    case actionTypes.UPDATE_DISPLAY_POSITION:
+      return updateDisplayPosition(state, action);
+    case actionTypes.UPDATE_DISPLAY_FONT_SIZE:
+      return updateDisplayFontSize(state, action);
+    case actionTypes.UPDATE_DISPLAY_FONT_COLOUR:
+      return updateDisplayFontColour(state, action)
     default:
       return state;
   }

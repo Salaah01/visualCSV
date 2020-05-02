@@ -12,4 +12,8 @@ export {
   updateGraphType,
   updateYAxisStackOpt,
   toggleTitleDisplay,
+  updateDisplayText,
+  updateDisplayPosition,
+  updateDisplayFontSize,
+  updateDisplayFontColour,
 } from './graphOptions';

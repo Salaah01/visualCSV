@@ -97,21 +97,6 @@ describe('TOGGLE_TITLE_DISPLAY', () => {
   });
 
   it('should update the display to `true` for each graph type.', () => {
-    const state = {
-      options: {
-        bar: { title: { display: false } },
-        line: { title: { display: false } },
-        pie: { title: { display: false } },
-        doughnut: { title: { display: false } },
-        'horizontal bar': { title: { display: false } },
-        polar: { title: { display: false } },
-        radar: { title: { display: false } },
-        scatter: { title: { display: false } },
-      },
-    };
-
-
-
     const updatedReducer = graphOptionsReducer(reducer, {
       type: actionTypes.TOGGLE_TITLE_DISPLAY,
     });
@@ -139,5 +124,125 @@ describe('TOGGLE_TITLE_DISPLAY', () => {
       radar: { title: { display: true } },
       scatter: { title: { display: true } },
     });
+  });
+});
+
+describe('UPDATE_DISPLAY_TEXT', () => {
+  const state = {
+    options: {
+      bar: { title: { text: '' } },
+      line: { title: { text: '' } },
+      pie: { title: { text: '' } },
+      doughnut: { title: { text: '' } },
+      'horizontal bar': { title: { text: '' } },
+      polar: { title: { text: '' } },
+      radar: { title: { text: '' } },
+      scatter: { title: { text: '' } },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_DISPLAY_TEXT,
+    text: 'abc',
+  });
+
+  it('should update the display text to `abc`.', () => {
+    expect(reducer.options.bar.title.text).toEqual('abc');
+    expect(reducer.options.line.title.text).toEqual('abc');
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.bar.title.text).toEqual('');
+    expect(state.options.bar.title.text).toEqual('');
+  });
+});
+
+describe('UPDATE_DISPLAY_POSITION', () => {
+  const state = {
+    options: {
+      bar: { title: { position: 'top' } },
+      line: { title: { position: 'top' } },
+      pie: { title: { position: 'top' } },
+      doughnut: { title: { position: 'top' } },
+      'horizontal bar': { title: { position: 'top' } },
+      polar: { title: { position: 'top' } },
+      radar: { title: { position: 'top' } },
+      scatter: { title: { position: 'top' } },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_DISPLAY_POSITION,
+    position: 'bottom',
+  });
+
+  it('should update the display text to `bottom`.', () => {
+    expect(reducer.options.bar.title.position).toEqual('bottom');
+    expect(reducer.options.line.title.position).toEqual('bottom');
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.bar.title.position).toEqual('top');
+    expect(state.options.bar.title.position).toEqual('top');
+  });
+});
+
+describe('UPDATE_DISPLAY_FONT_SIZE', () => {
+  const state = {
+    options: {
+      bar: { title: { fontSize: 12 } },
+      line: { title: { fontSize: 12 } },
+      pie: { title: { fontSize: 12 } },
+      doughnut: { title: { fontSize: 12 } },
+      'horizontal bar': { title: { fontSize: 12 } },
+      polar: { title: { fontSize: 12 } },
+      radar: { title: { fontSize: 12 } },
+      scatter: { title: { fontSize: 12 } },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_DISPLAY_FONT_SIZE,
+    size: 25,
+  });
+
+  it('should update the display title to `25`.', () => {
+    expect(reducer.options.bar.title.fontSize).toEqual(25);
+    expect(reducer.options.line.title.fontSize).toEqual(25);
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.bar.title.fontSize).toEqual(12);
+    expect(state.options.bar.title.fontSize).toEqual(12);
+  });
+});
+
+describe('UPDATE_DISPLAY_FONT_COLOUR', () => {
+  const state = {
+    options: {
+      bar: { title: { fontColor: '#fff' } },
+      line: { title: { fontColor: '#fff' } },
+      pie: { title: { fontColor: '#fff' } },
+      doughnut: { title: { fontColor: '#fff' } },
+      'horizontal bar': { title: { fontColor: '#fff' } },
+      polar: { title: { fontColor: '#fff' } },
+      radar: { title: { fontColor: '#fff' } },
+      scatter: { title: { fontColor: '#fff' } },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_DISPLAY_FONT_COLOUR,
+    colour: 'blue',
+  });
+
+  it('should update the display font colour to `blue`.', () => {
+    expect(reducer.options.bar.title.fontColor).toEqual('blue');
+    expect(reducer.options.line.title.fontColor).toEqual('blue');
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.bar.title.fontColor).toEqual('#fff');
+    expect(state.options.bar.title.fontColor).toEqual('#fff');
   });
 });
