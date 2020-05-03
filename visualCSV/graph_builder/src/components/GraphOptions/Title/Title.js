@@ -46,16 +46,16 @@ class Title extends PureComponent {
     /**Returns the display text input box element. */
     <div className={sharedClasses.option}>
       <label
-        htmlFor="title-display-text"
+        htmlFor="title-text"
         className={sharedClasses.option__label}
       >
         Display Text
       </label>
       <input
         type="input"
-        name="display-text"
-        id="title-display-text"
-        placeholder="Display Text"
+        name="title-text"
+        id="title-text"
+        placeholder="Graph Title"
         className={sharedClasses.option__input}
         value={this.graphTitleOptions().text}
         onChange={(event) => this.props.onUpdateText(event.target.value)}

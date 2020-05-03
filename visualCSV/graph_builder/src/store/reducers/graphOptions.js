@@ -41,7 +41,7 @@ const sharedOptions = {
         scaleLabel: {
           display: false,
           labelString: '',
-          fontColor: '#fff',
+          fontColor: '#000',
           fontSize: 12,
         },
       },
@@ -52,7 +52,7 @@ const sharedOptions = {
         scaleLabel: {
           display: false,
           labelString: '',
-          fontColor: '#fff',
+          fontColor: '#000',
           fontSize: 12,
         },
       },
@@ -286,7 +286,7 @@ const toggleAxisLabelDisplay = (state, action) => {
     state,
     action.axis,
     'display',
-    !state.options.bar.scales[action.axis][0].scaleLabel.display,
+    !action.currDisplay,
   );
 };
 

@@ -11,11 +11,13 @@ import * as actions from '../../store/actions';
 import GraphTypeDropDown from '../../components/GraphOptions/GraphTypeDropDown/GraphTypeDropDown';
 import TitleOptions from '../../components/GraphOptions/Title/Title';
 import LegendOptions from '../../components/GraphOptions/Legend/Legend';
+import AxesOptions from '../../components/GraphOptions/Axes/Axes'
 
 class Graph extends Component {
   state = {
-    showTitleOpts: true,
-    showLegendOpts: true,
+    showTitleOpts: false,
+    showLegendOpts: false,
+    showAxesOpts: true
   };
 
   toggleShowOptions = (option) =>
@@ -37,6 +39,10 @@ class Graph extends Component {
         <LegendOptions
           showOptions={this.state.showLegendOpts}
           onToggleShowOptions={() => this.toggleShowOptions('showLegendOpts')}
+        />
+        <AxesOptions
+          showOptions={this.state.showAxesOpts}
+          onToggleShowOptions={() => this.toggleShowOptions('showAxesOpts')}
         />
       </div>
     );

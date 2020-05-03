@@ -19,4 +19,8 @@ export {
   toggleLegendDisplay,
   updateLegendPosition,
   updateLegendAlignment,
+  toggleAxisLabelDisplay,
+  updateAxisLabel,
+  updateAxisFontColour,
+  updateAxisFontSize
 } from './graphOptions';

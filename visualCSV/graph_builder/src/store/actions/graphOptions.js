@@ -110,14 +110,16 @@ export const updateLegendAlignment = (alignment) => {
   };
 };
 
-export const toggleAxisLabelDisplay = (axis) => {
+export const toggleAxisLabelDisplay = (axis, currDisplay) => {
   /**Toggles the display option the defined axis.
    * Args:
    *  axis: (str) Axis in which to apply the changes.
+   *  currDisplay: (bool) The current display property.
    */
   return {
     type: actionTypes.TOGGLE_AXIS_LABEL_DISPLAY,
     axis: axis,
+    currDisplay: currDisplay,
   };
 };
 

@@ -427,6 +427,7 @@ describe('TOGGLE_AXIS_LABEL_DISPLAY', () => {
   const reducer = graphOptionsReducer(state, {
     type: actionTypes.TOGGLE_AXIS_LABEL_DISPLAY,
     axis: 'yAxes',
+    currDisplay: false
   });
 
   it('should set the display for all y-axis to true.', () => {

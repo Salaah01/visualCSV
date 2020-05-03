@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 // Local Imports
 import * as actions from '../../../store/actions';
 import sharedClasses from '../Shared/Shared.module.scss';
-import classes from './Legend.module.scss';
 
 class Legend extends PureComponent {
   /**Crates the legend options for the graph. */
