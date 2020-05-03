@@ -15,6 +15,9 @@
  *  updateDisplayPosition: Updates the display position.
  *  updateDisplayFontSize: Updates the display font size.
  *  updateDisplayFontColour: Updates the font colour.
+ *  toggleLegendDisplay: Toggles the legend display option.
+ *  updateLegendPosition: Updates the legend position.
+ *  updateLegendAlignment: Updates the legend alignment.
  */
 
 // IMPORTS
@@ -28,8 +31,14 @@ import * as actionTypes from '../actions/actionTypes';
 const sharedOptions = {
   maintainAspectRatio: false,
   scales: {
-    yAxes: [{ ticks: { beginAtZero: true } }],
-    xAxes: [{ ticks: { beginAtZero: true } }],
+    yAxes: [
+      { ticks: { beginAtZero: true } },
+      { scaleLabel: { display: false, labelString: '' } },
+    ],
+    xAxes: [
+      { ticks: { beginAtZero: true } },
+      { scaleLabel: { display: false, labelString: '' } },
+    ],
   },
   title: {
     display: true,
@@ -37,6 +46,11 @@ const sharedOptions = {
     position: 'top',
     fontSize: 12,
     fontColor: '#616161',
+  },
+  legend: {
+    display: true,
+    position: 'top',
+    align: 'center',
   },
 };
 
@@ -133,6 +147,32 @@ const updateGraphTitleProps = (state, propName, propValue) => {
   return updateObject(state, { options: graphOptions });
 };
 
+const updateGraphLegendsProps = (state, propName, propValue) => {
+  /**Updates the display property for each graph with by updating the legends
+   * object with a new value for a particular property.
+   * Args:
+   *  state: Current state.
+   *  propName: Name of property (object key) to update.
+   *  propValue: new value to assign to the property being updated.
+   */
+  const graphTypes = Object.keys(initialState.options);
+  let graphOptions = { ...state.options };
+
+  for (const graphType of graphTypes) {
+    const updatedLegend = updateObject(graphOptions[graphType].legend, {
+      [propName]: propValue,
+    });
+
+    const updatedGraph = updateObject(graphOptions[graphType], {
+      legend: updatedLegend,
+    });
+
+    graphOptions = updateObject(graphOptions, { [graphType]: updatedGraph });
+  }
+
+  return updateObject(state, { options: graphOptions });
+};
+
 const toggleTitleDisplay = (state) => {
   /**Toggles the title display option. */
   return updateGraphTitleProps(
@@ -159,8 +199,27 @@ const updateDisplayFontSize = (state, action) => {
 
 const updateDisplayFontColour = (state, action) => {
   /**Updates the font colour. */
-  return updateGraphTitleProps(state, 'fontColor', action.colour)
-}
+  return updateGraphTitleProps(state, 'fontColor', action.colour);
+};
+
+const toggleLegendDisplay = (state) => {
+  /**Toggles the legend display option. */
+  return updateGraphLegendsProps(
+    state,
+    'display',
+    !state.options.bar.legend.display,
+  );
+};
+
+const updateLegendPosition = (state, action) => {
+  /**Updates the legend position. */
+  return updateGraphLegendsProps(state, 'position', action.position);
+};
+
+const updateLegendAlignment = (state, action) => {
+  /**Updates the legend alignment. */
+  return updateGraphLegendsProps(state, 'align', action.alignment);
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -177,7 +236,13 @@ const reducer = (state = initialState, action) => {
     case actionTypes.UPDATE_DISPLAY_FONT_SIZE:
       return updateDisplayFontSize(state, action);
     case actionTypes.UPDATE_DISPLAY_FONT_COLOUR:
-      return updateDisplayFontColour(state, action)
+      return updateDisplayFontColour(state, action);
+    case actionTypes.TOGGLE_LEGEND_DISPLAY:
+      return toggleLegendDisplay(state);
+    case actionTypes.UPDATE_LEGEND_POSITION:
+      return updateLegendPosition(state, action);
+    case actionTypes.UPDATE_LEGEND_ALIGNMENT:
+      return updateLegendAlignment(state, action);
     default:
       return state;
   }

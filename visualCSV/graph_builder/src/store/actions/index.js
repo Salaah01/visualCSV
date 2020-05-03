@@ -16,4 +16,7 @@ export {
   updateDisplayPosition,
   updateDisplayFontSize,
   updateDisplayFontColour,
+  toggleLegendDisplay,
+  updateLegendPosition,
+  updateLegendAlignment,
 } from './graphOptions';

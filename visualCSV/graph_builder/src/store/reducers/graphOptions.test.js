@@ -246,3 +246,125 @@ describe('UPDATE_DISPLAY_FONT_COLOUR', () => {
     expect(state.options.bar.title.fontColor).toEqual('#fff');
   });
 });
+
+describe('TOGGLE_LEGEND_DISPLAY', () => {
+  const state = {
+    options: {
+      bar: { legend: { display: true } },
+      line: { legend: { display: true } },
+      pie: { legend: { display: true } },
+      doughnut: { legend: { display: true } },
+      'horizontal bar': { legend: { display: true } },
+      polar: { legend: { display: true } },
+      radar: { legend: { display: true } },
+      scatter: { legend: { display: true } },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.TOGGLE_LEGEND_DISPLAY,
+  });
+
+  it('should update the display to `false` for each graph type.', () => {
+    expect(reducer.options).toEqual({
+      bar: { legend: { display: false } },
+      line: { legend: { display: false } },
+      pie: { legend: { display: false } },
+      doughnut: { legend: { display: false } },
+      'horizontal bar': { legend: { display: false } },
+      polar: { legend: { display: false } },
+      radar: { legend: { display: false } },
+      scatter: { legend: { display: false } },
+    });
+  });
+
+  it('should update the legend display to `true` for each graph type.', () => {
+    const updatedReducer = graphOptionsReducer(reducer, {
+      type: actionTypes.TOGGLE_LEGEND_DISPLAY,
+    });
+
+    expect(updatedReducer.options).toEqual({
+      bar: { legend: { display: true } },
+      line: { legend: { display: true } },
+      pie: { legend: { display: true } },
+      doughnut: { legend: { display: true } },
+      'horizontal bar': { legend: { display: true } },
+      polar: { legend: { display: true } },
+      radar: { legend: { display: true } },
+      scatter: { legend: { display: true } },
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options).toEqual({
+      bar: { legend: { display: true } },
+      line: { legend: { display: true } },
+      pie: { legend: { display: true } },
+      doughnut: { legend: { display: true } },
+      'horizontal bar': { legend: { display: true } },
+      polar: { legend: { display: true } },
+      radar: { legend: { display: true } },
+      scatter: { legend: { display: true } },
+    });
+  });
+});
+
+describe('UPDATE_LEGEND_POSITION', () => {
+  const state = {
+    options: {
+      bar: { legend: { position: 'top' } },
+      line: { legend: { position: 'top' } },
+      pie: { legend: { position: 'top' } },
+      doughnut: { legend: { position: 'top' } },
+      'horizontal bar': { legend: { position: 'top' } },
+      polar: { legend: { position: 'top' } },
+      radar: { legend: { position: 'top' } },
+      scatter: { legend: { position: 'top' } },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_LEGEND_POSITION,
+    position: 'bottom',
+  });
+
+  it('should update the legend position to `bottom`.', () => {
+    expect(reducer.options.bar.legend.position).toEqual('bottom');
+    expect(reducer.options.line.legend.position).toEqual('bottom');
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.bar.legend.position).toEqual('top');
+    expect(state.options.bar.legend.position).toEqual('top');
+  });
+});
+
+describe('UPDATE_LEGEND_ALIGNMENT', () => {
+  const state = {
+    options: {
+      bar: { legend: { align: 'top' } },
+      line: { legend: { align: 'top' } },
+      pie: { legend: { align: 'top' } },
+      doughnut: { legend: { align: 'top' } },
+      'horizontal bar': { legend: { align: 'top' } },
+      polar: { legend: { align: 'top' } },
+      radar: { legend: { align: 'top' } },
+      scatter: { legend: { align: 'top' } },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_LEGEND_ALIGNMENT,
+    alignment: 'bottom',
+  });
+
+  it('should update the legend alignment to `bottom`.', () => {
+    expect(reducer.options.bar.legend.align).toEqual('bottom');
+    expect(reducer.options.line.legend.align).toEqual('bottom');
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.bar.legend.align).toEqual('top');
+    expect(state.options.bar.legend.align).toEqual('top');
+  });
+});

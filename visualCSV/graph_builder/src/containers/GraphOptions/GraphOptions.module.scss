@@ -2,9 +2,10 @@
 
 .graph_options {
   grid-row: 3 / span 5;
-  background-color: lightgrey;
+  background-color: #ececec;
   padding: 25px 30px;
   border-radius: 5px;
+  margin-bottom: 50px;
 
   &__heading {
     font-size: 20px;

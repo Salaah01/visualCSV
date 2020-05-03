@@ -1,18 +1,18 @@
-/**The title option in the graph options. */
+/**The title option in the graph options section.. */
 
 // IMPORTS
 // Third Party Import
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { SketchPicker } from 'react-color';
 
 // Local Imports
-import * as actions from '../../../../store/actions';
-import sharedClasses from '../Shared.module.scss';
+import * as actions from '../../../store/actions';
+import sharedClasses from '../Shared/Shared.module.scss';
 import classes from './Title.module.scss';
 
 class Title extends PureComponent {
-  /**Creates the tile and options for the graph. */
+  /**Creates the tile options for the graph. */
 
   state = {
     showColourPicker: false,
@@ -35,7 +35,7 @@ class Title extends PureComponent {
         className={sharedClasses.option__input}
         type="checkbox"
         name="display-title"
-        id="title-display-option "
+        id="title-display-option"
         checked={this.graphTitleOptions().display}
         onChange={this.props.onToggleTitleDisplay}
       />
@@ -67,7 +67,7 @@ class Title extends PureComponent {
     /**Set of options allowing the user to update the display position. */
     <div className={sharedClasses.option}>
       <label
-        htmlFor="title-display-position"
+        htmlFor="title-position"
         className={sharedClasses.option__label}
       >
         Position
@@ -83,47 +83,6 @@ class Title extends PureComponent {
       </select>
     </div>
   );
-
-  // position = () => {
-  //   const options = ['Top', 'Left', 'Right', 'Bottom'].map((option) => (
-  //     <Fragment key={option}>
-  //       <label
-  //         className="dropdown_menu__options__label"
-  //         htmlFor={`position_opt_${option}`}
-  //       >
-  //         {option}
-  //       </label>
-  //       <input
-  //         className="dropdown_menu__options__radio_btn"
-  //         type="radio"
-  //         id={`position_opt_${option}`}
-  //         value={option}
-  //         onClick={() => this.props.onUpdatePosition(option)}
-  //       />
-  //     </Fragment>
-  //   ));
-
-  //   return (
-  //     <form style={{ width: 'fit-content' }}>
-  //       <label
-  //         htmlFor="title-display-position"
-  //         className={sharedClasses.option__label}
-  //       >
-  //         Position
-  //       </label>
-  //       <div className="dropdown_menu">
-  //         <div className={`dropdown_menu__selected`}>
-  //           <span>Top</span>
-  //         </div>
-  //         <div
-  //           className={`dropdown_menu__options dropdown_menu__options--hide`}
-  //         >
-  //           {options}
-  //         </div>
-  //       </div>
-  //     </form>
-  //   );
-  // };
 
   fontSize = () => {
     /**Set of options allowing the user to update the display font size. */
@@ -215,9 +174,7 @@ class Title extends PureComponent {
   };
 
   titleOptions = () => {
-    /**Container with all the options an header which will show/hide the
-     * based on the value of `this.props.showOptions`.
-     */
+    /**Container with all the options. */
 
     const headingText = this.props.showOptions
       ? 'Hide Title Options'

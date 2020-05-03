@@ -1,3 +1,5 @@
+@import '../../../../visualCSV/static/sass/abstracts/variables';
+
 .tables_container {
   grid-row: 4;
   grid-column: 1 / span 2;
@@ -7,6 +9,7 @@
 
 .tables {
   background-color: #707b7c;
+  background-color: #ececec;
   display: flex;
   overflow-x: auto;
   padding-bottom: 4px;
@@ -26,7 +29,7 @@
 
   &__table {
     padding: 10px 20px;
-    background-color: #e6e6e6;
+    background-color: $colour-secondary;
     margin: 10px;
     overflow-y: auto;
     min-width: 155px;
@@ -48,8 +51,7 @@
       margin-bottom: 5px;
       text-align: center;
       text-transform: uppercase;
-      color: #707b7c;
-      font-weight: 600;
+      color: #ffd91d;
     }
 
     & > div {

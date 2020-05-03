@@ -7,6 +7,9 @@
  *  updateDisplayPosition: Updates the display position.
  *  updateDisplayFontSize: Updates the display font size.
  *  updateDisplayFontColour: Updates the font colour.
+ *  toggleLegendDisplay: Toggles the legend display option.
+ *  updateLegendPosition: Updates the legend position.
+ *  updateLegendAlignment: Updates the legend alignment.
  */
 
 import * as actionTypes from './actionTypes';
@@ -66,10 +69,33 @@ export const updateDisplayFontSize = (size) => {
   };
 };
 
-export const updateDisplayFontColour = colour => {
+export const updateDisplayFontColour = (colour) => {
   /**Updates the font colour. */
   return {
     type: actionTypes.UPDATE_DISPLAY_FONT_COLOUR,
-    colour: colour
-  }
-}
+    colour: colour,
+  };
+};
+
+export const toggleLegendDisplay = () => {
+  /**Toggles the legend display option. */
+  return {
+    type: actionTypes.TOGGLE_LEGEND_DISPLAY,
+  };
+};
+
+export const updateLegendPosition = (position) => {
+  /**Updates the legend position. */
+  return {
+    type: actionTypes.UPDATE_LEGEND_POSITION,
+    position: position,
+  };
+};
+
+export const updateLegendAlignment = (alignment) => {
+  /**Updates the legend alignment. */
+  return {
+    type: actionTypes.UPDATE_LEGEND_ALIGNMENT,
+    alignment: alignment,
+  };
+};

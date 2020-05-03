@@ -9,7 +9,8 @@ import { connect } from 'react-redux';
 import classes from './GraphOptions.module.scss';
 import * as actions from '../../store/actions';
 import GraphTypeDropDown from '../../components/GraphOptions/GraphTypeDropDown/GraphTypeDropDown';
-import TitleOptions from '../../components/GraphOptions/Shared/Title/Title';
+import TitleOptions from '../../components/GraphOptions/Title/Title';
+import LegendOptions from '../../components/GraphOptions/Legend/Legend';
 
 class Graph extends Component {
   state = {
@@ -32,6 +33,10 @@ class Graph extends Component {
         <TitleOptions
           showOptions={this.state.showTitleOpts}
           onToggleShowOptions={() => this.toggleShowOptions('showTitleOpts')}
+        />
+        <LegendOptions
+          showOptions={this.state.showLegendOpts}
+          onToggleShowOptions={() => this.toggleShowOptions('showLegendOpts')}
         />
       </div>
     );
