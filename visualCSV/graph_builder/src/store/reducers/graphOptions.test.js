@@ -6,6 +6,7 @@
 // Local Imports
 import graphOptionsReducer from './graphOptions';
 import * as actionTypes from '../actions/actionTypes';
+import reducer from './graphOptions';
 
 describe('UPDATE_GRAPH_TYPE', () => {
   const state = { graphType: 'line' };
@@ -366,5 +367,546 @@ describe('UPDATE_LEGEND_ALIGNMENT', () => {
   it('should not mutate the original state.', () => {
     expect(state.options.bar.legend.align).toEqual('top');
     expect(state.options.bar.legend.align).toEqual('top');
+  });
+});
+
+describe('TOGGLE_AXIS_LABEL_DISPLAY', () => {
+  const state = {
+    options: {
+      bar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.TOGGLE_AXIS_LABEL_DISPLAY,
+    axis: 'yAxes',
+  });
+
+  it('should set the display for all y-axis to true.', () => {
+    expect(reducer.options.polar.scales.yAxes[0].scaleLabel.display).toEqual(
+      true,
+    );
+    expect(reducer.options.line.scales.yAxes[0].scaleLabel.display).toEqual(
+      true,
+    );
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.polar.scales.yAxes[0].scaleLabel.display).toEqual(
+      false,
+    );
+    expect(state.options.line.scales.yAxes[0].scaleLabel.display).toEqual(
+      false,
+    );
+  });
+});
+
+describe('UPDATE_AXIS_LABEL', () => {
+  const state = {
+    options: {
+      bar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+        },
+      },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_AXIS_LABEL,
+    axis: 'xAxes',
+    label: 'abc',
+  });
+
+  it('should update hte label for the xAxes.', () => {
+    expect(reducer.options).toEqual({
+      bar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: 'abc' } }],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: 'abc' } }],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: 'abc' } }],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: 'abc' } }],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: 'abc' } }],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: 'abc' } }],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: 'abc' } }],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, labelString: '' } }],
+          xAxes: [{ scaleLabel: { display: false, labelString: 'abc' } }],
+        },
+      },
+    });
+  });
+
+  it('should not mutate the original state', () => {
+    expect(state.options.polar.scales.yAxes[0].scaleLabel).toEqual({
+      display: false,
+      labelString: '',
+    });
+    expect(state.options.line.scales.yAxes[0].scaleLabel).toEqual({
+      display: false,
+      labelString: '',
+    });
+  });
+});
+
+describe('UPDATE_AXIS_FONT_COLOUR', () => {
+  const state = {
+    options: {
+      bar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_AXIS_FONT_COLOUR,
+    axis: 'yAxes',
+    colour: 'blue',
+  });
+
+  it('should change the colour for all `yAxes` labels only to blue.', () => {
+    expect(reducer.options).toEqual({
+      bar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: 'blue' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: 'blue' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: 'blue' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: 'blue' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: 'blue' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: 'blue' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: 'blue' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontColor: 'blue' } }],
+          xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+        },
+      },
+    });
+  });
+
+  it('should not mutate to original state.', () => {
+    expect(state).toEqual({
+      options: {
+        bar: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+            xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          },
+        },
+        line: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+            xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          },
+        },
+        pie: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+            xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          },
+        },
+        doughnut: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+            xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          },
+        },
+        'horizontal bar': {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+            xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          },
+        },
+        polar: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+            xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          },
+        },
+        radar: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+            xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          },
+        },
+        scatter: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+            xAxes: [{ scaleLabel: { display: false, fontColor: '#fff' } }],
+          },
+        },
+      },
+    });
+  });
+});
+
+describe('UPDATE_AXIS_FONT_SIZE', () => {
+  const state = {
+    options: {
+      bar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+        },
+      },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_AXIS_FONT_SIZE,
+    axis: 'xAxes',
+    size: 25,
+  });
+
+  it('the font size for the x-axis label should update only.', () => {
+    expect(reducer.options).toEqual({
+      bar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 25 } }],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 25 } }],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 25 } }],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 25 } }],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 25 } }],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 25 } }],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 25 } }],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          xAxes: [{ scaleLabel: { display: false, fontSize: 25 } }],
+        },
+      },
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state).toEqual({
+      options: {
+        bar: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+            xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          },
+        },
+        line: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+            xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          },
+        },
+        pie: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+            xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          },
+        },
+        doughnut: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+            xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          },
+        },
+        'horizontal bar': {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+            xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          },
+        },
+        polar: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+            xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          },
+        },
+        radar: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+            xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          },
+        },
+        scatter: {
+          scales: {
+            yAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+            xAxes: [{ scaleLabel: { display: false, fontSize: 12 } }],
+          },
+        },
+      },
+    });
   });
 });

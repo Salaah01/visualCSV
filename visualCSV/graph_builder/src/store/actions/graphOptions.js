@@ -10,6 +10,10 @@
  *  toggleLegendDisplay: Toggles the legend display option.
  *  updateLegendPosition: Updates the legend position.
  *  updateLegendAlignment: Updates the legend alignment.
+ *  toggleAxisLabelDisplay: Toggles the display option the defined axis.
+ *  updateAxisLabel: Updates the label for a given axis.
+ *  updateAxisFontColour: Update the font colour for a given axis.
+ *  updateAxisFontSize: Update the font size for a given axis.
  */
 
 import * as actionTypes from './actionTypes';
@@ -85,7 +89,10 @@ export const toggleLegendDisplay = () => {
 };
 
 export const updateLegendPosition = (position) => {
-  /**Updates the legend position. */
+  /**Updates the legend position.
+   * Args:
+   *  position: (str) New position.
+   */
   return {
     type: actionTypes.UPDATE_LEGEND_POSITION,
     position: position,
@@ -93,9 +100,62 @@ export const updateLegendPosition = (position) => {
 };
 
 export const updateLegendAlignment = (alignment) => {
-  /**Updates the legend alignment. */
+  /**Updates the legend alignment.
+   * Args:
+   *  alignment: (str) New alignment.
+   */
   return {
     type: actionTypes.UPDATE_LEGEND_ALIGNMENT,
     alignment: alignment,
+  };
+};
+
+export const toggleAxisLabelDisplay = (axis) => {
+  /**Toggles the display option the defined axis.
+   * Args:
+   *  axis: (str) Axis in which to apply the changes.
+   */
+  return {
+    type: actionTypes.TOGGLE_AXIS_LABEL_DISPLAY,
+    axis: axis,
+  };
+};
+
+export const updateAxisLabel = (axis, label) => {
+  /**Updates the label for a given axis.
+   * Args:
+   *  axis: (str) Axis in which to apply the changes.
+   *  label: (str) Axis label.
+   */
+  return {
+    type: actionTypes.UPDATE_AXIS_LABEL,
+    axis: axis,
+    label: label,
+  };
+};
+
+export const updateAxisFontColour = (axis, colour) => {
+  /**Updates the font colour for a given axis.
+   * Args:
+   *  axis: (str) Axis in which to apply the changes.
+   *  colour: (str) colour in either hex, rgb or rgba format.
+   */
+  return {
+    type: actionTypes.UPDATE_AXIS_FONT_COLOUR,
+    axis: axis,
+    colour: colour,
+  };
+};
+
+export const updateAxisFontSize = (axis, size) => {
+  /**Updates the font size for a given axis.
+   * Args:
+   *  axis: (str) Axis in which to apply the changes.
+   *  size: (int) Font size in px.
+   */
+  return {
+    type: actionTypes.UPDATE_AXIS_FONT_SIZE,
+    axis: axis,
+    size: size,
   };
 };

@@ -18,6 +18,10 @@
  *  toggleLegendDisplay: Toggles the legend display option.
  *  updateLegendPosition: Updates the legend position.
  *  updateLegendAlignment: Updates the legend alignment.
+ *  toggleAxisLabelDisplay: Toggles the display option the defined axis.
+ *  updateAxisLabel: Updates the label for a given axis.
+ *  updateAxisFontColour: Update the font colour for a given axis.
+ *  updateAxisFontSize: Update the font size for a given axis.
  */
 
 // IMPORTS
@@ -33,11 +37,25 @@ const sharedOptions = {
   scales: {
     yAxes: [
       { ticks: { beginAtZero: true } },
-      { scaleLabel: { display: false, labelString: '' } },
+      {
+        scaleLabel: {
+          display: false,
+          labelString: '',
+          fontColor: '#fff',
+          fontSize: 12,
+        },
+      },
     ],
     xAxes: [
       { ticks: { beginAtZero: true } },
-      { scaleLabel: { display: false, labelString: '' } },
+      {
+        scaleLabel: {
+          display: false,
+          labelString: '',
+          fontColor: '#fff',
+          fontSize: 12,
+        },
+      },
     ],
   },
   title: {
@@ -84,6 +102,8 @@ const initialState = {
     scatter: scatter,
   },
 };
+
+const graphTypes = Object.keys(initialState.options);
 
 const updateGraphType = (state, action) => {
   /**Updates the graph type. */
@@ -155,7 +175,6 @@ const updateGraphLegendsProps = (state, propName, propValue) => {
    *  propName: Name of property (object key) to update.
    *  propValue: new value to assign to the property being updated.
    */
-  const graphTypes = Object.keys(initialState.options);
   let graphOptions = { ...state.options };
 
   for (const graphType of graphTypes) {
@@ -221,6 +240,71 @@ const updateLegendAlignment = (state, action) => {
   return updateGraphLegendsProps(state, 'align', action.alignment);
 };
 
+const updateAxisScaleLabel = (state, axis, propName, propValue) => {
+  /**Updates the `scaleLabel` property for a given axis.
+   * Args:
+   *  state: (obj) State object.
+   *  axis: (str) `x` or `y` to indicate x-axis and y-axis respectively. This
+   *    is the axis in which the changes will be applied.
+   *  propName: (str) The name of the property to update.
+   *  propValue: (any) The value of the updated property.
+   */
+  let graphOptions = { ...state.options };
+  for (const graphType of graphTypes) {
+    const updatedAxis = [...graphOptions[graphType].scales[axis]].map(
+      (option) => {
+        if (option.scaleLabel === undefined) {
+          return option;
+        } else {
+          const updatedScaleLabel = updateObject(option.scaleLabel, {
+            [propName]: propValue,
+          });
+          return updateObject(option, { scaleLabel: updatedScaleLabel });
+        }
+      },
+    );
+
+    const updatedScales = updateObject(graphOptions[graphType].scales, {
+      [axis]: updatedAxis,
+    });
+
+    const updatedGraph = updateObject(graphOptions[graphType], {
+      scales: updatedScales,
+    });
+
+    graphOptions = updateObject(graphOptions, {
+      [graphType]: updatedGraph,
+    });
+  }
+
+  return updateObject(state, { options: graphOptions });
+};
+
+const toggleAxisLabelDisplay = (state, action) => {
+  /**Toggles the display option the defined axis. */
+  return updateAxisScaleLabel(
+    state,
+    action.axis,
+    'display',
+    !state.options.bar.scales[action.axis][0].scaleLabel.display,
+  );
+};
+
+const updateAxisLabel = (state, action) => {
+  /**Updates the label for a given axis. */
+  return updateAxisScaleLabel(state, action.axis, 'labelString', action.label);
+};
+
+const updateAxisFontColour = (state, action) => {
+  /**Update the font colour for a given axis. */
+  return updateAxisScaleLabel(state, action.axis, 'fontColor', action.colour);
+};
+
+const updateAxisFontSize = (state, action) => {
+  /**Update the font size for a given axis. */
+  return updateAxisScaleLabel(state, action.axis, 'fontSize', action.size);
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.UPDATE_GRAPH_TYPE:
@@ -243,6 +327,14 @@ const reducer = (state = initialState, action) => {
       return updateLegendPosition(state, action);
     case actionTypes.UPDATE_LEGEND_ALIGNMENT:
       return updateLegendAlignment(state, action);
+    case actionTypes.TOGGLE_AXIS_LABEL_DISPLAY:
+      return toggleAxisLabelDisplay(state, action);
+    case actionTypes.UPDATE_AXIS_LABEL:
+      return updateAxisLabel(state, action);
+    case actionTypes.UPDATE_AXIS_FONT_COLOUR:
+      return updateAxisFontColour(state, action);
+    case actionTypes.UPDATE_AXIS_FONT_SIZE:
+      return updateAxisFontSize(state, action);
     default:
       return state;
   }
