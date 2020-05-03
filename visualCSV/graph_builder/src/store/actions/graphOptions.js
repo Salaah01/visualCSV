@@ -14,6 +14,11 @@
  *  updateAxisLabel: Updates the label for a given axis.
  *  updateAxisFontColour: Update the font colour for a given axis.
  *  updateAxisFontSize: Update the font size for a given axis.
+ *  toggleAxisGridDisplay: Toggles the grid display for a given axis.
+ *  updateAxisGridLineWidth: Updates the axis grid line width.
+ *  updateAxisGridLineColour: Updates the axis grid line colour.
+ *  updateAxisGrid0LineWidth: Updates the axis grid line width at 0.
+ *  updateAxisGrid0LineColour: Updates the axis grid line colour at 0.
  */
 
 import * as actionTypes from './actionTypes';
@@ -159,5 +164,67 @@ export const updateAxisFontSize = (axis, size) => {
     type: actionTypes.UPDATE_AXIS_FONT_SIZE,
     axis: axis,
     size: size,
+  };
+};
+
+export const toggleAxisGridDisplay = (axis) => {
+  /**Toggles the grid display for a given axis.
+   * Args:
+   *  axis: (str) Axis to which the changes should be applied.
+   */
+  return {
+    type: actionTypes.TOGGLE_AXIS_GRID_DISPLAY,
+    axis: axis,
+  };
+};
+
+export const updateAxisGridLineWidth = (axis, width) => {
+  /**Updates the axis grid line width.
+   * Args:
+   *  axis: (str) Axis to which the changes should be applied.
+   *  width: (int) Line width in px.
+   */
+  return {
+    type: actionTypes.UPDATE_AXIS_GRID_LINE_WIDTH,
+    width: width,
+  };
+};
+
+export const updateAxisGridLineColour = (axis, colour) => {
+  /**Updates the axis grid line colour.
+   * Args:
+   *  axis: (str) Axis to which the changes should be applied.
+   *  colour: (str) Line colour in the rgba, rgb or hex format.
+   */
+  return {
+    type: actionTypes.UPDATE_AXIS_GRID_LINE_COLOUR,
+    axis: axis,
+    colour: colour,
+  };
+};
+
+export const updateAxisGrid0LineWidth = (axis, width) => {
+  /**Updates the axis grid line width at 0.
+   * Args:
+   *  axis: (str) Axis to which the changes should be applied.
+   *  width: (int) Line width in px.
+   */
+  return {
+    type: actionTypes.UPDATE_AXIS_GRID_LINE_WIDTH,
+    axis: axis,
+    width: width,
+  };
+};
+
+export const updateAxisGrid0LineColour = (axis, colour) => {
+  /**Updates the axis grid line colour at 0.
+   * Args:
+   *  axis: (str) Axis to which the changes should be applied.
+   *  colour: (str) Line colour in the rgba, rgb or hex format.
+   */
+  return {
+    type: actionTypes.UPDATE_AXIS_GRID_LINE_COLOUR,
+    axis: axis,
+    colour: colour,
   };
 };

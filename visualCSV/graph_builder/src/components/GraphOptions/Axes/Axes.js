@@ -26,15 +26,6 @@ class Axes extends PureComponent {
      */
 
     return this.props.options[this.props.graphType].scales[axis][0];
-
-    const baseOptions = this.props.options[this.props.graphType].scales[axis];
-    const options = {};
-    for (const option of baseOptions) {
-      const propName = Object.keys(option);
-      options[propName] = option[propName];
-    }
-
-    return options;
   };
 
   axesTextVersion = (axes, titleCase = false, pluralVersion = false) => {

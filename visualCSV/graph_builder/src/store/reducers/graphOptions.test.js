@@ -427,7 +427,7 @@ describe('TOGGLE_AXIS_LABEL_DISPLAY', () => {
   const reducer = graphOptionsReducer(state, {
     type: actionTypes.TOGGLE_AXIS_LABEL_DISPLAY,
     axis: 'yAxes',
-    currDisplay: false
+    currDisplay: false,
   });
 
   it('should set the display for all y-axis to true.', () => {
@@ -908,6 +908,607 @@ describe('UPDATE_AXIS_FONT_SIZE', () => {
           },
         },
       },
+    });
+  });
+});
+
+describe('TOGGLE_AXIS_GRID_DISPLAY', () => {
+  const state = {
+    options: {
+      bar: {
+        scales: {
+          yAxes: [{ gridLines: { display: false }, abc: true }],
+          xAxes: [{ gridLines: { display: false }, abc: true }],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [{ gridLines: { display: false }, abc: true }],
+          xAxes: [{ gridLines: { display: false }, abc: true }],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [{ gridLines: { display: false }, abc: true }],
+          xAxes: [{ gridLines: { display: false }, abc: true }],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [{ gridLines: { display: false }, abc: true }],
+          xAxes: [{ gridLines: { display: false }, abc: true }],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [{ gridLines: { display: false }, abc: true }],
+          xAxes: [{ gridLines: { display: false }, abc: true }],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [{ gridLines: { display: false }, abc: true }],
+          xAxes: [{ gridLines: { display: false }, abc: true }],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [{ gridLines: { display: false }, abc: true }],
+          xAxes: [{ gridLines: { display: false }, abc: true }],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [{ gridLines: { display: false }, abc: true }],
+          xAxes: [{ gridLines: { display: false }, abc: true }],
+        },
+      },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.TOGGLE_AXIS_GRID_DISPLAY,
+    axis: 'yAxes',
+  });
+
+  it('should update the display for the y-axis to true.', () => {
+    expect(reducer.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: true }, abc: true }],
+      xAxes: [{ gridLines: { display: false }, abc: true }],
+    });
+
+    expect(reducer.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: true }, abc: true }],
+      xAxes: [{ gridLines: { display: false }, abc: true }],
+    });
+  });
+
+  it('should update the display for the x-axis to true.', () => {
+    const reducer = graphOptionsReducer(state, {
+      type: actionTypes.TOGGLE_AXIS_GRID_DISPLAY,
+      axis: 'xAxes',
+    });
+
+    expect(reducer.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: false }, abc: true }],
+      xAxes: [{ gridLines: { display: true }, abc: true }],
+    });
+
+    expect(reducer.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: false }, abc: true }],
+      xAxes: [{ gridLines: { display: true }, abc: true }],
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: false }, abc: true }],
+      xAxes: [{ gridLines: { display: false }, abc: true }],
+    });
+
+    expect(state.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: false }, abc: true }],
+      xAxes: [{ gridLines: { display: false }, abc: true }],
+    });
+  });
+});
+
+describe('UPDATE_AXIS_GRID_LINE_WIDTH', () => {
+  const state = {
+    options: {
+      bar: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+          xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+          xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+          xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+          xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+          xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+          xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+          xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+          xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+        },
+      },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_AXIS_GRID_LINE_WIDTH,
+    axis: 'yAxes',
+    width: 5,
+  });
+
+  it('should update the line width for the y-axis to 5.', () => {
+    expect(reducer.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, lineWidth: 5 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+    });
+
+    expect(reducer.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, lineWidth: 5 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+    });
+  });
+
+  it('should update the line width for the x-axis to 5.', () => {
+    const reducer = graphOptionsReducer(state, {
+      type: actionTypes.UPDATE_AXIS_GRID_LINE_WIDTH,
+      axis: 'xAxes',
+      width: 5,
+    });
+
+    expect(reducer.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, lineWidth: 5 }, abc: true }],
+    });
+
+    expect(reducer.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, lineWidth: 5 }, abc: true }],
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+    });
+
+    expect(state.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, lineWidth: 1 }, abc: true }],
+    });
+  });
+});
+
+describe('UPDATE_AXIS_GRID_LINE_COLOUR', () => {
+  const state = {
+    options: {
+      bar: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+          xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+          xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+          xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+          xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+          xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+          xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+          xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+          xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+        },
+      },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_AXIS_GRID_LINE_COLOUR,
+    axis: 'yAxes',
+    colour: '#123',
+  });
+
+  it('should update the line colour for the y-axis.', () => {
+    expect(reducer.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, color: '#123' }, abc: true }],
+      xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+    });
+
+    expect(reducer.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, color: '#123' }, abc: true }],
+      xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+    });
+  });
+
+  it('should update the line colour for the x-axis.', () => {
+    const reducer = graphOptionsReducer(state, {
+      type: actionTypes.UPDATE_AXIS_GRID_LINE_COLOUR,
+      axis: 'xAxes',
+      colour: '#123',
+    });
+
+    expect(reducer.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+      xAxes: [{ gridLines: { display: false, color: '#123' }, abc: true }],
+    });
+
+    expect(reducer.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+      xAxes: [{ gridLines: { display: false, color: '#123' }, abc: true }],
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+      xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+    });
+
+    expect(state.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+      xAxes: [{ gridLines: { display: false, color: '#000' }, abc: true }],
+    });
+  });
+});
+
+describe('UPDATE_AXIS_GRID_0_LINE_WIDTH', () => {
+  const state = {
+    options: {
+      bar: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineWidth: 1 }, abc: true },
+          ],
+        },
+      },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_AXIS_GRID_0_LINE_WIDTH,
+    axis: 'yAxes',
+    width: 5,
+  });
+
+  it('should update the line width for the y-axis to 5.', () => {
+    expect(reducer.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, zeroLineWidth: 5 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, zeroLineWidth: 1 }, abc: true }],
+    });
+
+    expect(reducer.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, zeroLineWidth: 5 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, zeroLineWidth: 1 }, abc: true }],
+    });
+  });
+
+  it('should update the line width for the x-axis to 5.', () => {
+    const reducer = graphOptionsReducer(state, {
+      type: actionTypes.UPDATE_AXIS_GRID_0_LINE_WIDTH,
+      axis: 'xAxes',
+      width: 5,
+    });
+
+    expect(reducer.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, zeroLineWidth: 1 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, zeroLineWidth: 5 }, abc: true }],
+    });
+
+    expect(reducer.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, zeroLineWidth: 1 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, zeroLineWidth: 5 }, abc: true }],
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.bar.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, zeroLineWidth: 1 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, zeroLineWidth: 1 }, abc: true }],
+    });
+
+    expect(state.options.line.scales).toEqual({
+      yAxes: [{ gridLines: { display: false, zeroLineWidth: 1 }, abc: true }],
+      xAxes: [{ gridLines: { display: false, zeroLineWidth: 1 }, abc: true }],
+    });
+  });
+});
+
+describe('UPDATE_AXIS_GRID_0_LINE_COLOUR', () => {
+  const state = {
+    options: {
+      bar: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+        },
+      },
+      line: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+        },
+      },
+      pie: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+        },
+      },
+      doughnut: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+        },
+      },
+      'horizontal bar': {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+        },
+      },
+      polar: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+        },
+      },
+      radar: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+        },
+      },
+      scatter: {
+        scales: {
+          yAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+          xAxes: [
+            { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+          ],
+        },
+      },
+    },
+  };
+
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_AXIS_GRID_0_LINE_COLOUR,
+    axis: 'yAxes',
+    colour: '#123',
+  });
+
+  it('should update the line colour for the y-axis.', () => {
+    expect(reducer.options.bar.scales).toEqual({
+      yAxes: [
+        { gridLines: { display: false, zeroLineColor: '#123' }, abc: true },
+      ],
+      xAxes: [
+        { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+      ],
+    });
+
+    expect(reducer.options.line.scales).toEqual({
+      yAxes: [
+        { gridLines: { display: false, zeroLineColor: '#123' }, abc: true },
+      ],
+      xAxes: [
+        { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+      ],
+    });
+  });
+
+  it('should update the line colour for the x-axis.', () => {
+    const reducer = graphOptionsReducer(state, {
+      type: actionTypes.UPDATE_AXIS_GRID_0_LINE_COLOUR,
+      axis: 'xAxes',
+      colour: '#123',
+    });
+
+    expect(reducer.options.bar.scales).toEqual({
+      yAxes: [
+        { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+      ],
+      xAxes: [
+        { gridLines: { display: false, zeroLineColor: '#123' }, abc: true },
+      ],
+    });
+
+    expect(reducer.options.line.scales).toEqual({
+      yAxes: [
+        { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+      ],
+      xAxes: [
+        { gridLines: { display: false, zeroLineColor: '#123' }, abc: true },
+      ],
+    });
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.options.bar.scales).toEqual({
+      yAxes: [
+        { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+      ],
+      xAxes: [
+        { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+      ],
+    });
+
+    expect(state.options.line.scales).toEqual({
+      yAxes: [
+        { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+      ],
+      xAxes: [
+        { gridLines: { display: false, zeroLineColor: '#000' }, abc: true },
+      ],
     });
   });
 });

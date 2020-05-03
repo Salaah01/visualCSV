@@ -22,6 +22,11 @@
  *  updateAxisLabel: Updates the label for a given axis.
  *  updateAxisFontColour: Update the font colour for a given axis.
  *  updateAxisFontSize: Update the font size for a given axis.
+ *  toggleAxisGridDisplay: Toggles the grid display for a given axis.
+ *  updateAxisGridLineWidth: Updates the axis grid line width.
+ *  updateAxisGridLineColour: Updates the axis grid line colour.
+ *  updateAxisGrid0LineWidth: Updates the axis grid line width at 0.
+ *  updateAxisGrid0LineColour: Updates the axis grid line colour at 0.
  */
 
 // IMPORTS
@@ -61,13 +66,13 @@ const sharedOptions = {
           labelString: '',
           fontColor: '#000',
           fontSize: 12,
-          gridLines: {
-            display: true,
-            color: 'rgba(0, 0, 0, 0.1)',
-            lineWidth: 1,
-            zeroLineWidth: 1,
-            zeroLineColor: 'rgba(0, 0, 0, 0.25)',
-          },
+        },
+        gridLines: {
+          display: true,
+          color: 'rgba(0, 0, 0, 0.1)',
+          lineWidth: 1,
+          zeroLineWidth: 1,
+          zeroLineColor: 'rgba(0, 0, 0, 0.25)',
         },
       },
     ],
@@ -319,6 +324,106 @@ const updateAxisFontSize = (state, action) => {
   return updateAxisScaleLabel(state, action.axis, 'fontSize', action.size);
 };
 
+const updateAxisGridOptions = (state, axis, propName, propValue) => {
+  /**Updates the `gridLines` property for a given `axis`.
+   * Args:
+   *  state: (obj) State object.
+   *  axis: (str) `x` or `y` to indicate x-axis and y-axis respectively. This
+   *    is the axis in which the changes will be applied.
+   *  propName: (str) The name of the property to update.
+   *  propValue: (any) The value of the updated property.
+   */
+
+  let graphOptions = { ...state.options };
+  for (const graphType of graphTypes) {
+    const updatedAxis = [...graphOptions[graphType].scales[axis]].map(
+      (option) => {
+        if (option.gridLines === undefined) {
+          return option;
+        } else {
+          const updatedGridLines = updateObject(option.gridLines, {
+            [propName]: propValue,
+          });
+          return updateObject(option, { gridLines: updatedGridLines });
+        }
+      },
+    );
+
+    const updatedScales = updateObject(graphOptions[graphType].scales, {
+      [axis]: updatedAxis,
+    });
+
+    const updatedGraph = updateObject(graphOptions[graphType], {
+      scales: updatedScales,
+    });
+
+    graphOptions = updateObject(graphOptions, {
+      [graphType]: updatedGraph,
+    });
+  }
+
+  return updateObject(state, { options: graphOptions });
+};
+
+const toggleAxisGridDisplay = (state, action) => {
+  /**Toggles the grid display for a given axis.
+   * Args:
+   *  axis: (str) Axis to which the changes should be applied.
+   */
+  return updateAxisGridOptions(
+    state,
+    action.axis,
+    'display',
+    !state.options.bar.scales[action.axis][0].gridLines.display,
+  );
+};
+
+const updateAxisGridLineWidth = (state, action) => {
+  /**Updates the axis grid line width.
+   * Args:
+   *  axis: (str) Axis to which the changes should be applied.
+   *  width: (int) Line width in px.
+   */
+  return updateAxisGridOptions(state, action.axis, 'lineWidth', action.width);
+};
+
+const updateAxisGridLineColour = (state, action) => {
+  /**Updates the axis grid line colour.
+   * Args:
+   *  axis: (str) Axis to which the changes should be applied.
+   *  colour: (str) Line colour in the rgba, rgb or hex format.
+   */
+  return updateAxisGridOptions(state, action.axis, 'color', action.colour);
+};
+
+const updateAxisGrid0LineWidth = (state, action) => {
+  /**Updates the axis grid line width at 0.
+   * Args:
+   *  axis: (str) Axis to which the changes should be applied.
+   *  width: (int) Line width in px.
+   */
+  return updateAxisGridOptions(
+    state,
+    action.axis,
+    'zeroLineWidth',
+    action.width,
+  );
+};
+
+const updateAxisGrid0LineColour = (state, action) => {
+  /**Updates the axis grid line colour at 0.
+   * Args:
+   *  axis: (str) Axis to which the changes should be applied.
+   *  colour: (str) Line colour in the rgba, rgb or hex format.
+   */
+  return updateAxisGridOptions(
+    state,
+    action.axis,
+    'zeroLineColor',
+    action.colour,
+  );
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.UPDATE_GRAPH_TYPE:
@@ -349,6 +454,16 @@ const reducer = (state = initialState, action) => {
       return updateAxisFontColour(state, action);
     case actionTypes.UPDATE_AXIS_FONT_SIZE:
       return updateAxisFontSize(state, action);
+    case actionTypes.TOGGLE_AXIS_GRID_DISPLAY:
+      return toggleAxisGridDisplay(state, action);
+    case actionTypes.UPDATE_AXIS_GRID_LINE_WIDTH:
+      return updateAxisGridLineWidth(state, action);
+    case actionTypes.UPDATE_AXIS_GRID_LINE_COLOUR:
+      return updateAxisGridLineColour(state, action);
+    case actionTypes.UPDATE_AXIS_GRID_0_LINE_WIDTH:
+      return updateAxisGrid0LineWidth(state, action);
+    case actionTypes.UPDATE_AXIS_GRID_0_LINE_COLOUR:
+      return updateAxisGrid0LineColour(state, action);
     default:
       return state;
   }
