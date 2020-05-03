@@ -29,7 +29,6 @@
   }
 
   &__options {
-    display: grid;
     max-height: 1000px;
     overflow: hidden;
     transition: all 0.2s ease;
@@ -45,7 +44,7 @@
 
   &__label {
     margin-right: 10px;
-    min-width: 100px;
+    min-width: 125px;
     display: inline-block;
   }
 

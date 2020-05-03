@@ -186,6 +186,7 @@ export const updateAxisGridLineWidth = (axis, width) => {
    */
   return {
     type: actionTypes.UPDATE_AXIS_GRID_LINE_WIDTH,
+    axis: axis,
     width: width,
   };
 };
@@ -210,7 +211,7 @@ export const updateAxisGrid0LineWidth = (axis, width) => {
    *  width: (int) Line width in px.
    */
   return {
-    type: actionTypes.UPDATE_AXIS_GRID_LINE_WIDTH,
+    type: actionTypes.UPDATE_AXIS_GRID_0_LINE_WIDTH,
     axis: axis,
     width: width,
   };
@@ -223,7 +224,7 @@ export const updateAxisGrid0LineColour = (axis, colour) => {
    *  colour: (str) Line colour in the rgba, rgb or hex format.
    */
   return {
-    type: actionTypes.UPDATE_AXIS_GRID_LINE_COLOUR,
+    type: actionTypes.UPDATE_AXIS_GRID_0_LINE_COLOUR,
     axis: axis,
     colour: colour,
   };

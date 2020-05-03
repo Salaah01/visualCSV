@@ -15,8 +15,14 @@ class Axes extends PureComponent {
   /**Crates the axes options for the graph. */
 
   state = {
-    xAxisColourPicker: false,
-    yAxisColourPicker: false,
+    xAxisOptions: true,
+    yAxisOptions: true,
+    xAxisLabelColPicker: false,
+    yAxisLabelColPicker: false,
+    xAxisGridLinesColPicker: false,
+    yAxisGridLinesColPicker: false,
+    xAxisGrid0LineColPicker: false,
+    yAxisGrid0LineColPicker: false,
   };
 
   graphOptions = (axis) => {
@@ -58,7 +64,7 @@ class Axes extends PureComponent {
     }
   };
 
-  display = (axis) => {
+  labelDisplay = (axis) => {
     const currDisplay = this.graphOptions(axis).scaleLabel.display;
     return (
       /**Option to toggle the display option. */
@@ -75,13 +81,13 @@ class Axes extends PureComponent {
           name={`display-${axis}`}
           id={`${axis}-display-option`}
           checked={currDisplay}
-          onChange={() => this.props.onToggleDisplay(axis, currDisplay)}
+          onChange={() => this.props.onToggleLabelDisplay(axis, currDisplay)}
         />
       </div>
     );
   };
 
-  label = (axis) => (
+  labelText = (axis) => (
     /**Returns the axis text input box element which will be used to set the
      * axis label. */
     <div className={sharedClasses.option}>
@@ -100,7 +106,7 @@ class Axes extends PureComponent {
     </div>
   );
 
-  fontSize = (axis) => {
+  labelFontSize = (axis) => {
     /**Set of options allowing the user to update the font size. */
     const options = [8, 9, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72];
     const optionElems = options.map((optionElem) => (
@@ -121,7 +127,7 @@ class Axes extends PureComponent {
           className={sharedClasses.option__select}
           defaultValue={this.graphOptions(axis).scaleLabel.fontSize}
           onChange={(event) =>
-            this.props.onUpdateFontSize(axis, +event.target.value)
+            this.props.onUpdateLabelFontSize(axis, +event.target.value)
           }
         >
           {optionElems}
@@ -130,38 +136,76 @@ class Axes extends PureComponent {
     );
   };
 
-  onColourPickerClick = (axis) => {
-    /**Click handler for when the user clicks on the colour picker. */
+  onColourPickerClick = (axis, property) => {
+    /**Click handler for when the user clicks on the colour picker.
+     * Args:
+     *  axis: (str) Axis
+     *  property: (str) Which property should be updated?
+     */
+
     if (axis === 'xAxes') {
-      this.setState({ xAxisColourPicker: true });
+      switch (property) {
+        case 'label':
+          this.setState({ xAxisLabelColPicker: true });
+          break;
+        case 'grid lines':
+          this.setState({ xAxisGridLinesColPicker: true });
+          break;
+        case 'grid line 0':
+          this.setState({ xAxisGrid0LineColPicker: true });
+          break;
+        default:
+          throw Error(`property argument (${property}) is invalid.`);
+      }
     } else {
-      this.setState({ yAxisColourPicker: true });
+      switch (property) {
+        case 'label':
+          this.setState({ yAxisLabelColPicker: true });
+          break;
+        case 'grid lines':
+          this.setState({ yAxisGridLinesColPicker: true });
+          break;
+        case 'grid line 0':
+          this.setState({ yAxisGrid0LineColPicker: true });
+          break;
+        default:
+          throw Error(`property argument (${property}) is invalid.`);
+      }
     }
 
     document.addEventListener('click', this.onClickOutColourPicker, false);
   };
 
-  onColourChangeHandler = (axis, colour) => {
-    /**Change handler for when the user chooses a new colour. */
+  onColourChangeHandler = (axis, colour, func = null) => {
+    /**Change handler for when the user chooses a new colour.
+     * Args:
+     *  axis: (str) Axis
+     *  colour: (str) Colour in the rgba format.
+     *  func: (func [optional]) A function to dispatch.
+     */
     const rgba = colour.rgb;
-    return this.props.onUpdateColour(
-      axis,
-      `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`,
-    );
+    return func(axis, `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`);
   };
 
   onClickOutColourPicker = (event) => {
     /**Click handler for when the user clicks outside anywhere the colour
-     * picker.
+     * picker. Method will set all colour pickers show option to false.
      */
     if (!this.node.contains(event.target)) {
-      this.setState({ xAxisColourPicker: false, yAxisColourPicker: false });
+      this.setState({
+        xAxisLabelColPicker: false,
+        yAxisLabelColPicker: false,
+        xAxisGridLinesColPicker: false,
+        yAxisGridLinesColPicker: false,
+        xAxisGrid0LineColPicker: false,
+        yAxisGrid0LineColPicker: false,
+      });
       document.removeEventListener('click', this.onClickOutColourPicker, false);
     }
   };
 
-  colour = (axis) => {
-    /**Options to change the font colour for a given axis label. */
+  labelColour = (axis) => {
+    /**Options to change the line colour for a given axis. */
 
     if (axis !== 'xAxes' && axis !== 'yAxes') {
       throw Error(
@@ -175,7 +219,7 @@ class Axes extends PureComponent {
         style={{
           backgroundColor: this.graphOptions(axis).scaleLabel.fontColor,
         }}
-        onClick={() => this.onColourPickerClick(axis)}
+        onClick={() => this.onColourPickerClick(axis, 'label')}
       />
     );
 
@@ -183,8 +227,8 @@ class Axes extends PureComponent {
 
     const showColourPicker =
       axis === 'xAxes'
-        ? this.state.xAxisColourPicker
-        : this.state.yAxisColourPicker;
+        ? this.state.xAxisLabelColPicker
+        : this.state.yAxisLabelColPicker;
 
     if (showColourPicker) {
       colourPicker = (
@@ -197,7 +241,11 @@ class Axes extends PureComponent {
           <SketchPicker
             color={this.graphOptions(axis).scaleLabel.fontColor}
             onChangeComplete={(colour) =>
-              this.onColourChangeHandler(axis, colour)
+              this.onColourChangeHandler(
+                axis,
+                colour,
+                this.props.onUpdateLabelColour,
+              )
             }
           />
         </div>
@@ -216,12 +264,230 @@ class Axes extends PureComponent {
     );
   };
 
-  legendOptions = () => {
+  toggleShowXAxisSubOpts = () => {
+    /**Toggles the state value for `xAxisOptions`. */
+    this.setState((prevState) => ({ xAxisOptions: !prevState.xAxisOptions }));
+  };
+
+  toggleShowYAxisSubOpts = () => {
+    /**Toggles the state value for `yAxisOptions`. */
+    this.setState((prevState) => ({ yAxisOptions: !prevState.yAxisOptions }));
+  };
+
+  gridLinesDisplay = (axis) => {
+    /**Option to toggle the grid lines display option. */
+    const currDisplay = this.graphOptions(axis).gridLines.display;
+
+    return (
+      <div className={sharedClasses.option}>
+        <label
+          htmlFor={`${axis}-grid-lines-display-option`}
+          className={sharedClasses.option__label}
+        >
+          Show Grid Lines
+        </label>
+        <input
+          className={sharedClasses.option__input}
+          type="checkbox"
+          name={`display-${axis}`}
+          id={`${axis}-grid-lines-display-option`}
+          checked={currDisplay}
+          onChange={() => this.props.onToggleAxisGridDisplay(axis)}
+        />
+      </div>
+    );
+  };
+
+  gridLineWidth = (axis) => {
+    /**Set of options allowing the user to update the grid line width. */
+    const options = [0.25, 0.5, 0.75, 1, 1.5, 2.25, 3, 4.5, 6];
+    const optionElems = options.map((optionElem) => (
+      <option key={optionElem} value={optionElem}>
+        {optionElem}
+      </option>
+    ));
+
+    return (
+      <div className={sharedClasses.option}>
+        <label
+          htmlFor={`${axis}-grid-line-width`}
+          className={sharedClasses.option__label}
+        >
+          Line Width
+        </label>
+        <select
+          className={sharedClasses.option__select}
+          defaultValue={this.graphOptions(axis).gridLines.lineWidth}
+          onChange={(event) =>
+            this.props.onUpdateAxisGridLineWidth(axis, +event.target.value)
+          }
+        >
+          {optionElems}
+        </select>
+      </div>
+    );
+  };
+
+  gridLineColour = (axis) => {
+    /**Options to change the font colour for the grid line for a given axis. */
+
+    if (axis !== 'xAxes' && axis !== 'yAxes') {
+      throw Error(
+        'check the axis argument. Must be either `aAxes` or `yAxes`.',
+      );
+    }
+
+    const currentColour = (
+      <span
+        className={classes.colour__current}
+        style={{
+          backgroundColor: this.graphOptions(axis).gridLines.color,
+        }}
+        onClick={() => this.onColourPickerClick(axis, 'grid lines')}
+      />
+    );
+
+    let colourPicker = null;
+
+    const showColourPicker =
+      axis === 'xAxes'
+        ? this.state.xAxisGridLinesColPicker
+        : this.state.yAxisGridLinesColPicker;
+
+    if (showColourPicker) {
+      colourPicker = (
+        <div
+          className={classes.colour__picker}
+          ref={(node) => {
+            this.node = node;
+          }}
+        >
+          <SketchPicker
+            color={this.graphOptions(axis).gridLines.color}
+            onChangeComplete={(colour) =>
+              this.onColourChangeHandler(
+                axis,
+                colour,
+                this.props.onUpdateAxisGridLineColour,
+              )
+            }
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div
+        className={`${classes.colour} ${sharedClasses.option}`}
+        style={{ marginBottom: '15px' }}
+      >
+        <label className={sharedClasses.option__label}>Line Colour</label>
+        {currentColour}
+        {colourPicker}
+      </div>
+    );
+  };
+
+  grid0LineWidth = (axis) => {
+    /**Set of options allowing the user to update the grid line width at the
+     * 0'th value for a given `axis`.
+     */
+    const options = [0.25, 0.5, 0.75, 1, 1.5, 2.25, 3, 4.5, 6];
+    const optionElems = options.map((optionElem) => (
+      <option key={optionElem} value={optionElem}>
+        {optionElem}
+      </option>
+    ));
+
+    return (
+      <div className={sharedClasses.option}>
+        <label
+          htmlFor={`${axis}-grid-line-width-at-0`}
+          className={sharedClasses.option__label}
+        >
+          Line Width at 0
+        </label>
+        <select
+          className={sharedClasses.option__select}
+          defaultValue={this.graphOptions(axis).gridLines.lineWidth}
+          onChange={(event) =>
+            this.props.onUpdateAxisGrid0LineWidth(axis, +event.target.value)
+          }
+        >
+          {optionElems}
+        </select>
+      </div>
+    );
+  };
+
+  grid0LineColour = (axis) => {
+    /**Options to change the line colour at the 0th value in a given axis. */
+
+    if (axis !== 'xAxes' && axis !== 'yAxes') {
+      throw Error(
+        'check the axis argument. Must be either `aAxes` or `yAxes`.',
+      );
+    }
+
+    const currentColour = (
+      <span
+        className={classes.colour__current}
+        style={{
+          backgroundColor: this.graphOptions(axis).gridLines.zeroLineColor,
+        }}
+        onClick={() => this.onColourPickerClick(axis, 'grid line 0')}
+      />
+    );
+
+    let colourPicker = null;
+
+    const showColourPicker =
+      axis === 'xAxes'
+        ? this.state.xAxisGrid0LineColPicker
+        : this.state.yAxisGrid0LineColPicker;
+
+    if (showColourPicker) {
+      colourPicker = (
+        <div
+          className={classes.colour__picker}
+          ref={(node) => {
+            this.node = node;
+          }}
+        >
+          <SketchPicker
+            color={this.graphOptions(axis).gridLines.color}
+            onChangeComplete={(colour) =>
+              this.onColourChangeHandler(
+                axis,
+                colour,
+                this.props.onUpdateAxisGrid0LineColour,
+              )
+            }
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div
+        className={`${classes.colour} ${sharedClasses.option}`}
+        style={{ marginBottom: '15px' }}
+      >
+        <label className={sharedClasses.option__label}>Line Colour at 0</label>
+        {currentColour}
+        {colourPicker}
+      </div>
+    );
+  };
+
+  allOptions = () => {
     /**Container with all the options. */
 
+    // Dynamically update the text/style of the main container allowing it to
+    // become collapsable.
     const headingText = this.props.showOptions
-      ? 'Hide Legend Options'
-      : 'Show Legend Options';
+      ? 'Hide Axes Options'
+      : 'Show Axes Options';
     const headingIcon = this.props.showOptions ? '-' : '+';
 
     // Style overrides
@@ -231,6 +497,25 @@ class Axes extends PureComponent {
     const optionsStyle = this.props.showOptions
       ? null
       : { maxHeight: 0, padding: 0, borderBottom: 'none' };
+
+    // Dynamically update the text/style of the sub-options container allowing
+    // it to become collapsable.
+    const xAxisOptText = this.state.xAxisOptions
+      ? 'Hide X-Axis Options'
+      : 'Show X-Axis Options';
+    const xAxisOptIcon = this.state.xAxisOptions ? '-' : '+';
+    const yAxisOptText = this.state.yAxisOptions
+      ? 'Hide Y-Axis Options'
+      : 'Show Y-Axis Options';
+    const yAxisOptIcon = this.state.yAxisOptions ? '-' : '+';
+
+    // Style overrides
+    const xAxisOptStyle = this.state.xAxisOptions
+      ? null
+      : { maxHeight: 0, padding: 0 };
+    const yAxisOptStyle = this.state.yAxisOptions
+      ? null
+      : { maxHeight: 0, padding: 0 };
 
     const options = (
       <div className={sharedClasses.options_container}>
@@ -247,17 +532,50 @@ class Axes extends PureComponent {
           </span>
         </h3>
         <div
-          className={sharedClasses.options_container__options}
+          className={`${sharedClasses.options_container__options} ${classes.options_container__options}`}
           style={optionsStyle}
         >
-          {this.display('xAxes')}
-          {this.label('xAxes')}
-          {this.fontSize('xAxes')}
-          {this.colour('xAxes')}
-          {this.display('yAxes')}
-          {this.label('yAxes')}
-          {this.fontSize('yAxes')}
-          {this.colour('yAxes')}
+          <div className={classes.sub_options}>
+            <p
+              className={classes.sub_options__heading}
+              onClick={this.toggleShowXAxisSubOpts}
+            >
+              <span>{xAxisOptText}</span>
+              <span>{xAxisOptIcon}</span>
+            </p>
+            <div className={classes.sub_options__options} style={xAxisOptStyle}>
+              {this.labelDisplay('xAxes')}
+              {this.labelText('xAxes')}
+              {this.labelFontSize('xAxes')}
+              {this.labelColour('xAxes')}
+              {this.gridLinesDisplay('xAxes')}
+              {this.gridLineWidth('xAxes')}
+              {this.gridLineColour('xAxes')}
+              {this.grid0LineWidth('xAxes')}
+              {this.grid0LineColour('xAxes')}
+            </div>
+          </div>
+
+          <div className={classes.sub_options}>
+            <p
+              className={classes.sub_options__heading}
+              onClick={this.toggleShowYAxisSubOpts}
+            >
+              <span>{yAxisOptText}</span>
+              <span>{yAxisOptIcon}</span>
+            </p>
+            <div className={classes.sub_options__options} style={yAxisOptStyle}>
+              {this.labelDisplay('yAxes')}
+              {this.labelText('yAxes')}
+              {this.labelFontSize('yAxes')}
+              {this.labelColour('yAxes')}
+              {this.gridLinesDisplay('yAxes')}
+              {this.gridLineWidth('yAxes')}
+              {this.gridLineColour('yAxes')}
+              {this.grid0LineWidth('yAxes')}
+              {this.grid0LineColour('yAxes')}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -266,7 +584,7 @@ class Axes extends PureComponent {
   };
 
   render() {
-    return this.legendOptions();
+    return this.allOptions();
   }
 }
 
@@ -279,14 +597,24 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onToggleDisplay: (axis, currDisplay) =>
+    onToggleLabelDisplay: (axis, currDisplay) =>
       dispatch(actions.toggleAxisLabelDisplay(axis, currDisplay)),
     onUpdateLabel: (axis, label) =>
       dispatch(actions.updateAxisLabel(axis, label)),
-    onUpdateFontSize: (axis, size) =>
+    onUpdateLabelFontSize: (axis, size) =>
       dispatch(actions.updateAxisFontSize(axis, size)),
-    onUpdateColour: (axis, colour) =>
+    onUpdateLabelColour: (axis, colour) =>
       dispatch(actions.updateAxisFontColour(axis, colour)),
+    onToggleAxisGridDisplay: (axis) =>
+      dispatch(actions.toggleAxisGridDisplay(axis)),
+    onUpdateAxisGridLineWidth: (axis, width) =>
+      dispatch(actions.updateAxisGridLineWidth(axis, width)),
+    onUpdateAxisGridLineColour: (axis, colour) =>
+      dispatch(actions.updateAxisGridLineColour(axis, colour)),
+    onUpdateAxisGrid0LineWidth: (axis, width) =>
+      dispatch(actions.updateAxisGrid0LineWidth(axis, width)),
+    onUpdateAxisGrid0LineColour: (axis, colour) =>
+      dispatch(actions.updateAxisGrid0LineColour(axis, colour)),
   };
 };
 

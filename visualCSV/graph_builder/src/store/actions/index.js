@@ -22,5 +22,10 @@ export {
   toggleAxisLabelDisplay,
   updateAxisLabel,
   updateAxisFontColour,
-  updateAxisFontSize
+  updateAxisFontSize,
+  toggleAxisGridDisplay,
+  updateAxisGridLineWidth,
+  updateAxisGridLineColour,
+  updateAxisGrid0LineWidth,
+  updateAxisGrid0LineColour,
 } from './graphOptions';
