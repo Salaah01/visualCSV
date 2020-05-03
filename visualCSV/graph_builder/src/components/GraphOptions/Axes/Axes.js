@@ -25,6 +25,8 @@ class Axes extends PureComponent {
      *  axis: (str) Axis name (xAxes/yAxes).
      */
 
+    return this.props.options[this.props.graphType].scales[axis][0];
+
     const baseOptions = this.props.options[this.props.graphType].scales[axis];
     const options = {};
     for (const option of baseOptions) {

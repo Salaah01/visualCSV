@@ -11,13 +11,13 @@ import * as actions from '../../store/actions';
 import GraphTypeDropDown from '../../components/GraphOptions/GraphTypeDropDown/GraphTypeDropDown';
 import TitleOptions from '../../components/GraphOptions/Title/Title';
 import LegendOptions from '../../components/GraphOptions/Legend/Legend';
-import AxesOptions from '../../components/GraphOptions/Axes/Axes'
+import AxesOptions from '../../components/GraphOptions/Axes/Axes';
 
 class Graph extends Component {
   state = {
     showTitleOpts: false,
     showLegendOpts: false,
-    showAxesOpts: true
+    showAxesOpts: true,
   };
 
   toggleShowOptions = (option) =>

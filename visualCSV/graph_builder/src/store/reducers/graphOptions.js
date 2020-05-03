@@ -36,24 +36,38 @@ const sharedOptions = {
   maintainAspectRatio: false,
   scales: {
     yAxes: [
-      { ticks: { beginAtZero: true } },
       {
+        ticks: { beginAtZero: true },
         scaleLabel: {
           display: false,
           labelString: '',
           fontColor: '#000',
           fontSize: 12,
         },
+        gridLines: {
+          display: true,
+          color: 'rgba(0, 0, 0, 0.1)',
+          lineWidth: 1,
+          zeroLineWidth: 1,
+          zeroLineColor: 'rgba(0, 0, 0, 0.25)',
+        },
       },
     ],
     xAxes: [
-      { ticks: { beginAtZero: true } },
       {
+        ticks: { beginAtZero: true },
         scaleLabel: {
           display: false,
           labelString: '',
           fontColor: '#000',
           fontSize: 12,
+          gridLines: {
+            display: true,
+            color: 'rgba(0, 0, 0, 0.1)',
+            lineWidth: 1,
+            zeroLineWidth: 1,
+            zeroLineColor: 'rgba(0, 0, 0, 0.25)',
+          },
         },
       },
     ],
