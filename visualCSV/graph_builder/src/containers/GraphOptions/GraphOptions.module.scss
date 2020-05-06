@@ -15,4 +15,8 @@
     text-transform: uppercase;
     color: $colour-secondary;
   }
+
+  &__main_drop_downs {
+    display: flex;
+  }
 }

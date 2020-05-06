@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import classes from './GraphOptions.module.scss';
 import * as actions from '../../store/actions';
 import GraphTypeDropDown from '../../components/GraphOptions/GraphTypeDropDown/GraphTypeDropDown';
+import AggregateDropDown from '../../components/GraphOptions/AggregateDropDown/AggregateDropDown';
 import TitleOptions from '../../components/GraphOptions/Title/Title';
 import LegendOptions from '../../components/GraphOptions/Legend/Legend';
 import AxesOptions from '../../components/GraphOptions/Axes/Axes';
@@ -31,7 +32,13 @@ class Graph extends Component {
     return (
       <div className={classes.graph_options}>
         <h2 className={classes.graph_options__heading}>Graph Options</h2>
-        <GraphTypeDropDown onUpdateType={this.props.onUpdateType} />
+        <div className={classes.graph_options__main_drop_downs}>
+          <GraphTypeDropDown onUpdateType={this.props.onUpdateType} />
+          <AggregateDropDown
+            onReAggregate={this.props.onReAggregate}
+            onUnAggregate={this.props.onUnAggregate}
+          />
+        </div>
         <TitleOptions
           showOptions={this.state.showTitleOpts}
           onToggleShowOptions={() => this.toggleShowOptions('showTitleOpts')}
@@ -60,6 +67,8 @@ const mapDispatchToProps = (dispatch) => {
     onUpdateType: (graphType) => dispatch(actions.updateGraphType(graphType)),
     onUpdateYAxisStackOpt: (opt, graphType) =>
       dispatch(actions.updateYAxisStackOpt(opt, graphType)),
+    onReAggregate: (method) => dispatch(actions.reAggregate(method)),
+    onUnAggregate: () => dispatch(actions.unAggregate()),
   };
 };
 

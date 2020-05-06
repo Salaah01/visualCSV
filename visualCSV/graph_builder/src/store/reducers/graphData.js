@@ -306,7 +306,7 @@ const _aggregate_legends = (xAxisData, legendData, method) => {
       break;
 
     default:
-      throw Error('Aggregation method is not valid.');
+      throw Error(`Aggregation method (${method}) is not valid.`);
   }
 
   // Convert the aggregated data to an ordered array.
@@ -331,8 +331,6 @@ const addDataSet = (state, action) => {
     const colourPrefix = `rgba(${colour.r}, ${colour.g}, ${colour.b}`;
     bgColour = `${colourPrefix}, .6)`;
     borderColour = `${colourPrefix}, 1)`;
-
-    bgColour = action.bgColour;
     borderColour = action.borderColour ? action.borderColour : borderColour;
   }
 
@@ -373,6 +371,8 @@ const addDataSet = (state, action) => {
       index: Object.keys(state.dataSets).length,
     },
   });
+
+  console.log(updatedDataSet)
 
   return updateObject(state, { dataSets: updatedDataSet });
 };

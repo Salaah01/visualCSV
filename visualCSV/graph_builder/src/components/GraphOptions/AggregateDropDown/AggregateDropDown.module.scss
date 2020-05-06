@@ -1,0 +1,11 @@
+.dropdown_menu {
+    &__selected,
+    &__options {
+      border-radius: 3px;
+      width: 180px;
+    }
+
+    &__selected {
+        margin-bottom: 20px;
+    }
+  }
