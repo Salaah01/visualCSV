@@ -772,5 +772,193 @@ describe('ADD_DATA_SET', () => {
       dataSets: {},
     });
   });
+
+  it('should set the data to be the set of the data provided.', () => {
+    const state = {
+      columns: { column_1: { data: [1, 2, 2, 4, 4], columnName: 'column 1' } },
+      dataSets: {},
+    };
+
+    const reducer = graphDataReducer(state, {
+      type: actionTypes.ADD_DATA_SET,
+      columnID: 'column_1',
+      label: 'new column',
+      aggregation: 'COUNT',
+      axis: 'x',
+    });
+
+    expect(reducer.dataSets.column_1.data).toEqual([1, 2, 4]);
+  });
+
+  it('should aggregate the data (COUNT).', () => {
+    const state = {
+      columns: {
+        column_1: { data: ['a', 'a', 'b'], columnName: 'column 1' },
+        column_2: { data: [10, 20, 30], columnName: 'column 2' },
+      },
+      sections: { xAxis: { column: ['column_1'] } },
+      dataSets: {},
+    };
+
+    const reducer = graphDataReducer(state, {
+      type: actionTypes.ADD_DATA_SET,
+      columnID: 'column_2',
+      label: 'new column',
+      aggregation: 'COUNT',
+      axis: 'y',
+    });
+
+    expect(reducer.dataSets.column_2.data).toEqual([2, 1]);
+  });
+
+  it('should aggregate the data (SUM).', () => {
+    const state = {
+      columns: {
+        column_1: { data: ['a', 'a', 'b'], columnName: 'column 1' },
+        column_2: { data: [10, 20, 30], columnName: 'column 2' },
+      },
+      sections: { xAxis: { column: ['column_1'] } },
+      dataSets: {},
+    };
+
+    const reducer = graphDataReducer(state, {
+      type: actionTypes.ADD_DATA_SET,
+      columnID: 'column_2',
+      label: 'new column',
+      aggregation: 'SUM',
+      axis: 'y',
+    });
+
+    expect(reducer.dataSets.column_2.data).toEqual([30, 30]);
+  });
+
+  it('should aggregate the data (AVERAGE).', () => {
+    const state = {
+      columns: {
+        column_1: { data: ['a', 'a', 'b'], columnName: 'column 1' },
+        column_2: { data: [10, 20, 30], columnName: 'column 2' },
+      },
+      sections: { xAxis: { column: ['column_1'] } },
+      dataSets: {},
+    };
+
+    const reducer = graphDataReducer(state, {
+      type: actionTypes.ADD_DATA_SET,
+      columnID: 'column_2',
+      label: 'new column',
+      aggregation: 'AVERAGE',
+      axis: 'y',
+    });
+
+    expect(reducer.dataSets.column_2.data).toEqual([15, 30]);
+  });
 });
 
+describe('RE_AGGREGATE', () => {
+  const state = {
+    columns: {
+      column_1: { data: ['a', 'a', 'b'], columnName: 'column 1' },
+      column_2: { data: [10, 20, 30], columnName: 'column 2' },
+      column_3: { data: [1, 2, 3], columnName: 'column 3' },
+      column_4: { data: [4, 5, 6], columnName: 'column 4' },
+    },
+    sections: { xAxis: { column: ['column_1'] } },
+    dataSets: {
+      column_1: { colour: 1, data: ['a'] },
+      column_2: { colour: 1, data: [60] },
+      column_3: { colour: 5, data: [6] },
+    },
+  };
+
+  const reducer = graphDataReducer(state, {
+    type: actionTypes.RE_AGGREGATE,
+    method: 'COUNT',
+  });
+
+  it('the a-axis should not contain any repeated keys..', () => {
+    expect(reducer.dataSets.column_1).toEqual({ colour: 1, data: ['a', 'b'] });
+  });
+
+  it('should aggregate the legends using the count method.', () => {
+    expect(reducer.dataSets.column_2).toEqual({ colour: 1, data: [2, 1] });
+    expect(reducer.dataSets.column_3).toEqual({ colour: 5, data: [2, 1] });
+  });
+
+  it('should not include column 4.', () => {
+    expect(reducer.dataSets.column_4).toEqual(undefined);
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state).toEqual({
+      columns: {
+        column_1: { data: ['a', 'a', 'b'], columnName: 'column 1' },
+        column_2: { data: [10, 20, 30], columnName: 'column 2' },
+        column_3: { data: [1, 2, 3], columnName: 'column 3' },
+        column_4: { data: [4, 5, 6], columnName: 'column 4' },
+      },
+      sections: { xAxis: { column: ['column_1'] } },
+      dataSets: {
+        column_1: { colour: 1, data: ['a'] },
+        column_2: { colour: 1, data: [60] },
+        column_3: { colour: 5, data: [6] },
+      },
+    });
+  });
+});
+
+describe('UN_AGGREGATE', () => {
+  const state = {
+    columns: {
+      column_1: { data: ['a', 'a', 'b'], columnName: 'column 1' },
+      column_2: { data: [10, 20, 30], columnName: 'column 2' },
+      column_3: { data: [1, 2, 3], columnName: 'column 3' },
+      column_4: { data: [4, 5, 6], columnName: 'column 4' },
+    },
+    sections: { xAxis: { column: ['column_1'] } },
+    dataSets: {
+      column_1: { columnName: 'column 1', data: ['a'] },
+      column_2: { columnName: 'column 2', data: [60] },
+      column_3: { columnName: 'column 3', data: [6] },
+    },
+  };
+
+  const reducer = graphDataReducer(state, {
+    type: actionTypes.UN_AGGREGATE,
+  });
+
+  it('should reset the `dataSets` for columns 1-3', () => {
+    expect(reducer.dataSets.column_1).toEqual({
+      data: ['a', 'a', 'b'],
+      columnName: 'column 1',
+    });
+    expect(reducer.dataSets.column_2).toEqual({
+      data: [10, 20, 30],
+      columnName: 'column 2',
+    });
+    expect(reducer.dataSets.column_3).toEqual({
+      data: [1, 2, 3],
+      columnName: 'column 3',
+    });
+  });
+
+  it('should not include `column_4` in the `dataSets`.', () => {
+    expect(reducer.dataSets.column_4).toEqual(undefined);
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state).toEqual({
+      columns: {
+        column_1: { data: ['a', 'a', 'b'], columnName: 'column 1' },
+        column_2: { data: [10, 20, 30], columnName: 'column 2' },
+        column_3: { data: [1, 2, 3], columnName: 'column 3' },
+        column_4: { data: [4, 5, 6], columnName: 'column 4' },
+      },
+      sections: { xAxis: { column: ['column_1'] } },
+      dataSets: {
+        column_1: { columnName: 'column 1', data: ['a'] },
+        column_2: { columnName: 'column 2', data: [60] },
+        column_3: { columnName: 'column 3', data: [6] },
+      },
+    });
+  });
+});

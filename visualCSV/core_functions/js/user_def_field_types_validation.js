@@ -28,7 +28,9 @@ export const userDefFieldTypesValidation = (data, fieldType, col) => {
         ) !== null
       );
     } else {
-      throw "invalid fieldType, valid fieldTypes are 'string', 'number' and 'date'";
+      throw Error(
+        "invalid fieldType, valid fieldTypes are 'string', 'number' and 'date'",
+      );
     }
   };
 

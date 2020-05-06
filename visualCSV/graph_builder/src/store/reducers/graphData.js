@@ -4,6 +4,8 @@
  *  moveColumnToLegends: Moves a column to the legends section.
  *  moveColumnToTables: Moves a column back to its table.
  *  setColumnData: Stores the data belonging to a column.
+ *  unAggregate: Expands the data in the dataset, such that if they were aggregated before,
+ *    they effectively will become un-aggregated.
  */
 
 // IMPORTS
@@ -260,8 +262,64 @@ const setColumnData = (state, action) => {
   return updateObject(state, { columns: updatedColumns });
 };
 
+const _aggregate_legends = (xAxisData, legendData, method) => {
+  /**Aggregates data.
+   * Args:
+   *  xAxisData: (arr) Array of data which make up the x-axis.
+   *  legendData: (arr) Array of data to be aggregated.
+   *  method: (str) Aggregation method.
+   */
+
+  // Set the x-axis and form an empty dictionary key/value relationship where
+  // each value is an empty list.
+  let aggData = {};
+  const xAxisKeys = [...new Set(xAxisData)];
+  for (const key of xAxisKeys) {
+    aggData[key] = [];
+  }
+
+  // Bucket each piece of data in accordance with the x-axis.
+  for (let x = 0; x < xAxisData.length; x++) {
+    aggData[xAxisData[x]].push(legendData[x]);
+  }
+
+  // Aggregate
+  switch (method) {
+    case 'COUNT':
+      for (const xAxisKey of xAxisKeys) {
+        aggData[xAxisKey] = aggData[xAxisKey].length;
+      }
+      break;
+
+    case 'SUM':
+      for (const xAxisKey of xAxisKeys) {
+        aggData[xAxisKey] = aggData[xAxisKey].reduce((a, b) => a + b, 0);
+      }
+      break;
+
+    case 'AVERAGE':
+      for (const xAxisKey of xAxisKeys) {
+        aggData[xAxisKey] =
+          aggData[xAxisKey].reduce((a, b) => a + b, 0) /
+          aggData[xAxisKey].length;
+      }
+      break;
+
+    default:
+      throw Error('Aggregation method is not valid.');
+  }
+
+  // Convert the aggregated data to an ordered array.
+  const results = [];
+  for (const xAxisKey of xAxisKeys) {
+    results.push(aggData[xAxisKey]);
+  }
+
+  return results;
+};
+
 const addDataSet = (state, action) => {
-  /**Adds a new dataset. */
+  /**Adds a new dataset. This is used primarily to build the graph. */
   let bgColour;
   let borderColour;
 
@@ -274,7 +332,7 @@ const addDataSet = (state, action) => {
     bgColour = `${colourPrefix}, .6)`;
     borderColour = `${colourPrefix}, 1)`;
 
-    bgColour = bgColour;
+    bgColour = action.bgColour;
     borderColour = action.borderColour ? action.borderColour : borderColour;
   }
 
@@ -282,18 +340,117 @@ const addDataSet = (state, action) => {
     ? action.label
     : state.columns[action.columnID].columnName;
 
+  // How the data is built is dependant on the aggregation method as well as
+  // the axis. By default, for every bit of data, there will be a separate
+  // column. Through aggregation these will be merged.
+
+  // If there is any aggregation, then the x-axis becomes the set of itself and
+  // the y-axis is aggregated accordingly.
+  let data;
+  if (state.columns[action.columnID].data) {
+    data = state.columns[action.columnID].data;
+  } else {
+    data = [];
+  }
+
+  if (action.aggregation) {
+    if (action.axis === 'x') {
+      data = [...new Set(data)];
+    } else if (state.sections.xAxis.column.length) {
+      const xAxisCol = state.sections.xAxis.column[0];
+      const xAxisData = state.columns[xAxisCol].data;
+      data = _aggregate_legends(xAxisData, data, action.aggregation);
+    }
+  }
+
   const updatedDataSet = updateObject(state.dataSets, {
     [action.columnID]: {
       label: label,
-      data: state.columns[action.columnID].data
-        ? state.columns[action.columnID].data
-        : [],
+      data: data,
       backgroundColor: bgColour,
       borderColor: borderColour,
       borderWidth: action.borderWidth ? action.borderWidth : 1,
       index: Object.keys(state.dataSets).length,
     },
   });
+
+  return updateObject(state, { dataSets: updatedDataSet });
+};
+
+const reAggregate = (state, action) => {
+  /**Re-aggregates all the datasets. */
+
+  if (!action.method) {
+    return state;
+  }
+
+  // Aggregate the x-axis if possible. If there isn't a column set up as the
+  // x-axis then return the state as it is.
+
+  if (state.sections.xAxis.column.length) {
+    const xAxisID = state.sections.xAxis.column[0];
+    let xAxisSet = state.columns[xAxisID].data;
+    xAxisSet = [...new Set(xAxisSet)];
+
+    if (state.columns[xAxisID].data.length) {
+      // Change the x-axis to it's set version.
+      let updatedDataSet = { ...state.dataSets };
+      const xAxisData = state.columns[xAxisID].data;
+
+      const updatedXAxis = updateObject(updatedDataSet[xAxisID], {
+        data: xAxisSet,
+      });
+
+      updatedDataSet = updateObject(updatedDataSet, {
+        [xAxisID]: updatedXAxis,
+      });
+
+      // Update all legends
+      const legendIDs = Object.keys(updatedDataSet).filter(
+        (id) => id !== xAxisID,
+      );
+
+      for (const legendID of legendIDs) {
+        const updatedLegendData = _aggregate_legends(
+          xAxisData,
+          state.columns[legendID].data,
+          action.method,
+        );
+
+        const updatedLegend = updateObject(updatedDataSet[legendID], {
+          data: updatedLegendData,
+        });
+
+        updatedDataSet = updateObject(updatedDataSet, {
+          [legendID]: updatedLegend,
+        });
+      }
+
+      // Update and return the state.
+      return updateObject(state, { dataSets: updatedDataSet });
+    } else {
+      return state;
+    }
+  } else {
+    return state;
+  }
+};
+
+const unAggregate = (state) => {
+  /**Expands the data in the dataset, such that if they were aggregated before,
+   * they effectively will become un-aggregated.
+   */
+
+  let updatedDataSet = { ...state.dataSets };
+
+  for (const columnID of Object.keys(updatedDataSet)) {
+    const updatedColumn = updateObject(updatedDataSet[columnID], {
+      data: state.columns[columnID].data,
+    });
+    updatedDataSet = updateObject(updatedDataSet, {
+      [columnID]: updatedColumn,
+    });
+  }
 
   return updateObject(state, { dataSets: updatedDataSet });
 };
@@ -312,6 +469,10 @@ const reducer = (state = initialState, action) => {
       return setColumnData(state, action);
     case actionTypes.ADD_DATA_SET:
       return addDataSet(state, action);
+    case actionTypes.RE_AGGREGATE:
+      return reAggregate(state, action);
+    case actionTypes.UN_AGGREGATE:
+      return unAggregate(state);
     default:
       return state;
   }

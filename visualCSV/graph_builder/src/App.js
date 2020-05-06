@@ -78,28 +78,21 @@ class App extends Component {
 
     // Retrieve and store the contents of a column if the user has moved it to
     // either the x-axis or the legend and then add it as a dataset.
-    if (
-      destination.droppableId === 'xAxis' ||
-      destination.droppableId === 'legends'
-    ) {
-      this.updateData(source.droppableId, draggableId);
-      // this.props.onAddDataSet(
-      //   draggableId,
-      //   this.props.columns[draggableId].columnName,
-      //   'rgba(30, 40, 50, 0.8)',
-      //   null,
-      //   null,
-      // );
+    if (destination.droppableId === 'xAxis') {
+      this.updateData(source.droppableId, draggableId, 'x');
+    } else if (destination.droppableId === 'legends') {
+      this.updateData(source.droppableId, draggableId, 'y');
     }
   };
 
-  updateData = (table, columnID) => {
+  updateData = (table, columnID, axis) => {
     /**Dispatch an action to the redux store which will update a column with
      * data if it does not contain any data.
      * Args:
-     *  table: Table name.
-     *  columnID: A column ID which exists in the redux store. Note: the format
-     *    of this arg is [column name]__[table_name]
+     *  table: (str) Table name.
+     *  columnID: (str) A column ID which exists in the redux store. Note: the
+     *    format of this arg is [column name]__[table_name]
+     *  axis: (str) Axis in which the data is being added to.
      */
 
     const column = columnID.split('__' + table)[0];
@@ -111,6 +104,8 @@ class App extends Component {
         null,
         null,
         null,
+        this.props.aggregation,
+        axis,
       );
 
     if (this.props.columns[columnID].data === undefined) {
@@ -154,6 +149,7 @@ const mapStateToProps = (state) => {
     columns: state.graphData.columns,
     tables: state.graphData.tables,
     showingOptions: state.graphData.showingOptions,
+    aggregation: state.graphOptions.aggregation,
   };
 };
 
@@ -169,9 +165,25 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.moveColumnToTables(columnID, source, destID, destIndex)),
     onSetColumnData: (table, column, data) =>
       dispatch(actions.setColumnData(table, column, data)),
-    onAddDataSet: (columnID, label, bgColour, borderColor, borderWidth) =>
+    onAddDataSet: (
+      columnID,
+      label,
+      bgColour,
+      borderColor,
+      borderWidth,
+      aggregation,
+      axis,
+    ) =>
       dispatch(
-        actions.addDataSet(columnID, label, bgColour, borderColor, borderWidth),
+        actions.addDataSet(
+          columnID,
+          label,
+          bgColour,
+          borderColor,
+          borderWidth,
+          aggregation,
+          axis,
+        ),
       ),
   };
 };

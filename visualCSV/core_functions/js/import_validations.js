@@ -5,7 +5,6 @@ export const checkBaseStructure = (headers, content) => {
    * These do not check the field type but with check that there is headers
    * and content and each row of data is the same length.
    */
-  let valid = true;
 
   // Checks if either of the two variables are falsy.
   if (!headers || !content) {

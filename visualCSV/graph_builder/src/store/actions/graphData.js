@@ -8,6 +8,9 @@
  *    from a `table` to the store.
  *  addDataSet: Action to add a new dataset.
  *  removeDataSet: Action to remove a dataset.
+ *  reAggregate: Re-aggregates all the datasets.
+ *  unAggregate: Expands the data in the dataset, such that if they were aggregated before,
+ *    they effectively will become un-aggregated.
  */
 
 import * as actionTypes from './actionTypes';
@@ -33,6 +36,7 @@ export const setColumnAsXAxis = (tableID, columnID, source) => {
     tableID: tableID,
     columnID: columnID,
     source: source,
+
   };
 };
 
@@ -93,6 +97,7 @@ export const setColumnData = (table, column, data) => {
     table: table,
     column: column,
     data: data,
+
   };
 };
 
@@ -104,12 +109,16 @@ export const addDataSet = (
    *  bgColour: (str) Background colour.
    *  borderColour: (str) Line colour.
    *  borderWidth: (int) Border width (px).
+   *  aggregation: (str) How should the data be aggregated?
+   *  axis: (str ['x'|'y']): The axis in which the data is being added to.
    */
   columnID,
   label = null,
   bgColour = null,
   borderColour = null,
   borderWidth = 1,
+  aggregation = null,
+  axis
 ) => {
   return {
     type: actionTypes.ADD_DATA_SET,
@@ -118,5 +127,27 @@ export const addDataSet = (
     bgColour: bgColour,
     borderColour: borderColour,
     borderWidth: borderWidth,
+    aggregation: aggregation,
+    axis
   };
 };
+
+export const reAggregate = (method) => {
+  /**Re-aggregates all the datasets.
+   * Args:
+   *  method: (str) Aggregation method.
+   */
+  return {
+    type: actionTypes.RE_AGGREGATE,
+    method: method
+  }
+}
+
+export const unAggregate = () => {
+  /**Expands the data in the dataset, such that if they were aggregated before,
+   * they effectively will become un-aggregated.
+   */
+  return {
+    type: actionTypes.UN_AGGREGATE
+  }
+}

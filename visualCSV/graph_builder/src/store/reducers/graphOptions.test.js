@@ -1512,3 +1512,19 @@ describe('UPDATE_AXIS_GRID_0_LINE_COLOUR', () => {
     });
   });
 });
+
+describe('UPDATE_AGGREGATION_METHOD', () => {
+  const state = { aggregation: 'SUM' };
+  const reducer = graphOptionsReducer(state, {
+    type: actionTypes.UPDATE_AGGREGATION_METHOD,
+    method: 'COUNT',
+  });
+
+  it('should update the aggregation method to `COUNT`', () => {
+    expect(reducer.aggregation).toEqual('COUNT');
+  });
+
+  it('should not mutate the original state.', () => {
+    expect(state.aggregation).toEqual('SUM');
+  });
+});

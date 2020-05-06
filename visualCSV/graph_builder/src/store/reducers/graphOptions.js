@@ -27,6 +27,7 @@
  *  updateAxisGridLineColour: Updates the axis grid line colour.
  *  updateAxisGrid0LineWidth: Updates the axis grid line width at 0.
  *  updateAxisGrid0LineColour: Updates the axis grid line colour at 0.
+ *  updateAggregationMethod: Updates the aggregation method.
  */
 
 // IMPORTS
@@ -110,6 +111,7 @@ const scatter = merge(sharedOptions, {});
 const initialState = {
   graphType: 'bar',
   showingOptions: false,
+  aggregation: 'AVERAGE',
   options: {
     bar: bar,
     pie: pie,
@@ -424,6 +426,14 @@ const updateAxisGrid0LineColour = (state, action) => {
   );
 };
 
+const updateAggregationMethod = (state, action) => {
+  /**Updates the aggregation method.
+   * Args:
+   *  method: (str) New aggregation method.
+   */
+  return updateObject(state, { aggregation: action.method });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.UPDATE_GRAPH_TYPE:
@@ -464,6 +474,8 @@ const reducer = (state = initialState, action) => {
       return updateAxisGrid0LineWidth(state, action);
     case actionTypes.UPDATE_AXIS_GRID_0_LINE_COLOUR:
       return updateAxisGrid0LineColour(state, action);
+    case actionTypes.UPDATE_AGGREGATION_METHOD:
+      return updateAggregationMethod(state, action);
     default:
       return state;
   }

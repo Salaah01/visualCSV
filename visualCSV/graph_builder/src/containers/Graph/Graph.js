@@ -43,10 +43,11 @@ class Graph extends Component {
     let labels = [];
     if (this.props.sections.xAxis.column.length) {
       const column = this.props.sections.xAxis.column;
-      if (this.props.columns[column].data) {
-        labels = this.props.columns[column].data;
+      if (this.props.dataSets[column] && this.props.dataSets[column].data) {
+        labels = this.props.dataSets[column].data;
       }
     }
+
     return labels;
   };
 

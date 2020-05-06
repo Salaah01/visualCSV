@@ -6,6 +6,8 @@ export {
   moveColumnToTables,
   setColumnData,
   addDataSet,
+  reAggregate,
+  unAggregate,
 } from './graphData';
 
 export {
@@ -28,4 +30,5 @@ export {
   updateAxisGridLineColour,
   updateAxisGrid0LineWidth,
   updateAxisGrid0LineColour,
+  updateAggregationMethod,
 } from './graphOptions';

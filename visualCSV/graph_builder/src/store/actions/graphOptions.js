@@ -19,6 +19,7 @@
  *  updateAxisGridLineColour: Updates the axis grid line colour.
  *  updateAxisGrid0LineWidth: Updates the axis grid line width at 0.
  *  updateAxisGrid0LineColour: Updates the axis grid line colour at 0.
+ *  updateAggregationMethod: Updates the aggregation method.
  */
 
 import * as actionTypes from './actionTypes';
@@ -227,5 +228,16 @@ export const updateAxisGrid0LineColour = (axis, colour) => {
     type: actionTypes.UPDATE_AXIS_GRID_0_LINE_COLOUR,
     axis: axis,
     colour: colour,
+  };
+};
+
+export const updateAggregationMethod = (method) => {
+  /**Updates the aggregation method.
+   * Args:
+   *  method: (str) New aggregation method.
+   */
+  return {
+    type: actionTypes.UPDATE_AGGREGATION_METHOD,
+    method: method,
   };
 };
