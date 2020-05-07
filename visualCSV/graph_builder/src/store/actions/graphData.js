@@ -11,6 +11,7 @@
  *  reAggregate: Re-aggregates all the datasets.
  *  unAggregate: Expands the data in the dataset, such that if they were aggregated before,
  *    they effectively will become un-aggregated.
+ *  updateDataSetColour: Updates the colour for a data set.
  */
 
 import * as actionTypes from './actionTypes';
@@ -36,7 +37,6 @@ export const setColumnAsXAxis = (tableID, columnID, source) => {
     tableID: tableID,
     columnID: columnID,
     source: source,
-
   };
 };
 
@@ -71,8 +71,10 @@ export const moveColumnToTables = (
   /**Action to move a column back to its table.
    * Args:
    *  columnID: (str) The columnID of the source column.
-   *  source: (str[tables|legend]) Where is the column being moved from?
-   *  destinationID: (str) The destination ID.
+   *  source: (str['tables'|'legend'|'x-axis']) Where is the column being moved
+   *    from?
+   *  destinationID: (str) The destination ID. Either a tableID, x-axis or
+   *    legends.
    *  destinationIndex: (int) Index at which the element has been dropped.
    */
   return {
@@ -97,7 +99,6 @@ export const setColumnData = (table, column, data) => {
     table: table,
     column: column,
     data: data,
-
   };
 };
 
@@ -118,7 +119,7 @@ export const addDataSet = (
   borderColour = null,
   borderWidth = 1,
   aggregation = null,
-  axis
+  axis,
 ) => {
   return {
     type: actionTypes.ADD_DATA_SET,
@@ -128,7 +129,7 @@ export const addDataSet = (
     borderColour: borderColour,
     borderWidth: borderWidth,
     aggregation: aggregation,
-    axis
+    axis,
   };
 };
 
@@ -139,15 +140,28 @@ export const reAggregate = (method) => {
    */
   return {
     type: actionTypes.RE_AGGREGATE,
-    method: method
-  }
-}
+    method: method,
+  };
+};
 
 export const unAggregate = () => {
   /**Expands the data in the dataset, such that if they were aggregated before,
    * they effectively will become un-aggregated.
    */
   return {
-    type: actionTypes.UN_AGGREGATE
-  }
-}
+    type: actionTypes.UN_AGGREGATE,
+  };
+};
+
+export const updateDataSetColour = (columnID, colour) => {
+  /**Updates the colour for a data set.
+   * Args:
+   *  columnID: (str) The column ID of the data set to update.
+   *  colour: (obj) The new colour as an RGB component.
+   */
+  return {
+    type: actionTypes.UPDATE_DATA_SET_COLOUR,
+    columnID: columnID,
+    colour: colour,
+  };
+};

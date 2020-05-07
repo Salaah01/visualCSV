@@ -11,7 +11,6 @@ import classes from './Graph.module.scss';
 import Spinner from '../../../../shared_js_components/UI/spinners/spinner1/Spinner';
 import Graphs from '../../components/Graphs/Graphs';
 import { hexToRgb } from '../../../../core_functions/js';
-import { Bar } from 'react-chartjs-2';
 
 class Graph extends Component {
   state = {

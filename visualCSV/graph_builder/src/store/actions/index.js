@@ -8,6 +8,7 @@ export {
   addDataSet,
   reAggregate,
   unAggregate,
+  updateDataSetColour,
 } from './graphData';
 
 export {

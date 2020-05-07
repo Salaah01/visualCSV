@@ -6,6 +6,7 @@
  *  setColumnData: Stores the data belonging to a column.
  *  unAggregate: Expands the data in the dataset, such that if they were aggregated before,
  *    they effectively will become un-aggregated.
+ *  updateDataSetColour: Updates the colour for a data set.
  */
 
 // IMPORTS
@@ -166,7 +167,7 @@ const moveColumnToLegends = (state, action) => {
 
   // Remove column from `state.sections.xAxis.column` if the column came from
   // the x-axis section legends.
-  else if (action.source === 'x-axis') {
+  else if (action.source === 'xAxis') {
     const updatedXAxis = updateObject(state.sections.xAxis, {
       column: [],
     });
@@ -372,8 +373,6 @@ const addDataSet = (state, action) => {
     },
   });
 
-  console.log(updatedDataSet)
-
   return updateObject(state, { dataSets: updatedDataSet });
 };
 
@@ -455,6 +454,27 @@ const unAggregate = (state) => {
   return updateObject(state, { dataSets: updatedDataSet });
 };
 
+const updateDataSetColour = (state, action) => {
+  /**Updates the colour for a data set.
+   * Args (Action props):
+   *  columnID: (str) The column ID of the data set to update.
+   *  colour: (ojb) The new colour as an RGB component.
+   */
+
+  const colourPrefix = `rgba(${action.colour.r}, ${action.colour.g}, ${action.colour.b}`;
+
+  const updatedDataSet = updateObject(state.dataSets[action.columnID], {
+    backgroundColor: `${colourPrefix}, 1)`,
+    borderColor: `${colourPrefix}, 0.6)`,
+  });
+
+  const updatedDataSets = updateObject(state.dataSets, {
+    [action.columnID]: updatedDataSet,
+  });
+
+  return updateObject(state, { dataSets: updatedDataSets });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_USER_TABLES_DATA:
@@ -473,6 +493,8 @@ const reducer = (state = initialState, action) => {
       return reAggregate(state, action);
     case actionTypes.UN_AGGREGATE:
       return unAggregate(state);
+    case actionTypes.UPDATE_DATA_SET_COLOUR:
+      return updateDataSetColour(state, action);
     default:
       return state;
   }

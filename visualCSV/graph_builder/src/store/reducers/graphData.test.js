@@ -962,3 +962,65 @@ describe('UN_AGGREGATE', () => {
     });
   });
 });
+
+describe('UPDATE_DATA_SET_COLOUR', () => {
+  const state = {
+    dataSets: {
+      column_1: {
+        label: 'column_1',
+        backgroundColor: 'red',
+        borderColor: 'dark red',
+      },
+      column_2: {
+        label: 'column_2',
+        backgroundColor: 'blue',
+        borderColor: 'dark blue',
+      },
+    },
+    type: 'bar',
+  };
+
+  const reducer = graphDataReducer(state, {
+    type: actionTypes.UPDATE_DATA_SET_COLOUR,
+    columnID: 'column_1',
+    colour: { r: 255, g: 25, b: 2 },
+  });
+
+  it('should update the colour for `column_1`.', () => {
+    expect(reducer.dataSets.column_1).toEqual({
+      label: 'column_1',
+      backgroundColor: 'rgba(255, 25, 2, 1)',
+      borderColor: 'rgba(255, 25, 2, 0.6)',
+    });
+  });
+
+  it('should not affect `column_2`.', () => {
+    expect(reducer.dataSets.column_2).toEqual({
+      label: 'column_2',
+      backgroundColor: 'blue',
+      borderColor: 'dark blue',
+    });
+  });
+
+  it("should not lose the `type` info. (prevent bad override).", () => {
+    expect(reducer.type).toEqual('bar')
+  })
+
+  it("should not mutate the original state.", () => {
+    expect(state).toEqual({
+      dataSets: {
+        column_1: {
+          label: 'column_1',
+          backgroundColor: 'red',
+          borderColor: 'dark red',
+        },
+        column_2: {
+          label: 'column_2',
+          backgroundColor: 'blue',
+          borderColor: 'dark blue',
+        },
+      },
+      type: 'bar',
+    })
+  })
+});
