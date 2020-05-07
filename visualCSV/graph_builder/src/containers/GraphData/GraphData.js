@@ -107,6 +107,7 @@ class GraphData extends Component {
        */
       this.props.onMoveColumnToTables(
         columnID,
+        section,
         this.props.columns[columnID].table,
         null,
       );
