@@ -37,6 +37,8 @@ class Graph extends Component {
           <AggregateDropDown
             onReAggregate={this.props.onReAggregate}
             onUnAggregate={this.props.onUnAggregate}
+            onUpdateAggregationMtd={this.props.onUpdateAggregationMtd}
+            aggregation={this.props.aggregation}
           />
         </div>
         <TitleOptions
@@ -59,6 +61,7 @@ class Graph extends Component {
 const mapStateToProps = (state) => {
   return {
     graphType: state.graphOptions.graphType,
+    aggregation: state.graphOptions.aggregation,
   };
 };
 
@@ -69,6 +72,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.updateYAxisStackOpt(opt, graphType)),
     onReAggregate: (method) => dispatch(actions.reAggregate(method)),
     onUnAggregate: () => dispatch(actions.unAggregate()),
+    onUpdateAggregationMtd: (method) =>
+      dispatch(actions.updateAggregationMethod(method)),
   };
 };
 

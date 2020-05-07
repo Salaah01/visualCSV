@@ -8,10 +8,23 @@ import React, { Fragment } from 'react';
 import classes from './AggregateDropDown.module.scss';
 
 const aggregateDropDown = (props) => {
+  /**Renders the aggregation dropdown options. Interacting with this will
+   * change how the data is aggregated.
+   */
+
   const onClickHandler = (option) => {
     /**Depending on what button the user clicks on dispatches an action to the
      * redux store to either aggregate the values or to un-aggregate.
+     * option:
      */
+
+    // If the aggregation is not changed, do not dispatch an action.
+    if (option.toUpperCase() === props.aggregation.toUpperCase()) {
+      return;
+    } else {
+      props.onUpdateAggregationMtd(option.toUpperCase());
+    }
+
     if (option) {
       props.onReAggregate(option.toUpperCase());
     } else {

@@ -111,7 +111,7 @@ const scatter = merge(sharedOptions, {});
 const initialState = {
   graphType: 'bar',
   showingOptions: false,
-  aggregation: 'AVERAGE',
+  aggregation: 'SUM',
   options: {
     bar: bar,
     pie: pie,
