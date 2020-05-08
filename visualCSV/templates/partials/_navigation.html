@@ -1,0 +1,63 @@
+{% load static %}
+<nav class="nav">
+  <div class="nav__option_group">
+    <div class="nav__option">
+      <a class="nav__option__link nav__option__home" href="#">
+        <span><i class="fas fa-chart-pie"></i></span>
+      </a>
+    </div>
+    <!-- Data Loader -->
+    <div class="nav__option">
+      <a
+        href="{% url 'data_loader' %}"
+        class="nav__option__link {% if 'data_loader' in request.path %} nav__option__link--active {% endif %}"
+        {% if not user.is_authenticated %}disabled{% endif %}
+      >
+        <span class="nav__option__link__icon"><i class="fas fa-upload"></i></span>
+        <span>Data Loader</span>
+      </a>
+    </div>
+    <div class="nav__option">
+      <a
+        href="{% url 'graph_builder' %}"
+        class="nav__option__link {% if 'graphbuilder' in request.path %} nav__option__link--active {% endif %}"
+        {% if not user.is_authenticated %}disabled{% endif %}
+      >
+        <span class="nav__option__link__icon"><i class="fas fa-cubes"></i></span>
+        <span>Graph Builder</span>
+      </a>
+    </div>
+  </div>
+  <div class="nav__option_group">
+    {% if user.is_authenticated %}
+    <div class="nav__option">
+      <a
+        href="#"
+        class="nav__option__link"
+      >
+        <span class="nav__option__link__icon"><i class="fas fa-sign-out-alt"></i></span>
+        <span>Log Out</span>
+      </a>
+    </div>
+    {% else %}
+    <div class="nav__option">
+      <a
+        href="#"
+        class="nav__option__link"
+      >
+        <span class="nav__option__link__icon"><i class="fas fa-user-plus"></i></span>
+        <span>Sign Up</span>
+      </a>
+    </div>
+    <div class="nav__option">
+      <a
+        href="#"
+        class="nav__option__link"
+      >
+        <span class="nav__option__link__icon"><i class="fas fa-sign-in-alt"></i></span>
+        <span>Login</span>
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</nav>

@@ -1,20 +1,16 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'icons/icons.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/main.min.css' %}" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div id="root"></div>
 
-    <p id="user-tables-data">{{ userTables }}</p>
-    <p id='user-id'>{{ userID }}</p>
-    <p id='testing'></p>
-  </body>
+{% block title %} | Load Data {% endblock %}
 
+{% block content %}
+  <div id="root"></div>
+
+  <p id="user-tables-data">{{ userTables }}</p>
+  <p id='user-id'>{{ userID }}</p>
+  <p id='testing'></p>
+{% endblock %}
+
+{% block footer %}
   <script src="{% static 'data_loader/main.js' %}"></script>
-</html>
+{% endblock %}

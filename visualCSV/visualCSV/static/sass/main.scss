@@ -1,14 +1,15 @@
 // Abstracts
-@import "abstracts/variables";
-@import "abstracts/functions";
-@import "abstracts/mixins";
+@import 'abstracts/variables';
+@import 'abstracts/functions';
+@import 'abstracts/mixins';
 
 // Components
+@import 'components/navigation';
 
 // Base Styling
-@import "base/typography";
-@import "base/utilities";
-@import "base/base";
+@import 'base/typography';
+@import 'base/utilities';
+@import 'base/base';
 
 // Layout Styling
 

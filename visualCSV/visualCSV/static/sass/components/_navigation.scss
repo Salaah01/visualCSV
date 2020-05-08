@@ -1,0 +1,37 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: #343a40;
+  font-family: inherit;
+  margin-bottom: 3rem;
+
+  &__option_group {
+    display: flex;
+  }
+
+  &__option {
+    &__link {
+      padding: 2rem 3rem;
+      display: inline-block;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: rgba(#fff, 0.75);
+
+      &__icon {
+        margin-right: 0.5rem;
+      }
+
+      &:hover,
+      &--active {
+        color: #fff;
+      }
+    }
+
+    &__home {
+      color: #fff;
+      padding: 1rem 0 1rem 3rem;
+      font-size: 3rem;
+    }
+  }
+}
