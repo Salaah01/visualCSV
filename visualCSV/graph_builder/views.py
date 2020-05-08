@@ -11,9 +11,8 @@ import json
 # Third Party Imports
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib import messages, auth
+from django.contrib import messages
 from django.views import View
-import psycopg2
 
 # Local Imports
 import core_functions
@@ -23,7 +22,14 @@ class GraphBuilder(View):
     """View for the GraphBuilder page."""
 
     def get(self, request):
-        return render(request, 'graph_builder/graph_builder.html')
+        if request.user.is_authenticated:
+            return render(request, 'graph_builder/graph_builder.html')
+        else:
+            messages.error(
+                request,
+                'You need to be logged in to view this page.'
+            )
+            return redirect('login')
 
 
 class TableMetaDataAPI(View):

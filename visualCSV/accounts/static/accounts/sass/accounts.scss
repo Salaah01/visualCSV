@@ -1,0 +1,79 @@
+@import '../../../../visualCSV/static/sass/abstracts/variables';
+
+.register-login {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.9)),
+    url('/static/img/accounts/accounts_bg.jpg');
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+
+  &__container {
+    background-color: rgba(0, 0, 0, 0.55);
+    padding: 5rem 6rem 7rem;
+    border-radius: 10px;
+    width: 50rem;
+  }
+
+  &__heading {
+    margin-bottom: 3rem;
+    color: $colour-primary;
+    text-align: center;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+
+    &__section {
+      display: flex;
+      margin-top: 0.5rem;
+      & > :not(:last-child) {
+        margin-right: 1.5rem;
+      }
+    }
+
+    &__input {
+      height: 3rem;
+      padding: 2rem;
+      border-radius: 5px;
+      outline: none;
+      border: 1px solid $colour-grey-dark-1;
+      margin-bottom: 1rem;
+
+      &[invalid='true'] {
+        box-shadow: 0 0 1px 2px red;
+      }
+
+      &--error {
+        display: none;
+      }
+
+      &[invalid='true'] + &--error {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        width: 90vw;
+        z-index: 100;
+        position: absolute;
+        top: 0;
+        margin-top: 10rem;
+        text-align: center;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    &__btn {
+      margin-bottom: 1rem;
+      text-align: center;
+      width: 50%;
+    }
+  }
+}

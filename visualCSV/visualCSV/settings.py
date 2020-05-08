@@ -10,8 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+# IMPORTS
+# Python Core Imports
 import sys
 import os
+
+# Third Party Imports
+from django.contrib.messages import constants as messages
+
+# Local Imports
 
 try:
     # A .local_settings file is used in development for ease, in production
@@ -43,8 +50,10 @@ if not DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
-    'data_loader.apps.DataLoaderConfig',
-    'graph_builder.apps.GraphBuilderConfig',
+    'data_loader',
+    'graph_builder',
+    'pages',
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

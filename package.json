@@ -13,7 +13,12 @@
     "watch:main_css": "node-sass visualCSV/visualCSV/static/sass/main.scss visualCSV/visualCSV/static/css/main.min.css -w --output-style compressed",
     "prefix:main_css": "postcss --use autoprefixer -b \"last 10 version\" visualCSV/visualCSV/static/css/main.min.css -o visualCSV/visualCSV/static/css/main.min.css",
     "compress:main_css": "node-sass visualCSV/visualCSV/static/css/main.min.css visualCSV/visualCSV/static/css/main.min.css --output-style compressed",
-    "build:main_css": "npm-run-all prefix:main_css compress:main_css"
+    "build:main_css": "npm-run-all prefix:main_css compress:main_css",
+    "watch:accounts_css": "node-sass visualCSV/accounts/static/accounts/sass/accounts.scss visualCSV/accounts/static/accounts/css/accounts.min.css -w --output-style compressed",
+    "prefix:accounts_css": "postcss --use autoprefixer -b \"last 10 versions\" visualCSV/accounts/static/accounts/css/accounts.min.css -o visualCSV/accounts/static/accounts/css/accounts.min.css",
+    "compress:accounts_css": "node-sass visualCSV/accounts/static/accounts/css/accounts.min.css visualCSV/accounts/static/accounts/css/accounts.min.css --output-style compressed",
+    "build:accounts_css": "npm-run-all prefix:accounts_css compress:accounts_css",
+    "build:css": "npm-run-all build:main_css build:accounts_css"
   },
   "repository": {
     "type": "git",

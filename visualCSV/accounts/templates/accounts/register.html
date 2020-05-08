@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | Register {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'accounts/css/accounts.min.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+<main class="register-login">
+  <div class="register-login__container">
+    <h1 class="register-login__heading heading-1">Register</h1>
+    <form method="POST" class="register-login__form">
+      {% csrf_token %}
+      <input
+        type="text"
+        name="first_name"
+        class="register-login__form__input"
+        placeholder="First Name"
+        required
+      />
+      <input
+        type="text"
+        name="last_name"
+        class="register-login__form__input"
+        placeholder="Last Name"
+        required
+      />
+      <input
+        type="email"
+        name="email"
+        class="register-login__form__input"
+        placeholder="Email"
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        class="register-login__form__input"
+        id="account-password"
+        placeholder="Password"
+        required
+      />
+      <input
+        type="password"
+        name="password-confirm"
+        class="register-login__form__input"
+        id="account-password-confirm"
+        placeholder="Confirm Password"
+        required
+      />
+      <span
+        class="register-login__form__input--error alert alert--danger"
+        id="account-errors"
+      >
+      </span>
+      <div class="register-login__form__section">
+        <button
+          type="submit"
+          class="register-login__form__btn btn btn--primary"
+          id="account-submit"
+        >Register
+        </button>
+        <a
+          href="{% url 'login' %}"
+          class="register-login__form__btn btn btn--primary"
+        >Login
+        </a>
+      </div>
+    </form>
+  </div>
+</main>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

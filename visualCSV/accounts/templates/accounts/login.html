@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | Login {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'accounts/css/accounts.min.css' %}" />
+{% endblock %}
+{% block content %}
+{% include 'partials/_messages.html' %}
+
+
+<main class="register-login">
+  <div class="register-login__container">
+    <h1 class="register-login__heading heading-1">Login</h1>
+    <form method="POST" class="register-login__form">
+      {% csrf_token %}
+      <input
+        type="email"
+        name="email"
+        class="register-login__form__input"
+        placeholder="Email"
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        class="register-login__form__input"
+        placeholder="Password"
+        required
+      />
+      <span
+        class="register-login__form__input--error alert alert--danger"
+        id="register-errors"
+      >
+    </span>
+    <div class="register-login__form__section">
+        <button
+            type="submit"
+            class="register-login__form__btn btn btn--primary"
+            id="register-submit"
+        >Login
+      </button>
+      <a
+        href="{% url 'register' %}"
+        class="register-login__form__btn btn btn--primary"
+        >Create Account
+      </a>
+    </div>
+
+    </form>
+  </div>
+</main>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

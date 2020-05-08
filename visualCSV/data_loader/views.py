@@ -16,7 +16,7 @@ import traceback
 # Third Party Imports
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib import messages, auth
+from django.contrib import messages
 from django.views import View
 import psycopg2
 
@@ -62,7 +62,11 @@ class DataLoader(View):
             return render(request, 'data_loader/data_loader.html', context)
 
         else:
-            return HttpResponse('<h1>Redirect to sign up screen</h1>')
+            messages.error(
+                request,
+                'You need to be logged in to view this page.'
+            )
+            return redirect('login')
 
     def post(self, request):
         """Post request: validate the import, create database table(s) and

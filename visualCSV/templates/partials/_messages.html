@@ -1,0 +1,9 @@
+{% if messages %}
+  <section class="messages">
+    {% for message in messages %}
+      <div class="message message--{{ message.tags }}">
+          <span>{{ message }}</span>
+      </div>
+    {% endfor %}
+  </section>
+{% endif %}

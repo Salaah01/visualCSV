@@ -11,7 +11,6 @@
       <a
         href="{% url 'data_loader' %}"
         class="nav__option__link {% if 'data_loader' in request.path %} nav__option__link--active {% endif %}"
-        {% if not user.is_authenticated %}disabled{% endif %}
       >
         <span class="nav__option__link__icon"><i class="fas fa-upload"></i></span>
         <span>Data Loader</span>
@@ -21,7 +20,6 @@
       <a
         href="{% url 'graph_builder' %}"
         class="nav__option__link {% if 'graphbuilder' in request.path %} nav__option__link--active {% endif %}"
-        {% if not user.is_authenticated %}disabled{% endif %}
       >
         <span class="nav__option__link__icon"><i class="fas fa-cubes"></i></span>
         <span>Graph Builder</span>
@@ -30,29 +28,36 @@
   </div>
   <div class="nav__option_group">
     {% if user.is_authenticated %}
+    <!-- Logout -->
     <div class="nav__option">
       <a
-        href="#"
+        href="javascript:{document.getElementById('nav-logout').submit()}"
         class="nav__option__link"
       >
         <span class="nav__option__link__icon"><i class="fas fa-sign-out-alt"></i></span>
         <span>Log Out</span>
       </a>
+      <form action="{% url 'logout' %}" method="POST" id="nav-logout">
+        {% csrf_token %}
+        <input type="hidden" />
+      </form>
     </div>
     {% else %}
+    <!-- Sign Up -->
     <div class="nav__option">
       <a
-        href="#"
-        class="nav__option__link"
+        href="{% url 'register' %}"
+        class="nav__option__link {% if 'register' in request.path %} nav__option__link--active {% endif %}"
       >
         <span class="nav__option__link__icon"><i class="fas fa-user-plus"></i></span>
         <span>Sign Up</span>
       </a>
     </div>
+    <!-- Login -->
     <div class="nav__option">
       <a
-        href="#"
-        class="nav__option__link"
+        href="{% url 'login' %}"
+        class="nav__option__link {% if 'login' in request.path %} nav__option__link--active {% endif %}"
       >
         <span class="nav__option__link__icon"><i class="fas fa-sign-in-alt"></i></span>
         <span>Login</span>
