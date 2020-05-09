@@ -132,7 +132,7 @@ class App extends Component {
           gridTemplateColumns: this.props.showingOptions ? '1fr 1fr' : null,
         }}
       >
-        <h1 className={classes.app__heading}>Graph Builder</h1>
+        <h1 className={`heading-1 ${classes.app__heading}`}>Graph Builder</h1>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Graph />
           <GraphData />

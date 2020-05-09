@@ -4,11 +4,45 @@
 {% block title %} | Load Data {% endblock %}
 
 {% block content %}
-  <div id="root"></div>
+  <header class="header">
+    <h1 class="heading-1">Load Data</h1>
+    <div class="u-margin-bottom-medium u-margin-top-small">
+      <p class="u-margin-bottom-small">
+        Begin by uploading the CSVs onto our database by dragging and dropping
+        your files below.
+      </p>
+      <p>
+        Once you have add your files select any primary and foreign keys you
+        may wish to select (optional).
+      </p>
+    </div>
+    <h2 class="heading-2">What are Primary and Foreign Keys?</h2>
+    <div class="u-margin-bottom-medium">
+      <p class="u-margin-bottom-small u-margin-top-small">
+        A primary key is a column a database that uniquely identifies that
+        record. For example, on a list of students details there may be column
+        called studentID which their unique student number. The studentID would
+        be the primary key as it is unique and can be used to identify any
+        student.
+      </p>
+      <p>
+        A foreign key is a column a database table which is a primary key on
+        another table. It is used to form relationships between multiple
+        tables. For example, if you have a table with student test details,
+        rather than using the students' names, you may have a studentID field
+        which is defined in another table. This studentID column now enables
+        you to be link an score back to a student.
+      </p>
+    </div>
+  </header>
 
-  <p id="user-tables-data">{{ userTables }}</p>
-  <p id='user-id'>{{ userID }}</p>
-  <p id='testing'></p>
+  <main>
+    <div id="root"></div>
+
+    <p id="user-tables-data" class="hide">{{ userTables }}</p>
+    <p id='user-id' class="hide">{{ userID }}</p>
+  </main>
+
 {% endblock %}
 
 {% block footer %}

@@ -18,7 +18,7 @@ class Graph extends Component {
   state = {
     showTitleOpts: false,
     showLegendOpts: false,
-    showAxesOpts: true,
+    showAxesOpts: false,
   };
 
   toggleShowOptions = (option) =>

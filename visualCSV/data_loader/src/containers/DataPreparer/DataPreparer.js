@@ -114,6 +114,7 @@ class DataPreparer extends Component {
           type="reset"
           disabled={filesLen === 0}
           onClick={this.submitBtnOnClickHandler}
+          className={`btn btn--primary ${classes.btn}`}
         >
           {loadingIcon}Upload Now
         </button>

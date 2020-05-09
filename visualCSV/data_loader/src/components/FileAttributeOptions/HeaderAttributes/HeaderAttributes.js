@@ -57,7 +57,7 @@ const HeaderAttributes = (props) => {
      * header, else update the foreign key.
      */
 
-     console.log(id, header);
+    console.log(id, header);
 
     if (fk !== '__none') {
       props.setForeignKey(id, header, fk);
@@ -67,37 +67,52 @@ const HeaderAttributes = (props) => {
   };
 
   const elems = fileHeaders.map((fileHeader) => (
-    <Fragment>
-      <p>{fileHeader}</p>
-      <input
-        type="radio"
-        name={props.file.name}
-        value={fileHeader}
-        onClick={(event) =>
-          props.setPrimaryKey(props.fileID, event.target.value)
-        }
-      />
-      <select
-        onChange={(event) =>
-          setForeignKeyHandler(
-            props.fileID,
-            event.target[event.target.selectedIndex].getAttribute('header'),
-            event.target.value,
-          )
-        }
-      >
-        <option header={fileHeader} value="__none">(none)</option>
-        {existingTableOptions(fileHeader)}
-        {newTableOptions(fileHeader)}
-      </select>
-    </Fragment>
+    <div className={classes.row}>
+      <div className={classes.cell} data_title="Column">
+        {fileHeader}
+      </div>
+
+      <div className={classes.cell} data_title="Primary Key">
+        <input
+          type="radio"
+          name={props.file.name}
+          value={fileHeader}
+          className={classes.input}
+          onClick={(event) =>
+            props.setPrimaryKey(props.fileID, event.target.value)
+          }
+        />
+      </div>
+
+      <div className={classes.cell} data_title="Foreign Keys">
+        <select
+          className={classes.select}
+          onChange={(event) =>
+            setForeignKeyHandler(
+              props.fileID,
+              event.target[event.target.selectedIndex].getAttribute('header'),
+              event.target.value,
+            )
+          }
+        >
+          <option header={fileHeader} value="__none">
+            (none)
+          </option>
+          {existingTableOptions(fileHeader)}
+          {newTableOptions(fileHeader)}
+        </select>
+      </div>
+    </div>
   ));
 
   return (
-    <div key={props.file.name} className={classes.HeaderAttributes}>
-      <p>Header</p>
-      <p>Primary Key</p>
-      <p>Foreign Keys</p>
+    <div key={props.file.name} className={classes.table}>
+      <div className={`${classes.row} ${classes.header}`}>
+        <div className={classes.cell}>Column</div>
+        <div className={classes.cell}>Primary Key</div>
+        <div className={classes.cell}>Foreign Keys</div>
+      </div>
+
       {elems}
     </div>
   );

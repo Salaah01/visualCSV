@@ -5,9 +5,12 @@
   align-items: center;
   background-color: #fafafa;
   color: #bdbdbd;
-  height: 150px;
+  height: 170px;
   outline: none;
   transition: border 0.24s ease-in-out;
+  margin: 0 auto;
+  border-radius: 7px;
+  margin-bottom: 1rem;
 
   &:focus {
     border-color: #2196f3;
@@ -25,6 +28,7 @@
     border-color: #eeeeee;
     border-style: dashed;
     cursor: pointer;
+    border-radius: inherit;
 
     &:hover {
       background-color: #f3f3f3;
@@ -44,6 +48,14 @@
   &__Item {
     display: flex;
     align-items: center;
+
+    &:first-of-type {
+      margin-top: 2rem;
+    }
+
+    &:last-of-type {
+      margin-bottom: 1rem;
+    }
   }
 }
 
