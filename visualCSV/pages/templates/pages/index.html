@@ -18,24 +18,25 @@
     <h2 class="heading-2 u-margin-bottom-small">How Does it Work</h2>
     <p>
       With every CSV you upload store the data as well in a database. We also
-      ensure that the system is aware that the data you have uploaded belongs to
-      you only.
+      ensure that the system is aware that the data you have uploaded belongs
+      to you only.
     </p>
     <p>
       Once you have uploaded all your CSVs you can simply visit the
-      <a href="{% url 'graph_builder' %}">graph builder</a> page and start
+      <a class="btn-a btn-a--secondary" href="{% url 'graph_builder' %}">graph builder</a> page and start
       creating your graphs.
     </p>
   </div>
   <div class="u-margin-bottom-big">
     <h2 class="heading-2 u-margin-bottom-small">Getting Started</h2>
     <p class="u-margin-bottom-small">
-      Make sure you are <a href="{% url 'login' %}" target="_black">logged in</a>
+      Make sure you are
+      <a class="btn-a btn-a--secondary" href="{% url 'login' %}" target="_black">logged in</a>
       as the system needs to know who the uploaded files belong to.
     </p>
     <p class="u-margin-bottom-small">
       Head over to the
-      <a href="{% url 'data_loader' %}" target="_blank">data loader</a> and start
+      <a class="btn-a btn-a--secondary" href="{% url 'data_loader' %}" target="_blank">data loader</a> and start
       uploading your CSVs.
     </p>
     <video controls poster="{% static 'pages/img/data_loader.jpg' %}">
@@ -47,7 +48,7 @@
     <p class='u-margin-bottom-small u-margin-top-small'>
       Once you have uploaded your CSVs and you're happy to proceed, you can move
       onto the fun bit. Head over to
-      <a href="{% url 'graph_builder' %}" target="_blank">graph builder</a>
+      <a class="btn-a btn-a--secondary" href="{% url 'graph_builder' %}" target="_blank">graph builder</a>
       and start building your graph!
     </p>
     <video controls poster="{% static 'pages/img/graph_builder.jpg' %}">

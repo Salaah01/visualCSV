@@ -145,6 +145,7 @@ svg {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
   transition: color 0.3s ease, background-color 0.3s ease, border 0.3s ease;
+  text-decoration: none;
 
   &--primary,
   &--primary:link,
@@ -197,6 +198,24 @@ svg {
 
     &:active {
       background-color: $colour-secondary;
+    }
+  }
+}
+
+.btn-a {
+  text-decoration: none;
+  padding: 0;
+  outline: none;
+  border-bottom: none;
+  transition: all .3s ease;
+
+  &--secondary,
+  &--secondary:link,
+  &--secondary:visited {
+    color: $colour-secondary-high-sat;
+
+    &:hover {
+      color: rgba($colour-secondary-high-sat, .80);
     }
   }
 }
