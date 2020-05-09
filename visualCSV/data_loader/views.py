@@ -163,14 +163,17 @@ class DataLoader(View):
                     cur.execute(sqlQuery, [tableName])
 
                     # TODO: What happens if no results?
-                    result = cur.fetchone()[0]
+                    result = cur.fetchone()
+                    if result:
 
-                    sqlQuery = f"""ALTER TABLE {core_functions.sanitize(tableName, '_')}
-                        ADD FOREIGN KEY ({core_functions.sanitize(colName), '_'})
-                        REFERENCES {core_functions.sanitize(refTableName, '_')} ({result})
-                        """
+                        result = result[0]
 
-                    cur.execute(sqlQuery)
+                        sqlQuery = f"""ALTER TABLE {core_functions.sanitize(tableName, '_')}
+                            ADD FOREIGN KEY ({core_functions.sanitize(colName, '_')})
+                            REFERENCES {core_functions.sanitize(refTableName, '_')} ({result})
+                            """
+
+                        cur.execute(sqlQuery)
 
                 # Load the data from the CSVs.
                 for row in range(contentsSize):
@@ -205,12 +208,34 @@ class DataLoader(View):
 
             except psycopg2.errors.DatatypeMismatch:
                 report[tableAlias] = 'Mismatch in foreign key types.'
+                messages.error(
+                    request,
+                    f'Mismatch in foreign key types ({tableAlias}).'
+                )
             except psycopg2.errors.DuplicateTable:
                 report[tableAlias] = 'This table already exists.'
-            # except:
-            #     report[tableAlias] = 'Unknown error.'
+                messages.error(
+                    request,
+                    f'This table ({tableAlias}) already exists.'
+                )
+            except psycopg2.errors.UndefinedTable:
+                report[tableAlias] = 'Table does not exist.'
+                messages.error(
+                    request,
+                    f'This table ({tableAlias}) does not exist.'
+                )
+            except:  # noqa: E722
+                print('errors:', traceback.format_exc())
+                report[tableAlias] = 'Unknown error.'
+                messages.error(
+                    request,
+                    f'Unknown error. Please check your data and try again. ({tableAlias})'
+                )
             finally:
-                print(traceback.format_exc())
                 core_functions.close(conn)
 
-        return HttpResponse('<h1>Post request<h1>')
+        if traceback.format_exc():
+            print('errors:', traceback.format_exc())
+            return redirect('data_loader')
+        else:
+            return redirect('graph_builder')

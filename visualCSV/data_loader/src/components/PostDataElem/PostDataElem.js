@@ -28,6 +28,7 @@ const postDataElem = (props) => {
     <textarea
       id="post-data"
       name="post-data"
+      style={{ display: 'none' }}
       value={JSON.stringify(convertFilesDataToJson(props.files))}
     />
   );

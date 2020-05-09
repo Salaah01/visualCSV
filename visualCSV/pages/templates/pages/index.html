@@ -6,40 +6,58 @@
 {% block content %}
 
 <header class="header">
-  <h1>VisualCSV</h1>
-  <p>VisualCSV is an online platform where CSVs can very quickly and easily
+  <h1 class="heading-1">VisualCSV</h1>
+  <p class="u-margin-top-small">VisualCSV is an online platform where CSVs can
+    very quickly and easily
     be converted into graphs.
   </p>
 </header>
 
 <main class="main">
-  <h2>How Does it Work</h2>
-  <p>
-    With every CSV you upload store the data as well in a database. We also
-    ensure that the system is aware that the data you have uploaded belongs to
-    you only.
-  </p>
-  <p>
-    Once you have uploaded all your CSVs you can simply visit the
-    <a href="{% url 'graph_builder' %}">graph builder</a> page and start
-    creating your graphs.
-  </p>
-  <h2>Getting Started</h2>
-  <p>
-    Make sure you are <a href="{% url 'login' %}" target="_black">logged in</a>
-    as the system needs to know who the uploaded files belong to.
-</p>
-<p>
-  Head over to the
-  <a href="{% url 'data_loader' %}" target="_blank">data loader</a> and start
-  uploading your CSVs.
-</p>
-<p>
-  Once you have uploaded your CSVs and you're happy to proceed, you can move
-  onto the fun bit. Head over to
-  <a href="{% url 'graph_builder' %}" target="_blank">graph builder</a>
-  and start building your graph!
-</p>
+  <div class="u-margin-bottom-medium">
+    <h2 class="heading-2 u-margin-bottom-small">How Does it Work</h2>
+    <p>
+      With every CSV you upload store the data as well in a database. We also
+      ensure that the system is aware that the data you have uploaded belongs to
+      you only.
+    </p>
+    <p>
+      Once you have uploaded all your CSVs you can simply visit the
+      <a href="{% url 'graph_builder' %}">graph builder</a> page and start
+      creating your graphs.
+    </p>
+  </div>
+  <div class="u-margin-bottom-big">
+    <h2 class="heading-2 u-margin-bottom-small">Getting Started</h2>
+    <p class="u-margin-bottom-small">
+      Make sure you are <a href="{% url 'login' %}" target="_black">logged in</a>
+      as the system needs to know who the uploaded files belong to.
+    </p>
+    <p class="u-margin-bottom-small">
+      Head over to the
+      <a href="{% url 'data_loader' %}" target="_blank">data loader</a> and start
+      uploading your CSVs.
+    </p>
+    <video controls poster="{% static 'pages/img/data_loader.jpg' %}">
+      <source src="{% static 'pages/img/data_loader.mp4' %}" type="video/mp4">
+      <source src="{% static 'pages/img/data_loader.webm' %}" type="video/webm">
+      <source src="{% static 'pages/img/data_loader.ogv' %}" type="video/ogv">
+        Your browser does not support the video tag.
+    </video>
+    <p class='u-margin-bottom-small u-margin-top-small'>
+      Once you have uploaded your CSVs and you're happy to proceed, you can move
+      onto the fun bit. Head over to
+      <a href="{% url 'graph_builder' %}" target="_blank">graph builder</a>
+      and start building your graph!
+    </p>
+    <video controls poster="{% static 'pages/img/graph_builder.jpg' %}">
+      <source src="{% static 'pages/img/graph_builder.mp4' %}" type="video/mp4">
+      <source src="{% static 'pages/img/graph_builder.webm' %}" type="video/webm">
+      <source src="{% static 'pages/img/graph_builder.ogv' %}" type="video/ogv">
+        Your browser does not support the video tag.
+    </video>
+  </div>
+
 </main>
 
 {% endblock %}
