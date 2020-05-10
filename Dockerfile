@@ -14,7 +14,8 @@ WORKDIR /app/
 # updating whereas it is likely the npm packages may be updated in the future.
 
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt \
+    && python.py migrate
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
