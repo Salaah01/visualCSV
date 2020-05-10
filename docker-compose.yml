@@ -19,7 +19,7 @@ services:
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
         ports:
-            - "5433:5432"
+            - "5432"
         volumes:
             - client_data:/var/lib/postgresql/data/
             - ./client_db_init:/docker-entrypoint-initdb.d
@@ -31,7 +31,7 @@ services:
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
         ports:
-            - "5434:5432"
+            - "5432"
         volumes:
             - client_test_data:/var/lib/postgresql/data/
             - ./client_db_init:/docker-entrypoint-initdb.d
@@ -51,16 +51,15 @@ services:
             - DB_CLIENT_HOST=client_db
             - DB_CLIENT_USER=postgres
             - DB_CLIENT_PASSWORD=postgres
-            - DB_CLIENT_PORT=5433
+            - DB_CLIENT_PORT=5432
             - DB_CLIENT_TEST_ENGINE=django.db.backends.postgresql
             - DB_CLIENT_TEST_HOST=client_test_db
             - DB_CLIENT_TEST_USER=postgres
             - DB_CLIENT_TEST_PASSWORD=postgres
-            - DB_CLIENT_TEST_PORT=5434
+            - DB_CLIENT_TEST_PORT=5432
         volumes:
             - web-django:/app
             - web-static:/app/static
-        command: python3 manage.py runserver 0.0.0.0:8000
         ports:
             - "8000:8000"
         depends_on:

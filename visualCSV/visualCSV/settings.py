@@ -96,21 +96,25 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME'),
         'USER': os.getenv('DB_USER'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
-        'PORT': os.getenv('DB_PORT')
+        'PORT': os.getenv('DB_PORT'),
+        'HOST': os.getenv('DB_HOST')
     },
     'client': {
         'ENGINE': os.getenv('DB_CLIENT_ENGINE'),
         'NAME': os.getenv('DB_CLIENT_NAME'),
         'USER': os.getenv('DB_CLIENT_USER'),
         'PASSWORD': os.getenv('DB_CLIENT_PASSWORD'),
-        'PORT': os.getenv('DB_CLIENT_PORT')
+        'PORT': os.getenv('DB_CLIENT_PORT'),
+        'HOST': os.getenv('DB_CLIENT_HOST')
+
     },
     'client_test': {
         'ENGINE': os.getenv('DB_CLIENT_TEST_ENGINE'),
         'NAME': os.getenv('DB_CLIENT_TEST_NAME'),
         'USER': os.getenv('DB_CLIENT_TEST_USER'),
         'PASSWORD': os.getenv('DB_CLIENT_TEST_PASSWORD'),
-        'PORT': os.getenv('DB_CLIENT_TEST_PORT')
+        'PORT': os.getenv('DB_CLIENT_TEST_PORT'),
+        'HOST': os.getenv('DB_CLIENT_HOST')
     }
 }
 
