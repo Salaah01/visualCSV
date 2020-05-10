@@ -14,8 +14,7 @@ WORKDIR /app/
 # updating whereas it is likely the npm packages may be updated in the future.
 
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt \
-    && python.py migrate
+RUN pip install -r requirements.txt
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
@@ -27,4 +26,4 @@ COPY . .
 RUN npm run build:react
 RUN npm run build:css
 
-WORKDIR /app/visualCSV/
+# WORKDIR /app/visualCSV/

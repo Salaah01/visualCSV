@@ -6,9 +6,27 @@ VisualCSV is a web application which allows users to upload CSVs and build graph
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment notes on how to deploy the project to production.
 
-The easiest and fastest to get started is using [Docker](https://www.docker.com/). If you do have docker installed, you simply need to run `docker compose up` to get started.
+## Installation
 
-If you don't have Docker installed however, the following will help you get installed manually.
+The guide will cover installation using [Docker Compose](https://docs.docker.com/compose/) and installing manually without Docker.
+
+### Installation Using Docker
+
+**Clone the repository**
+Clone (or fork) the repository to your working directory `git clone https://github.com/Salaah01/visualCSV.git`.
+
+**Build the services**
+
+```bash
+docker-compose build
+docker-compose up
+```
+
+This can take a little while the first time round as it does install the node packages.
+The script will bind the visualCSV form the host to the same directory in the container. Therefore, updating files in the host will update the files in the container.
+Once docker-compose has finished it's magic, you are ready to access the site via port 8000 on localhost start developing!
+
+## Installation Manually
 
 ### Prerequisites
 
@@ -75,6 +93,7 @@ Run `python visualCSV\manage.py runserver` to start the development start and ru
 A script exists which will start the JavaScript unit test on watch mode. This can be run using: `npm run test:watch`.
 
 ## Testing
+
 The packages comes with Python and JavaScript unit tests.
 To run the Python unit tests run `python visualCSV\manage.py test`.
 To test JavaScript unit tests run `npm run test`.
