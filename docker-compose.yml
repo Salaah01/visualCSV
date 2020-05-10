@@ -3,34 +3,19 @@ version: '3.2'
 services:
     django_db:
         image: postgres:12.2
-        environment:
-            - POSTGRES_DB=postgres
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-        ports:
-            - "5432:5432"
+        env_file: .django_db.env
         volumes:
             - django_data:/var/lib/postgresql/data/
 
     client_db:
         image: postgres:12.2
-        environment:
-            - POSTGRES_DB=postgres
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-        ports:
-            - "5432"
+        env_file: .client_db.env
         volumes:
             - client_data:/var/lib/postgresql/data/
 
     client_test_db:
         image: postgres:12.2
-        environment:
-            - POSTGRES_DB=postgres
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-        ports:
-            - "5432"
+        env_file: .client_test_db.env
         volumes:
             - client_test_data:/var/lib/postgresql/data/
 
@@ -38,31 +23,13 @@ services:
         build: .
         expose:
             - "8000"
-        environment:
-            - SECRET_KEY=jfghfdjgh374y237y7324hjbf732237f
-            - DB_ENGINE=django.db.backends.postgresql
-            - DB_HOST=django_db
-            - DB_USER=postgres
-            - DB_PASSWORD=postgres
-            - DB_PORT=5432
-            - DB_CLIENT_ENGINE=django.db.backends.postgresql
-            - DB_CLIENT_HOST=client_db
-            - DB_CLIENT_USER=postgres
-            - DB_CLIENT_PASSWORD=postgres
-            - DB_CLIENT_PORT=5432
-            - DB_CLIENT_TEST_ENGINE=django.db.backends.postgresql
-            - DB_CLIENT_TEST_HOST=client_test_db
-            - DB_CLIENT_TEST_USER=postgres
-            - DB_CLIENT_TEST_PASSWORD=postgres
-            - DB_CLIENT_TEST_PORT=5432
+        env_file: .web.env
         volumes:
             - ./:/app
             - web-static:/app/static
         ports:
             - "8000:8000"
-        command: >
-          bash -c "python ./visualCSV/manage.py migrate
-          && python ./visualCSV/manage.py runserver 0.0.0.0:8000"
+        command: python ./visualCSV/manage.py runserver 0.0.0.0:8000
         depends_on:
             - django_db
             - client_db
