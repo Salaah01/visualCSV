@@ -22,7 +22,6 @@ services:
             - "5432"
         volumes:
             - client_data:/var/lib/postgresql/data/
-            - ./client_db_init:/docker-entrypoint-initdb.d
 
     client_test_db:
         image: postgres:12.2
@@ -34,7 +33,6 @@ services:
             - "5432"
         volumes:
             - client_test_data:/var/lib/postgresql/data/
-            - ./client_db_init:/docker-entrypoint-initdb.d
 
     web:
         build: .
@@ -62,6 +60,7 @@ services:
             - web-static:/app/static
         ports:
             - "8000:8000"
+        command: python manage.py runserver 0.0.0.0:8000
         depends_on:
             - django_db
             - client_db
