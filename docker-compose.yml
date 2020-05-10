@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-    db:
+    django_db:
         image: postgres
         environment:
             - POSTGRES_DB=postgres
@@ -11,7 +11,31 @@ services:
             - "5432:5432"
         volumes:
             - pgdata:/var/lib/postgresql/data/
-    
+
+    client_db:
+        image: postgres
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - "5433:5432"
+        volumes:
+            - client_data:/var/lib/postgresql/data/
+            - ./client_db_init:/docker-entrypoint-initdb.d
+
+    client_test_db:
+        image: postgres
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - "5433:5432"
+        volumes:
+            - client_test_data:/var/lib/postgresql/data/
+            - ./client_db_init:/docker-entrypoint-initdb.d
+
     web:
         build: .
         expose:
@@ -31,8 +55,12 @@ services:
             - "8000:8000"
         depends_on:
             - db
+            - client_db
+            - client_test_db
 
-volumes: 
+volumes:
     web-django:
     web-static:
     pgdata:
+    client_data:
+    client_test_data:

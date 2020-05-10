@@ -21,12 +21,12 @@ from django.contrib.messages import constants as messages
 # Local Imports
 
 try:
-    # A .local_settings file is used in development for ease, in production
-    # environment variables will be used.
-    # Local
+    # A .local_settings file can used in development for ease, in production
+    # environment variables should be used.
     from .local_settings import *
 except ImportError:
     pass
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,16 +37,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
-
 # SECURITY WARNING: keep the secret key used in production secret!
-if not DEBUG:
-    SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Application definition
-
 INSTALLED_APPS = [
     'data_loader',
     'graph_builder',
@@ -94,24 +90,53 @@ WSGI_APPLICATION = 'visualCSV.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-if 'test' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'test_db',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'PORT': os.getenv('DB_PORT')
+    },
+    'client': {
+        'ENGINE': os.getenv('DB_CLIENT_ENGINE'),
+        'NAME': os.getenv('DB_CLIENT_NAME'),
+        'USER': os.getenv('DB_CLIENT_USER'),
+        'PASSWORD': os.getenv('DB_CLIENT_PASSWORD'),
+        'PORT': os.getenv('DB_CLIENT_PORT')
+    },
+    'client_test': {
+        'ENGINE': os.getenv('DB_CLIENT_TEST_ENGINE'),
+        'NAME': os.getenv('DB_CLIENT_TEST_NAME'),
+        'USER': os.getenv('DB_CLIENT_TEST_USER'),
+        'PASSWORD': os.getenv('DB_CLIENT_TEST_PASSWORD'),
+        'PORT': os.getenv('DB_CLIENT_TEST_PORT')
     }
-elif not DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': os.getenv('DB_ENGINE'),
-            'HOST': os.getenv('DB_HOST'),
-            'USER': os.getenv('DB_USER'),
-            'PASSWORD': os.getenv('DB_PASSWORD'),
-            'NAME': os.getenv('DB_NAME'),
-            'PORT': os.getenv('DB_PORT')
-        }
-    }
+}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'visualCSV',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Rasel121ne'
+#     },
+#     'client': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'HOST': 'localhost',
+#         'NAME': 'visualCSVClient',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Rasel121ne'
+#     },
+#     'client_test': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'HOST': 'localhost',
+#         'NAME': 'visualCSVClientTest',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Rasel121ne'
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
