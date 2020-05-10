@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 
 services:
     django_db:
@@ -56,18 +56,19 @@ services:
             - DB_CLIENT_TEST_PASSWORD=postgres
             - DB_CLIENT_TEST_PORT=5432
         volumes:
-            - web-django:/app
+            - ./:/app
             - web-static:/app/static
         ports:
             - "8000:8000"
-        command: python manage.py runserver 0.0.0.0:8000
+        command: >
+          bash -c "python ./visualCSV/manage.py migrate
+          && python ./visualCSV/manage.py runserver 0.0.0.0:8000"
         depends_on:
             - django_db
             - client_db
             - client_test_db
 
 volumes:
-    web-django:
     web-static:
     django_data:
     client_data:

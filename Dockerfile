@@ -26,4 +26,4 @@ COPY . .
 RUN npm run build:react
 RUN npm run build:css
 
-WORKDIR /app/visualCSV/
+# WORKDIR /app/visualCSV/
