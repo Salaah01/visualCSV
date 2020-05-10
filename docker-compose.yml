@@ -2,18 +2,19 @@ version: '3'
 
 services:
     django_db:
-        image: postgres
+        image: postgres:12.2
         environment:
             - POSTGRES_DB=postgres
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
+            -
         ports:
             - "5432:5432"
         volumes:
-            - pgdata:/var/lib/postgresql/data/
+            - django_data:/var/lib/postgresql/data/
 
     client_db:
-        image: postgres
+        image: postgres:12.2
         environment:
             - POSTGRES_DB=postgres
             - POSTGRES_USER=postgres
@@ -25,13 +26,13 @@ services:
             - ./client_db_init:/docker-entrypoint-initdb.d
 
     client_test_db:
-        image: postgres
+        image: postgres:12.2
         environment:
             - POSTGRES_DB=postgres
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
         ports:
-            - "5433:5432"
+            - "5434:5432"
         volumes:
             - client_test_data:/var/lib/postgresql/data/
             - ./client_db_init:/docker-entrypoint-initdb.d
@@ -41,12 +42,22 @@ services:
         expose:
             - "8000"
         environment:
+            - SECRET_KEY=jfghfdjgh374y237y7324hjbf732237f
             - DB_ENGINE=django.db.backends.postgresql
             - DB_HOST=localhost
             - DB_USER=postgres
             - DB_PASSWORD=postgres
             - DB_PORT=5432
-            - SECRET_KEY=jfghfdjgh374y237y7324hjbf732237f
+            - DB_CLIENT_ENGINE=django.db.backends.postgresql
+            - DB_CLIENT_HOST=localhost
+            - DB_CLIENT_USER=postgres
+            - DB_CLIENT_PASSWORD=postgres
+            - DB_CLIENT_PORT=5433
+            - DB_CLIENT_TEST_ENGINE=django.db.backends.postgresql
+            - DB_CLIENT_TEST_HOST=localhost
+            - DB_CLIENT_TEST_USER=postgres
+            - DB_CLIENT_TEST_PASSWORD=postgres
+            - DB_CLIENT_TEST_PORT=5434
         volumes:
             - web-django:/app
             - web-static:/app/static
@@ -54,13 +65,13 @@ services:
         ports:
             - "8000:8000"
         depends_on:
-            - db
+            - django_db
             - client_db
             - client_test_db
 
 volumes:
     web-django:
     web-static:
-    pgdata:
+    django_data:
     client_data:
     client_test_data:
