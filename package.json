@@ -4,29 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm-run-all build:react build:css",
-    "build:react": "npm-run-all build:data_loader build:graph_builder",
-    "build:css": "npm-run-all build:main_css build:accounts_css",
-
     "dev:data_loader": "webpack --mode development --watch ./visualCSV/data_loader/src/index.js --output ./visualCSV/data_loader/static/data_loader/main.js",
     "build:data_loader": "webpack --mode production ./visualCSV/data_loader/src/index.js --output ./visualCSV/data_loader/static/data_loader/main.js",
     "dev:graph_builder": "webpack --mode development --watch ./visualCSV/graph_builder/src/index.js --output ./visualCSV/graph_builder/static/graph_builder/main.js",
     "build:graph_builder": "webpack --mode production ./visualCSV/graph_builder/src/index.js --output ./visualCSV/graph_builder/static/graph_builder/main.js",
-
     "test": "jest",
     "test:watch": "jest --watch",
-
-    "compile:main_css": "node-sass visualCSV/visualCSV/static/sass/main.scss visualCSV/visualCSV/static/css/main.min.css",
     "watch:main_css": "node-sass visualCSV/visualCSV/static/sass/main.scss visualCSV/visualCSV/static/css/main.min.css -w --output-style compressed",
-    "prefix:main_css": "postcss --use autoprefixer -b \"last 10 versions\" visualCSV/visualCSV/static/css/main.min.css -o visualCSV/visualCSV/static/css/main.min.css",
+    "prefix:main_css": "postcss --use autoprefixer -b \"last 10 version\" visualCSV/visualCSV/static/css/main.min.css -o visualCSV/visualCSV/static/css/main.min.css",
     "compress:main_css": "node-sass visualCSV/visualCSV/static/css/main.min.css visualCSV/visualCSV/static/css/main.min.css --output-style compressed",
-    "build:main_css": "npm-run-all compile:main_css prefix:main_css compress:main_css",
-
+    "build:main_css": "npm-run-all prefix:main_css compress:main_css",
     "watch:accounts_css": "node-sass visualCSV/accounts/static/accounts/sass/accounts.scss visualCSV/accounts/static/accounts/css/accounts.min.css -w --output-style compressed",
-    "compile:accounts_css": "node-sass visualCSV/accounts/static/accounts/sass/accounts.scss visualCSV/accounts/static/accounts/css/accounts.min.css",
     "prefix:accounts_css": "postcss --use autoprefixer -b \"last 10 versions\" visualCSV/accounts/static/accounts/css/accounts.min.css -o visualCSV/accounts/static/accounts/css/accounts.min.css",
     "compress:accounts_css": "node-sass visualCSV/accounts/static/accounts/css/accounts.min.css visualCSV/accounts/static/accounts/css/accounts.min.css --output-style compressed",
-    "build:accounts_css": "npm-run-all compile:accounts_css prefix:accounts_css compress:accounts_css"
+    "build:accounts_css": "npm-run-all prefix:accounts_css compress:accounts_css",
+    "build:css": "npm-run-all build:main_css build:accounts_css"
   },
   "repository": {
     "type": "git",
