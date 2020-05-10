@@ -10,11 +10,64 @@ These instructions will get you a copy of the project up and running on your loc
 
 The guide will cover installation using [Docker Compose](https://docs.docker.com/compose/) and installing manually without Docker.
 
-
 ### Installation Using Docker
 
 **Clone the repository**
 Clone (or fork) the repository to your working directory `git clone https://github.com/Salaah01/visualCSV.git`.
+
+**Setting up the environment variables**
+The docker version of the installation will use 3 containers:
+
+- Main web application
+- PostgreSQL database containing the main tables for the Django application.
+- PostgreSQL database for containing the user tables.
+- PostgreSQL test database for tests relating to the user database.
+
+Docker-compose will expect a `.env` file for each of the containers. Below are examples of such files with example values:
+Main web application: `.web.env`
+
+```bash
+SECRET_KEY=jfghfdjgh374y237y7324hjbf732237f
+DB_ENGINE=django.db.backends.postgresql
+DB_HOST=django_db
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_PORT=5432
+DB_CLIENT_ENGINE=django.db.backends.postgresql
+DB_CLIENT_HOST=client_db
+DB_CLIENT_USER=postgres
+DB_CLIENT_PASSWORD=postgres
+DB_CLIENT_PORT=5432
+DB_CLIENT_TEST_ENGINE=django.db.backends.postgresql
+DB_CLIENT_TEST_HOST=client_test_db
+DB_CLIENT_TEST_USER=postgres
+DB_CLIENT_TEST_PASSWORD=postgres
+DB_CLIENT_TEST_PORT=5432
+```
+
+PostgreSQL database containing the main tables for the Django application: `.django_db.env`
+
+```bash
+POSTGRES_GB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgress
+```
+
+PostgreSQL database for containing the user tables: `.client_db.env`
+
+```bash
+POSTGRES_DB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+```
+
+PostgreSQL test database for tests relating to the user database: `client_db_test.env`
+
+```bash
+POSTGRES_DB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+```
 
 **Build the services**
 
