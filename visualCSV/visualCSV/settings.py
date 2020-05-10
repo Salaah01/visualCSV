@@ -114,30 +114,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'visualCSV',
-#         'USER': 'postgres',
-#         'PASSWORD': 'Rasel121ne'
-#     },
-#     'client': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'HOST': 'localhost',
-#         'NAME': 'visualCSVClient',
-#         'USER': 'postgres',
-#         'PASSWORD': 'Rasel121ne'
-#     },
-#     'client_test': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'HOST': 'localhost',
-#         'NAME': 'visualCSVClientTest',
-#         'USER': 'postgres',
-#         'PASSWORD': 'Rasel121ne'
-#     }
-# }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
