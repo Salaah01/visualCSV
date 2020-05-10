@@ -28,8 +28,6 @@ try:
 except ImportError:
     pass
 
-from .local_settings import *
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -111,6 +109,7 @@ elif not DEBUG:
             'USER': os.getenv('DB_USER'),
             'PASSWORD': os.getenv('DB_PASSWORD'),
             'NAME': os.getenv('DB_NAME'),
+            'PORT': os.getenv('DB_PORT')
         }
     }
 

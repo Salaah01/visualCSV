@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+    db:
+        image: postgres
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - "5432:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql/data/
+    
+    web:
+        build: .
+        expose:
+            - "8000"
+        environment:
+            - DB_ENGINE=django.db.backends.postgresql
+            - DB_HOST=localhost
+            - DB_USER=postgres
+            - DB_PASSWORD=postgres
+            - DB_PORT=5432
+            - SECRET_KEY=jfghfdjgh374y237y7324hjbf732237f
+        volumes:
+            - web-django:/app
+            - web-static:/app/static
+        command: python3 manage.py runserver 0.0.0.0:8000
+        ports:
+            - "8000:8000"
+        depends_on:
+            - db
+
+volumes: 
+    web-django:
+    web-static:
+    pgdata:
