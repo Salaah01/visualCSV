@@ -200,3 +200,6 @@ venv
 ### JS Build Files ###
 main.js
 *.min.css
+
+### .env files
+*.env

@@ -10,13 +10,13 @@ import sys
 import psycopg2
 
 # Local Imports
-from visualCSV import local_settings
+from visualCSV import settings
 
 # TODO: Change this to use ENV_VARS.
 if sys.argv[-1] == 'test':
-    DATABASE = local_settings.DATABASES['client_test']
+    DATABASE = settings.DATABASES['client_test']
 else:
-    DATABASE = local_settings.DATABASES['client']
+    DATABASE = settings.DATABASES['client']
 
 
 def connect():

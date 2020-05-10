@@ -1,0 +1,42 @@
+version: '3.2'
+
+services:
+    django_db:
+        image: postgres:12.2
+        env_file: .django_db.env
+        volumes:
+            - django_data:/var/lib/postgresql/data/
+
+    client_db:
+        image: postgres:12.2
+        env_file: .client_db.env
+        volumes:
+            - client_data:/var/lib/postgresql/data/
+
+    client_test_db:
+        image: postgres:12.2
+        env_file: .client_test_db.env
+        volumes:
+            - client_test_data:/var/lib/postgresql/data/
+
+    web:
+        build: .
+        expose:
+            - "8000"
+        env_file: .web.env
+        volumes:
+            - ./:/app
+            - web-static:/app/static
+        ports:
+            - "8000:8000"
+        command: python ./visualCSV/manage.py runserver 0.0.0.0:8000
+        depends_on:
+            - django_db
+            - client_db
+            - client_test_db
+
+volumes:
+    web-static:
+    django_data:
+    client_data:
+    client_test_data:

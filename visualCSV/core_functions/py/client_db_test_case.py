@@ -13,7 +13,7 @@ from random import random
 import psycopg2
 
 # Local Imports
-from visualCSV.local_settings import DATABASES
+from visualCSV.settings import DATABASES
 
 
 class ClientDBTestCase(TestCase):
@@ -24,11 +24,14 @@ class ClientDBTestCase(TestCase):
 
     # Create the connection and cursor.
     connection = DATABASES['client_test']
+    print
+
     conn = psycopg2.connect(
         host=connection['HOST'],
         database=connection['NAME'],
         user=connection['USER'],
-        password=connection['PASSWORD']
+        password=connection['PASSWORD'],
+        port=connection['PORT']
     )
     cur = conn.cursor()
 
