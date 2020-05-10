@@ -10,6 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 The guide will cover installation using [Docker Compose](https://docs.docker.com/compose/) and installing manually without Docker.
 
+
 ### Installation Using Docker
 
 **Clone the repository**
@@ -19,7 +20,8 @@ Clone (or fork) the repository to your working directory `git clone https://gith
 
 ```bash
 docker-compose build
-docker-compose up
+docker-compose up -d
+docker-compose run web bash -c "npm install && npm audit fix && python ./visualCSV/manage.py migrate && npm run build"
 ```
 
 This can take a little while the first time round as it does install the node packages.
