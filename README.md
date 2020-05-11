@@ -1,15 +1,20 @@
 # VisualCSV
 
 VisualCSV is a web application built using [Django](https://www.djangoproject.com/), [React](https://reactjs.org/) and [Redux](https://redux.js.org/) for state management which allows users to upload CSVs and build graphs based on the data in the CSVs.
-Once authenticated, users are able to upload CSVs. With the uploaded CSVs users are asked to set any primary and foreign keys. Once the users are happy with their inputs the user is able to sent their CSVs to the backend. This converts a user's choices to JSON and along with the CSV data which is also converted to JSON and send this off to the backend.
-The backend then creates database tables based on the POST data and updates a `user_auth` table contains information on which table belongs to what user.
-Will this completed, the user is then able to access the graph_builder where they are able to use the UI to build graphs.
+
+## How it Works
+
+Once authenticated, users are able to upload CSVs. With the uploaded CSVs users are asked to set any primary and foreign keys. Once the users are happy with their inputs they are able to send their CSVs to the backend by pressing an upload button. This converts a user's choices to JSON and along with the CSV data which is also converted to JSON and send this off to the backend.
+
+The backend then creates database tables based on the POST data and updates the `user_auth` table which contains information on which table belongs to which user.
+
+With this completed, the user is then able to access the graph_builder where they are able to use the UI to build graphs.
 
 Presently, the only way to save the graph is to physically save the a copy of the graph as an image. However, in the future, this will be updated so that this can be saved directly onto the database.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment notes on how to deploy the project to production.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ## Installation
 
@@ -18,9 +23,11 @@ The guide will cover installation using [Docker Compose](https://docs.docker.com
 ### Installation Using Docker
 
 **Clone the repository**
+
 Clone (or fork) the repository to your working directory `git clone https://github.com/Salaah01/visualCSV.git`.
 
 **Setting up the environment variables**
+
 The docker version of the installation will use 3 containers:
 
 - Main web application
@@ -29,6 +36,7 @@ The docker version of the installation will use 3 containers:
 - PostgreSQL test database for tests relating to the user database.
 
 Docker-compose will expect a `.env` file for each of the containers. Below are examples of such files with example values:
+
 Main web application: `.web.env`
 
 ```bash
@@ -83,18 +91,18 @@ docker-compose run web bash -c "npm install && npm audit fix && python ./visualC
 ```
 
 This can take a little while the first time round as it does install the node packages.
-The script will bind the visualCSV form the host to the same directory in the container. Therefore, updating files in the host will update the files in the container.
-Once docker-compose has finished it's magic, you are ready to access the site via port 8000 on localhost start developing!
+The script will bind the visualCSV directory in the host machine to the same directory in the container. Therefore, updating files in the host will update the files in the container.
+Once docker-compose has finished it's magic, you are ready to access the site via port 8000 on localhost and start developing!
 
 ## Installation Manually
 
 ### Prerequisites
 
 You will need to ensure that the following are installed:
-_ [Python 3](https://www.python.org/downloads/)
-_ [Node.js](https://nodejs.org/en/download/)
-_ [PostgreSQL](https://www.postgresql.org/) (The application has not yet been tested on other database systems.)
-_ [Git](https://git-scm.com/downloads) (Recommended)
+* [Python 3](https://www.python.org/downloads/)
+* [Node.js](https://nodejs.org/en/download/)
+* [PostgreSQL](https://www.postgresql.org/) (The application has not yet been tested on other database systems.)
+* [Git](https://git-scm.com/downloads) (Recommended)
 
 ### Installing
 
@@ -104,10 +112,18 @@ The system uses two databases. One which is handled by Django's ORM and another 
 
 Two separate databases are used to separate concerns. The visualCSV database will be used to handle authentication and other tables set up by Django. Whereas visualCSVClient will be used to store the end user's data. As each CSV is assigned its own table, we cannot control how fast the database grows. By designating the end-user tables to its own database, we can better control what is in the visualCSV (the main database).
 
-I commend using [pgAdmin](https://www.pgadmin.org/) to set up the database.
-You will need to create two databases, visualCSV and visualCSVClient.
+I recommend using [pgAdmin](https://www.pgadmin.org/) to set up the database as it provides a great GUI for interacting with postgreSQL.
+You will need to create three databases, visualCSV, visualCSVClient and visualCSVTest.
 
-Running the following SQL to build the database. (Will initially connect to the postgres role.)
+If you are using pgAdmin, access the query tool in visualCSVClient and run the following sql:
+
+```sql
+CREATE TABLE user_auth (id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL, table_name VARCHAR(100) NOT NULL, table_alias VARCHAR(100) NOT NULL);
+```
+
+Repeat the query in the visualCSVClient.
+
+If you choose not to use pgAdmin, you can achieve the same using the command line:
 
 ```bash
 psql -U postgres
@@ -135,12 +151,12 @@ Run `pip install -r requirements.txt`
 ### Install Node packages
 
 Run `npm install`.
-You may receive a warning about vulnerabilities in the installed node packages. By running `npm audit fix` you may be able to fix these vulnerabilities.
+You may receive a warning about vulnerabilities in the installed node packages. By running `npm audit fix` you may be able to fix these vulnerabilities (only vulnerabilities which will not break the code).
 
 ### Run Node build scripts
 
 Run `npm run build`.
-This will compile the React modules and compile the TypeScript and SASS modules to JavaScript and CSS respectively.
+This will compile the React, TypeScript and SASS modules to JavaScript and CSS.
 
 ### Django migrations
 
@@ -155,5 +171,7 @@ A script exists which will start the JavaScript unit test on watch mode. This ca
 ## Testing
 
 The packages comes with Python and JavaScript unit tests.
+
 To run the Python unit tests run `python visualCSV\manage.py test`.
+
 To test JavaScript unit tests run `npm run test`.
