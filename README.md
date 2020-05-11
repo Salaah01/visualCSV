@@ -1,6 +1,11 @@
 # VisualCSV
 
-VisualCSV is a web application which allows users to upload CSVs and build graphs based on the data in the CSVs.
+VisualCSV is a web application built using [Django](https://www.djangoproject.com/), [React](https://reactjs.org/) and [Redux](https://redux.js.org/) for state management which allows users to upload CSVs and build graphs based on the data in the CSVs.
+Once authenticated, users are able to upload CSVs. With the uploaded CSVs users are asked to set any primary and foreign keys. Once the users are happy with their inputs the user is able to sent their CSVs to the backend. This converts a user's choices to JSON and along with the CSV data which is also converted to JSON and send this off to the backend.
+The backend then creates database tables based on the POST data and updates a `user_auth` table contains information on which table belongs to what user.
+Will this completed, the user is then able to access the graph_builder where they are able to use the UI to build graphs.
+
+Presently, the only way to save the graph is to physically save the a copy of the graph as an image. However, in the future, this will be updated so that this can be saved directly onto the database.
 
 ## Getting Started
 
