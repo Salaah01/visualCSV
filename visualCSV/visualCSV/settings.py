@@ -114,9 +114,18 @@ DATABASES = {
         'USER': os.getenv('DB_CLIENT_TEST_USER'),
         'PASSWORD': os.getenv('DB_CLIENT_TEST_PASSWORD'),
         'PORT': os.getenv('DB_CLIENT_TEST_PORT'),
-        'HOST': os.getenv('DB_CLIENT_HOST')
+        'HOST': os.getenv('DB_CLIENT_TEST_HOST')
     }
 }
+
+# Much faster to run the tests using an sqlite3 db.
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'test_db',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
