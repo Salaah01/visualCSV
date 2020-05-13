@@ -3,30 +3,25 @@ version: '3.2'
 services:
     django_db:
         image: postgres:12.2
-        env_file: .django_db.env
         volumes:
             - django_data:/var/lib/postgresql/data/
 
     client_db:
         image: postgres:12.2
-        env_file: .client_db.env
         volumes:
             - client_data:/var/lib/postgresql/data/
+            - ./client_db_init.sql:/docker-entrypoint-initdb.d/client_db_init.sql
+            # - client_db_init.sql:/var/lib/postgresql/client_db_init.sql:ro
+        # entrypoint: /var/lib/postgresql/client_db_init.sql:/docker-entrypoint-initdb.d
 
     client_test_db:
         image: postgres:12.2
-        env_file: .client_test_db.env
         volumes:
             - client_test_data:/var/lib/postgresql/data/
-
+            - ./client_db_init.sql:/docker-entrypoint-initdb.d/client_db_init.sql
+    
     web:
-        build: .
-        expose:
-            - "8000"
-        env_file: .web.env
-        volumes:
-            - ./:/app
-            - web-static:/app/static
+        image: salaah01/visualcsv
         ports:
             - "8000:8000"
         command: python ./visualCSV/manage.py runserver 0.0.0.0:8000

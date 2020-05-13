@@ -1,4 +1,4 @@
-CREATE CREATE TABLE user_auth (
+CREATE TABLE user_auth (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
     table_name VARCHAR(100) NOT NULL,
