@@ -30,7 +30,9 @@ services:
         volumes:
             - ./:/app
             - web-static:/app/static
-        command: python ./visualCSV/manage.py runserver 0.0.0.0:8000
+        command: >
+            bash -c "python ./visualCSV/manage.py migrate
+            && python ./visualCSV/manage.py runserver 0.0.0.0:8000"
 
 volumes:
     web-static:

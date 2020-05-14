@@ -10,15 +10,13 @@ services:
         image: postgres:12.2
         volumes:
             - client_data:/var/lib/postgresql/data/
-            - ./client_db_init.sql:/docker-entrypoint-initdb.d/client_db_init.sql
-            # - client_db_init.sql:/var/lib/postgresql/client_db_init.sql:ro
-        # entrypoint: /var/lib/postgresql/client_db_init.sql:/docker-entrypoint-initdb.d
+            - ./client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh
 
     client_test_db:
         image: postgres:12.2
         volumes:
             - client_test_data:/var/lib/postgresql/data/
-            - ./client_db_init.sql:/docker-entrypoint-initdb.d/client_db_init.sql
+            - ./client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh
     
     web:
         image: salaah01/visualcsv
