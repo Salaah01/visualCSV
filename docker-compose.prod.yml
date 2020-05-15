@@ -37,7 +37,7 @@ services:
             - 8000
     
     nginx:
-        build: ./nginx
+        image: salaah01/visualcsv_nginx
         ports:
             - 80:80
         depends_on: 

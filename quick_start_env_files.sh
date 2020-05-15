@@ -27,22 +27,23 @@ echo postgres > django_db/env/.postgres_user.env
 # Django application
 mkdir -p web/
 echo DB_ENGINE=django.db.backends.postgresql > web/.web.env
-echo \nDB_HOST=django_db >> web/.web.env
-echo \nDB_USER=postgres >> web/.web.env
-echo \nDB_NAME=postgres >> web/.web.env
-echo \nDB_PASSWORD=postgres >> web/.web.env
-echo \nDB_PORT=5432 >> web/.web.env
-echo \nDB_CLIENT_ENGINE=django.db.backends.postgresql >> web/.web.env
-echo \nDB_CLIENT_HOST=client_db >> web/.web.env
-echo \nDB_CLIENT_USER=postgres >> web/.web.env
-echo \nDB_CLIENT_NAME=postgres >> web/.web.env
-echo \nDB_CLIENT_PASSWORD=postgres >> web/.web.env
-echo \nDB_CLIENT_PORT=5432 >> web/.web.env
-echo \nDB_CLIENT_TEST_ENGINE=django.db.backends.postgresql >> web/.web.env
-echo \nDB_CLIENT_TEST_HOST=client_test_db >> web/.web.env
-echo \nDB_CLIENT_TEST_USER=postgres >> web/.web.env
-echo \nDB_CLIENT_TEST_NAME=postgres >> web/.web.env
-echo \nDB_CLIENT_TEST_PASSWORD=postgres >> web/.web.env
-echo \nDB_CLIENT_TEST_PORT=5432 >> web/.web.env
+echo SECRET_KEY=jfghfdjgh374y237y7324hjbf732237f >> web/.web.env
+echo DB_HOST=django_db >> web/.web.env
+echo DB_USER=postgres >> web/.web.env
+echo DB_NAME=postgres >> web/.web.env
+echo DB_PASSWORD=postgres >> web/.web.env
+echo DB_PORT=5432 >> web/.web.env
+echo DB_CLIENT_ENGINE=django.db.backends.postgresql >> web/.web.env
+echo DB_CLIENT_HOST=client_db >> web/.web.env
+echo DB_CLIENT_USER=postgres >> web/.web.env
+echo DB_CLIENT_NAME=postgres >> web/.web.env
+echo DB_CLIENT_PASSWORD=postgres >> web/.web.env
+echo DB_CLIENT_PORT=5432 >> web/.web.env
+echo DB_CLIENT_TEST_ENGINE=django.db.backends.postgresql >> web/.web.env
+echo DB_CLIENT_TEST_HOST=client_test_db >> web/.web.env
+echo DB_CLIENT_TEST_USER=postgres >> web/.web.env
+echo DB_CLIENT_TEST_NAME=postgres >> web/.web.env
+echo DB_CLIENT_TEST_PASSWORD=postgres >> web/.web.env
+echo DB_CLIENT_TEST_PORT=5432 >> web/.web.env
 
 echo "Done! Remember to update all .env with new values!"
