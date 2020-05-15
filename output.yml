@@ -1,16 +1,16 @@
 secrets:
   client_db_password:
-    file: /home/salaah/dev/visualCSV/env/client_db/.postgres_password.env
+    file: /home/salaah/dev/visualCSV/client_db/env/client_db/.postgres_password.env
   client_db_user:
-    file: /home/salaah/dev/visualCSV/env/client_db/.postgres_user.env
+    file: /home/salaah/dev/visualCSV/client_db/env/client_db/.postgres_user.env
   client_test_db_password:
-    file: /home/salaah/dev/visualCSV/env/client_test_db/.postgres_password.env
+    file: /home/salaah/dev/visualCSV/client_db/env/client_test_db/.postgres_password.env
   client_test_db_user:
-    file: /home/salaah/dev/visualCSV/env/client_test_db/.postgres_user.env
+    file: /home/salaah/dev/visualCSV/client_db/env/client_test_db/.postgres_user.env
   django_db_password:
-    file: /home/salaah/dev/visualCSV/env/django_db/.postgres_password.env
+    file: /home/salaah/dev/visualCSV/django_db/env/.postgres_password.env
   django_db_user:
-    file: /home/salaah/dev/visualCSV/env/django_db/.postgres_user.env
+    file: /home/salaah/dev/visualCSV/django_db/env/.postgres_user.env
 services:
   client_db:
     environment:
@@ -21,7 +21,7 @@ services:
     - source: client_db_password
     - source: client_db_user
     volumes:
-    - /home/salaah/dev/visualCSV/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
+    - /home/salaah/dev/visualCSV/client_db/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
     - client_data:/var/lib/postgresql/data:rw
   client_test_db:
     environment:
@@ -32,7 +32,7 @@ services:
     - source: client_test_db_password
     - source: client_test_db_user
     volumes:
-    - /home/salaah/dev/visualCSV/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
+    - /home/salaah/dev/visualCSV/client_db/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
     - client_test_data:/var/lib/postgresql/data:rw
   django_db:
     environment:
@@ -44,9 +44,18 @@ services:
     - source: django_db_user
     volumes:
     - django_data:/var/lib/postgresql/data:rw
+  nginx:
+    build:
+      context: /home/salaah/dev/visualCSV/nginx
+    depends_on:
+    - web
+    ports:
+    - published: 80
+      target: 80
   web:
-    command: 'bash -c "python ./visualCSV/manage.py migrate && gunicorn visualCSV.wsgi:application
-      --bind 0.0.0.0:8000"
+    command: 'bash -c "cd visualCSV && rm -rf static/ && python manage.py migrate
+      && python manage.py collectstatic && gunicorn visualCSV.wsgi:application --bind
+      0.0.0.0:8000"
 
       '
     depends_on:
@@ -73,10 +82,9 @@ services:
       DB_PORT: '5432'
       DB_USER: postgres
       SECRET_KEY: jfghfdjgh374y237y7324hjbf732237f
+    expose:
+    - '8000'
     image: salaah01/visualcsv
-    ports:
-    - published: 8000
-      target: 8000
 version: '3.2'
 volumes:
   client_data: {}
