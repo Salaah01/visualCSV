@@ -1,16 +1,16 @@
 secrets:
   client_db_password:
-    file: /home/salaah/dev/visualCSV/client_db/env/client_db/.postgres_password.env
+    file: client_db/env/client_db/.postgres_password.env
   client_db_user:
-    file: /home/salaah/dev/visualCSV/client_db/env/client_db/.postgres_user.env
+    file: client_db/env/client_db/.postgres_user.env
   client_test_db_password:
-    file: /home/salaah/dev/visualCSV/client_db/env/client_test_db/.postgres_password.env
+    file: client_db/env/client_test_db/.postgres_password.env
   client_test_db_user:
-    file: /home/salaah/dev/visualCSV/client_db/env/client_test_db/.postgres_user.env
+    file: client_db/env/client_test_db/.postgres_user.env
   django_db_password:
-    file: /home/salaah/dev/visualCSV/django_db/env/.postgres_password.env
+    file: django_db/env/.postgres_password.env
   django_db_user:
-    file: /home/salaah/dev/visualCSV/django_db/env/.postgres_user.env
+    file: django_db/env/.postgres_user.env
 services:
   client_db:
     environment:
@@ -21,7 +21,7 @@ services:
     - source: client_db_password
     - source: client_db_user
     volumes:
-    - /home/salaah/dev/visualCSV/client_db/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
+    - client_db/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
     - client_data:/var/lib/postgresql/data:rw
   client_test_db:
     environment:
@@ -32,7 +32,7 @@ services:
     - source: client_test_db_password
     - source: client_test_db_user
     volumes:
-    - /home/salaah/dev/visualCSV/client_db/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
+    - client_db/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
     - client_test_data:/var/lib/postgresql/data:rw
   django_db:
     environment:
@@ -46,7 +46,7 @@ services:
     - django_data:/var/lib/postgresql/data:rw
   nginx:
     build:
-      context: /home/salaah/dev/visualCSV/nginx
+      context: nginx
     depends_on:
     - web
     ports:
