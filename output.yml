@@ -1,0 +1,86 @@
+secrets:
+  client_db_password:
+    file: /home/salaah/dev/visualCSV/env/client_db/.postgres_password.env
+  client_db_user:
+    file: /home/salaah/dev/visualCSV/env/client_db/.postgres_user.env
+  client_test_db_password:
+    file: /home/salaah/dev/visualCSV/env/client_test_db/.postgres_password.env
+  client_test_db_user:
+    file: /home/salaah/dev/visualCSV/env/client_test_db/.postgres_user.env
+  django_db_password:
+    file: /home/salaah/dev/visualCSV/env/django_db/.postgres_password.env
+  django_db_user:
+    file: /home/salaah/dev/visualCSV/env/django_db/.postgres_user.env
+services:
+  client_db:
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/client_db_password
+      POSTGRES_USER_FILE: /run/secrets/client_db_user
+    image: postgres:12.2
+    secrets:
+    - source: client_db_password
+    - source: client_db_user
+    volumes:
+    - /home/salaah/dev/visualCSV/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
+    - client_data:/var/lib/postgresql/data:rw
+  client_test_db:
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/client_test_db_password
+      POSTGRES_USER_FILE: /run/secrets/client_test_db_user
+    image: postgres:12.2
+    secrets:
+    - source: client_test_db_password
+    - source: client_test_db_user
+    volumes:
+    - /home/salaah/dev/visualCSV/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
+    - client_test_data:/var/lib/postgresql/data:rw
+  django_db:
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/django_db_password
+      POSTGRES_USER_FILE: /run/secrets/django_db_user
+    image: postgres:12.2
+    secrets:
+    - source: django_db_password
+    - source: django_db_user
+    volumes:
+    - django_data:/var/lib/postgresql/data:rw
+  web:
+    command: 'bash -c "python ./visualCSV/manage.py migrate && gunicorn visualCSV.wsgi:application
+      --bind 0.0.0.0:8000"
+
+      '
+    depends_on:
+    - client_db
+    - client_test_db
+    - django_db
+    environment:
+      DB_CLIENT_ENGINE: django.db.backends.postgresql
+      DB_CLIENT_HOST: client_db
+      DB_CLIENT_NAME: postgres
+      DB_CLIENT_PASSWORD: postgres
+      DB_CLIENT_PORT: '5432'
+      DB_CLIENT_TEST_ENGINE: django.db.backends.postgresql
+      DB_CLIENT_TEST_HOST: client_test_db
+      DB_CLIENT_TEST_NAME: postgres
+      DB_CLIENT_TEST_PASSWORD: postgres
+      DB_CLIENT_TEST_PORT: '5432'
+      DB_CLIENT_TEST_USER: postgres
+      DB_CLIENT_USER: postgres
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: django_db
+      DB_NAME: postgres
+      DB_PASSWORD: postgres
+      DB_PORT: '5432'
+      DB_USER: postgres
+      SECRET_KEY: jfghfdjgh374y237y7324hjbf732237f
+    image: salaah01/visualcsv
+    ports:
+    - published: 8000
+      target: 8000
+version: '3.2'
+volumes:
+  client_data: {}
+  client_test_data: {}
+  django_data: {}
+  web-static: {}
+
