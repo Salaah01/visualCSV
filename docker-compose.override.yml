@@ -26,10 +26,13 @@ services:
             - client_test_db_password
 
     web:
-        env_file: .web.env
+        env_file: ./web/.web.env
+        command: python ./visualCSV/manage.py runserver 0.0.0.0:8000
         volumes:
-            - ./:/app
+            - ./web/:/app
             - web-static:/app/static
+        ports:
+            - "8000:8000"
         command: >
             bash -c "python ./visualCSV/manage.py migrate
             && python ./visualCSV/manage.py runserver 0.0.0.0:8000"
@@ -42,14 +45,14 @@ volumes:
 
 secrets:
     django_db_user:
-        file: env/django_db/.postgres_user.env
+        file: django_db/env/.postgres_user.env
     django_db_password:
-        file: env/django_db/.postgres_password.env
+        file: django_db/env/.postgres_password.env
     client_db_user:
-        file: env/client_db/.postgres_user.env
+        file: client_db/env/client_db/.postgres_user.env
     client_db_password:
-        file: env/client_db/.postgres_password.env
+        file: client_db/env/client_db/.postgres_password.env
     client_test_db_user:
-        file: env/client_test_db/.postgres_user.env
+        file: client_db/env/client_test_db/.postgres_user.env
     client_test_db_password:
-        file: env/client_test_db/.postgres_password.env
+        file: client_db/env/client_test_db/.postgres_password.env

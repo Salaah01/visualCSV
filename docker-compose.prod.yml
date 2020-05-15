@@ -26,13 +26,22 @@ services:
             - client_test_db_password
 
     web:
-        env_file: .web.env
+        env_file: web/.web.env
         command: >
             bash -c "cd visualCSV
-            && rm -rf static/
+            && rm -rf static/ && ls
             && python manage.py migrate
             && python manage.py collectstatic
             && gunicorn visualCSV.wsgi:application --bind 0.0.0.0:8000"
+        expose: 
+            - 8000
+    
+    nginx:
+        build: ./nginx
+        ports:
+            - 1337:80
+        depends_on: 
+            - web
 
 volumes:
     django_data:
@@ -41,14 +50,14 @@ volumes:
 
 secrets:
     django_db_user:
-        file: env/django_db/.postgres_user.env
+        file: django_db/env/.postgres_user.env
     django_db_password:
-        file: env/django_db/.postgres_password.env
+        file: django_db/env/.postgres_password.env
     client_db_user:
-        file: env/client_db/.postgres_user.env
+        file: client_db/env/client_db/.postgres_user.env
     client_db_password:
-        file: env/client_db/.postgres_password.env
+        file: client_db/env/client_db/.postgres_password.env
     client_test_db_user:
-        file: env/client_test_db/.postgres_user.env
+        file: client_db/env/client_test_db/.postgres_user.env
     client_test_db_password:
-        file: env/client_test_db/.postgres_password.env
+        file: client_db/env/client_test_db/.postgres_password.env
