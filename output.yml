@@ -1,38 +1,36 @@
 secrets:
   client_db_password:
-    file: client_db/env/client_db/.postgres_password.env
+    file: /home/salaah/dev/visualCSV/client_db/env/client_db/.postgres_password.env
   client_db_user:
-    file: client_db/env/client_db/.postgres_user.env
+    file: /home/salaah/dev/visualCSV/client_db/env/client_db/.postgres_user.env
   client_test_db_password:
-    file: client_db/env/client_test_db/.postgres_password.env
+    file: /home/salaah/dev/visualCSV/client_db/env/client_test_db/.postgres_password.env
   client_test_db_user:
-    file: client_db/env/client_test_db/.postgres_user.env
+    file: /home/salaah/dev/visualCSV/client_db/env/client_test_db/.postgres_user.env
   django_db_password:
-    file: django_db/env/.postgres_password.env
+    file: /home/salaah/dev/visualCSV/django_db/env/.postgres_password.env
   django_db_user:
-    file: django_db/env/.postgres_user.env
+    file: /home/salaah/dev/visualCSV/django_db/env/.postgres_user.env
 services:
   client_db:
     environment:
       POSTGRES_PASSWORD_FILE: /run/secrets/client_db_password
       POSTGRES_USER_FILE: /run/secrets/client_db_user
-    image: postgres:12.2
+    image: salaah01/visualcsv_client_db
     secrets:
     - source: client_db_password
     - source: client_db_user
     volumes:
-    - client_db/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
     - client_data:/var/lib/postgresql/data:rw
   client_test_db:
     environment:
       POSTGRES_PASSWORD_FILE: /run/secrets/client_test_db_password
       POSTGRES_USER_FILE: /run/secrets/client_test_db_user
-    image: postgres:12.2
+    image: salaah01/visualcsv_client_db
     secrets:
     - source: client_test_db_password
     - source: client_test_db_user
     volumes:
-    - client_db/client_db_init.sh:/docker-entrypoint-initdb.d/client_db_init.sh:rw
     - client_test_data:/var/lib/postgresql/data:rw
   django_db:
     environment:
@@ -45,10 +43,9 @@ services:
     volumes:
     - django_data:/var/lib/postgresql/data:rw
   nginx:
-    build:
-      context: nginx
     depends_on:
     - web
+    image: salaah01/visualcsv_nginx
     ports:
     - published: 80
       target: 80
@@ -84,7 +81,7 @@ services:
       SECRET_KEY: jfghfdjgh374y237y7324hjbf732237f
     expose:
     - '8000'
-    image: salaah01/visualcsv
+    image: salaah01/visualcsv_web
 version: '3.2'
 volumes:
   client_data: {}
