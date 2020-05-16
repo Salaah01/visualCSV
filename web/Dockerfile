@@ -13,7 +13,7 @@ WORKDIR /app/
 # Install the python packages seperately as it is less likely they will need
 # updating whereas it is likely the npm packages may be updated in the future.
 
-COPY requirements.txt requirements.txt
+COPY ./requirements.txt ./requirements.txt
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
