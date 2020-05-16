@@ -19,9 +19,12 @@
     "indisprimary",
     "initdb",
     "mixins",
+    "msapplication",
     "noqa",
+    "runserver",
     "scrollbar",
-    "serializable"
+    "serializable",
+    "visualcsv"
   ],
   "editor.tabSize": 4,
   "[javascript]": {

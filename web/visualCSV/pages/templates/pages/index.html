@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} | Load Data {% endblock %}
+{% block title %} | Home {% endblock %}
 
 {% block content %}
 <header class="header--spacey">
@@ -38,24 +38,28 @@
       <a class="btn-a btn-a--secondary" href="{% url 'data_loader' %}" target="_blank">data loader</a> and start
       uploading your CSVs.
     </p>
-    <video controls poster="{% static 'pages/img/data_loader.jpg' %}">
-      <source src="{% static 'pages/img/data_loader.mp4' %}" type="video/mp4">
-      <source src="{% static 'pages/img/data_loader.webm' %}" type="video/webm">
-      <source src="{% static 'pages/img/data_loader.ogv' %}" type="video/ogv">
-        Your browser does not support the video tag.
-    </video>
+    <div style="display: flex; justify-content: center; width: 70vw;">
+      <video style="width: 100%;" controls poster="{% static 'pages/img/data_loader.jpg' %}">
+        <source src="{% static 'pages/img/data_loader.mp4' %}" type="video/mp4">
+        <source src="{% static 'pages/img/data_loader.webm' %}" type="video/webm">
+        <source src="{% static 'pages/img/data_loader.ogv' %}" type="video/ogv">
+          Your browser does not support the video tag.
+      </video>
+    </div>
     <p class='u-margin-bottom-small u-margin-top-small'>
       Once you have uploaded your CSVs and you're happy to proceed, you can move
       onto the fun bit. Head over to
       <a class="btn-a btn-a--secondary" href="{% url 'graph_builder' %}" target="_blank">graph builder</a>
       and start building your graph!
     </p>
-    <video controls poster="{% static 'pages/img/graph_builder.jpg' %}">
-      <source src="{% static 'pages/img/graph_builder.mp4' %}" type="video/mp4">
-      <source src="{% static 'pages/img/graph_builder.webm' %}" type="video/webm">
-      <source src="{% static 'pages/img/graph_builder.ogv' %}" type="video/ogv">
-        Your browser does not support the video tag.
-    </video>
+    <div style="display: flex; justify-content: center; width: 70vw;">
+      <video style="width: 100%;" controls poster="{% static 'pages/img/graph_builder.jpg' %}">
+        <source src="{% static 'pages/img/graph_builder.mp4' %}" type="video/mp4">
+        <source src="{% static 'pages/img/graph_builder.webm' %}" type="video/webm">
+        <source src="{% static 'pages/img/graph_builder.ogv' %}" type="video/ogv">
+          Your browser does not support the video tag.
+      </video>
+    </div>
   </div>
 
 </main>

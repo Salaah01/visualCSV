@@ -5,6 +5,16 @@
   font-family: inherit;
   margin-bottom: 3rem;
 
+  &__logo {
+    transform: translateY(3px);
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(3px) scale(1.1) rotate(20deg);
+      filter: brightness(1.2);
+    }
+  }
+
   &__option_group {
     display: flex;
   }
