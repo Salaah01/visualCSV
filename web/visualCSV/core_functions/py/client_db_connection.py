@@ -10,7 +10,7 @@ import sys
 import psycopg2
 
 # Local Imports
-from visualCSV import local_settings as settings
+from visualCSV import settings
 
 # TODO: Change this to use ENV_VARS.
 if sys.argv[-1] == 'test':

@@ -13,7 +13,7 @@ from random import random
 import psycopg2
 
 # Local Imports
-from visualCSV.local_settings import DATABASES
+from visualCSV.settings import DATABASES
 
 
 class ClientDBTestCase(TestCase):

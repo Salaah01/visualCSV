@@ -14,7 +14,8 @@ WORKDIR /app/
 # updating whereas it is likely the npm packages may be updated in the future.
 
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
@@ -23,6 +24,5 @@ RUN npm install && npm audit fix
 
 COPY . .
 
-RUN npm run build:react
-RUN npm run build:css
+RUN npm run build
 
