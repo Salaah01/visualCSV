@@ -1,16 +1,16 @@
 secrets:
   client_db_password:
-    file: /home/salaah/dev/visualCSV/client_db/env/client_db/.postgres_password.env
+    file: client_db/env/client_db/.postgres_password.env
   client_db_user:
-    file: /home/salaah/dev/visualCSV/client_db/env/client_db/.postgres_user.env
+    file: client_db/env/client_db/.postgres_user.env
   client_test_db_password:
-    file: /home/salaah/dev/visualCSV/client_db/env/client_test_db/.postgres_password.env
+    file: client_db/env/client_test_db/.postgres_password.env
   client_test_db_user:
-    file: /home/salaah/dev/visualCSV/client_db/env/client_test_db/.postgres_user.env
+    file: client_db/env/client_test_db/.postgres_user.env
   django_db_password:
-    file: /home/salaah/dev/visualCSV/django_db/env/.postgres_password.env
+    file: django_db/env/.postgres_password.env
   django_db_user:
-    file: /home/salaah/dev/visualCSV/django_db/env/.postgres_user.env
+    file: django_db/env/.postgres_user.env
 services:
   client_db:
     environment:
