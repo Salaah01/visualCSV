@@ -10,12 +10,14 @@
     "attnum",
     "attrelid",
     "chartjs",
+    "collectstatic",
     "contentfor",
     "csvs",
     "datasets",
     "deepmerge",
     "entrypoint",
     "graphbuilder",
+    "gunicorn",
     "indisprimary",
     "initdb",
     "mixins",
@@ -24,7 +26,8 @@
     "runserver",
     "scrollbar",
     "serializable",
-    "visualcsv"
+    "visualcsv",
+    "wsgi"
   ],
   "editor.tabSize": 4,
   "[javascript]": {

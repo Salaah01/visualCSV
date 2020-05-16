@@ -128,12 +128,12 @@ Run `python visualCSV\manage.py runserver` to start the development start and ru
 
 A script exists which will start the JavaScript unit test on watch mode. This can be run using: `npm run test:watch`.
 
-### Production
+## Production
 
 The following instructions will enable you to deploy the application using [Docker Stack](https://docs.docker.com/engine/reference/commandline/stack/) to deploy a stack to a swarm.
 The documentation will describe the steps needed to install the application on an Ubuntu 18.04.3 x64 machine.
 
-**Install Docker**
+### Install Docker
 
 Ensure that whichever cloud provider you are using does have docker installed. To quickly check if your machine has docker installed, run `docker --version`.
 If you need to install docker, you can do so by running the following:
@@ -144,16 +144,16 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 ```
 
-The application runs 5 services and does not specify any `deploy` rules in `docker-compose.prod.yml`. You may wish to edit this to include replicas and other settings.
+The application runs 5 services with 3 replicas of the web service. You may wish to edit this to include other replicas and settings.
 Having 5 services does not mean that you must have 5 machines, all of the services can be run from a single machine.
 
-**Initialise Swarm**
+### Initialise Swarm
 
 On one of your machines, run `docker swarm init  --advertise-addr <ip address>`.
 This will initialise the swarm and provide two commands using which you can either add a worker to the swarm or add a manager.
 We will add 4 other managers, to do so, run `docker swarm join-token manager` on each of the other machines.
 
-**Update Environment Variables**
+### Update Environment Variables
 
 ```bash
 bash quick_start_env_files.sh
@@ -165,7 +165,7 @@ We will test that the stack can be deployed, and once we are happy, we will stop
 docker stack deploy -c output.yml visualCSV
 ```
 
-Run `docker stack services visualCSV` to check the progress of the swarm. It is ready when all the replicas show the same number on the left and right. e.g: 0/5 means not ready, 5/5 means ready.
+Run `docker stack services visualCSV` to check the progress of the swarm. It is ready when all the replicas show the same number on the left and right. e.g: 0/3 means not ready, 3/3 means ready.
 
 This may take a while as the web service needs to run through a number of installations and so you may find that web service and the nginx service (it depends on the web service) take longer than others to initialise.
 

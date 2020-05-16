@@ -53,8 +53,9 @@ services:
     command: 'bash -c "cd visualCSV && rm -rf static/ && python manage.py migrate
       && python manage.py collectstatic && gunicorn visualCSV.wsgi:application --bind
       0.0.0.0:8000"
-
       '
+    deploy:
+      replicas: 3
     depends_on:
     - client_db
     - client_test_db
@@ -79,8 +80,6 @@ services:
       DB_PORT: '5432'
       DB_USER: postgres
       SECRET_KEY: jfghfdjgh374y237y7324hjbf732237f
-    expose:
-    - '8000'
     image: salaah01/visualcsv_web
 version: '3.2'
 volumes:

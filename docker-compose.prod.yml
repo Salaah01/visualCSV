@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
     django_db:
-        environment: 
+        environment:
             - POSTGRES_USER_FILE=/run/secrets/django_db_user
             - POSTGRES_PASSWORD_FILE=/run/secrets/django_db_password
         secrets:
@@ -10,7 +10,7 @@ services:
             - django_db_password
 
     client_db:
-        environment: 
+        environment:
             - POSTGRES_USER_FILE=/run/secrets/client_db_user
             - POSTGRES_PASSWORD_FILE=/run/secrets/client_db_password
         secrets:
@@ -18,7 +18,7 @@ services:
             - client_db_password
 
     client_test_db:
-        environment: 
+        environment:
             - POSTGRES_USER_FILE=/run/secrets/client_test_db_user
             - POSTGRES_PASSWORD_FILE=/run/secrets/client_test_db_password
         secrets:
@@ -33,14 +33,14 @@ services:
             && python manage.py migrate
             && python manage.py collectstatic
             && gunicorn visualCSV.wsgi:application --bind 0.0.0.0:8000"
-        expose: 
-            - 8000
-    
+        deploy:
+            replicas: 3
+
     nginx:
         image: salaah01/visualcsv_nginx
         ports:
             - 80:80
-        depends_on: 
+        depends_on:
             - web
 
 volumes:
