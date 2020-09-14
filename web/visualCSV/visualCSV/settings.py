@@ -36,8 +36,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = ['*', 'ip172-18-0-70-bqs5f5dim9m000flk430-8000.direct.labs.play-with-docker.com']
+DEBUG = False
+ALLOWED_HOSTS =['206.189.18.239']
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
