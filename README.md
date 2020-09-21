@@ -181,6 +181,9 @@ find | grep ".*\.env$"
 This returns a list of env files that need to be updated. Update the value in each file and re-run `docker stack deploy -c output.yml visualCSV`.
 Once everything is running again run `find | grep ".*\.env$" | while read in; do rm "$in"; done` to remove all the .env files.
 
+## Updating Webiste
+The image is held in Docker Hub and automation is setup were commits to the master branch will be picked up by Docker Hub resulting in a new image to be created. Once complete, run ``docker service update {{service name}}``.
+
 ## Testing
 
 The packages comes with Python and JavaScript unit tests.
