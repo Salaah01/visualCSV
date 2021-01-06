@@ -80,7 +80,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "chart.js": "^2.9.3",
     "csv": "^5.3.2",
     "deepmerge": "^4.2.2",
