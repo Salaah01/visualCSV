@@ -1,58 +1,20 @@
 version: '3.2'
 
 services:
-    django_db:
-        environment: 
-            - POSTGRES_USER_FILE=/run/secrets/django_db_user
-            - POSTGRES_PASSWORD_FILE=/run/secrets/django_db_password
-        secrets:
-            - django_db_user
-            - django_db_password
-
-    client_db:
-        environment: 
-            - POSTGRES_USER_FILE=/run/secrets/client_db_user
-            - POSTGRES_PASSWORD_FILE=/run/secrets/client_db_password
-        secrets:
-            - client_db_user
-            - client_db_password
-
-    client_test_db:
-        environment: 
-            - POSTGRES_USER_FILE=/run/secrets/client_test_db_user
-            - POSTGRES_PASSWORD_FILE=/run/secrets/client_test_db_password
-        secrets:
-            - client_test_db_user
-            - client_test_db_password
+        
 
     web:
-        env_file: ./web/.web.env
         command: python ./visualCSV/manage.py runserver 0.0.0.0:8000
         volumes:
             - ./web/:/app
-            - web-static:/app/static
-        ports:
-            - "8000:8000"
+            - static_files:/static_files
         command: >
             bash -c "python ./visualCSV/manage.py migrate
             && python ./visualCSV/manage.py runserver 0.0.0.0:8000"
 
 volumes:
-    web-static:
+    static_files:
     django_data:
     client_data:
     client_test_data:
 
-secrets:
-    django_db_user:
-        file: django_db/env/.postgres_user.env
-    django_db_password:
-        file: django_db/env/.postgres_password.env
-    client_db_user:
-        file: client_db/env/client_db/.postgres_user.env
-    client_db_password:
-        file: client_db/env/client_db/.postgres_password.env
-    client_test_db_user:
-        file: client_db/env/client_test_db/.postgres_user.env
-    client_test_db_password:
-        file: client_db/env/client_test_db/.postgres_password.env

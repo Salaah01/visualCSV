@@ -45,5 +45,5 @@ echo DB_CLIENT_TEST_USER=postgres >> web/.web.env
 echo DB_CLIENT_TEST_NAME=postgres >> web/.web.env
 echo DB_CLIENT_TEST_PASSWORD=postgres >> web/.web.env
 echo DB_CLIENT_TEST_PORT=5432 >> web/.web.env
-
+echo ALLOWED_HOSTS=localhost|host.docker.internal >> web/.web.env
 echo "Done! Remember to update all .env with new values!"

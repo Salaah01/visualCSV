@@ -2,30 +2,78 @@ version: '3.2'
 
 services:
     django_db:
-        image: postgres:12.2
+        image: postgres:13.3
         volumes:
             - django_data:/var/lib/postgresql/data/
+        environment: 
+            - POSTGRES_USER_FILE=/run/secrets/django_db_user
+            - POSTGRES_PASSWORD_FILE=/run/secrets/django_db_password
+        secrets:
+            - django_db_user
+            - django_db_password
 
     client_db:
-        image: salaah01/visualcsv_client_db
+        build: ./client_db/.
         volumes:
             - client_data:/var/lib/postgresql/data/
+        environment: 
+            - POSTGRES_USER_FILE=/run/secrets/client_db_user
+            - POSTGRES_PASSWORD_FILE=/run/secrets/client_db_password
+        secrets:
+            - client_db_user
+            - client_db_password
 
     client_test_db:
-        image: salaah01/visualcsv_client_db
+        build: ./client_db/.
         volumes:
             - client_test_data:/var/lib/postgresql/data/
-        
+        environment: 
+            - POSTGRES_USER_FILE=/run/secrets/client_test_db_user
+            - POSTGRES_PASSWORD_FILE=/run/secrets/client_test_db_password
+        secrets:
+            - client_test_db_user
+            - client_test_db_password
     
     web:
-        image: salaah01/visualcsv_web
+        build: ./web/.
+        env_file: ./web/.web.env
         depends_on:
             - django_db
             - client_db
             - client_test_db
+        command: >
+            bash -c "cd visualCSV
+            && rm -rf static/
+            && python manage.py migrate
+            && python manage.py collectstatic --noinput
+            && gunicorn visualCSV.wsgi:application --bind 0.0.0.0:8000"
+        volumes:
+            - static_files:/static_files
+
+    nginx:
+        build: ./nginx/.
+        depends_on:
+            - web
+        volumes:
+            - static_files:/static_files
+    
 
 volumes:
-    web-static:
+    static_files:
     django_data:
     client_data:
     client_test_data:
+
+secrets:
+    django_db_user:
+        file: django_db/env/.postgres_user.env
+    django_db_password:
+        file: django_db/env/.postgres_password.env
+    client_db_user:
+        file: client_db/env/client_db/.postgres_user.env
+    client_db_password:
+        file: client_db/env/client_db/.postgres_password.env
+    client_test_db_user:
+        file: client_db/env/client_test_db/.postgres_user.env
+    client_test_db_password:
+        file: client_db/env/client_test_db/.postgres_password.env

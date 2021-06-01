@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED 1
 # Install packages
 #   * node: To run the build scripts.
 RUN apt-get update \
-    && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && curl -sL https://deb.nodesource.com/setup_13.x | bash - \
     && apt-get install -y nodejs \
     && mkdir /app
 
@@ -19,8 +19,8 @@ RUN pip install --upgrade pip \
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
-
 RUN npm install && npm audit fix
+RUN npm install npm-run-all
 
 COPY . .
 
