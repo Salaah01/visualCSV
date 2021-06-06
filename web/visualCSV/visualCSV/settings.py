@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_url_prefixer'
 ]
 
 MIDDLEWARE = [
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_url_prefixer.middleware.URLPrefixer'
 ]
 
 ROOT_URLCONF = 'visualCSV.urls'
@@ -170,3 +172,5 @@ STATICFILES_DIRS = [
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10000000
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10000000
+
+URL_PREFIX = os.getenv('URL_PREFIX', '')

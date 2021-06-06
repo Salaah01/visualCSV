@@ -1,20 +1,16 @@
-version: '3.2'
+version: "3.2"
 
 services:
-        
+  web:
+    volumes:
+      - static_files:/static_files
 
-    web:
-        command: python ./visualCSV/manage.py runserver 0.0.0.0:8000
-        volumes:
-            - ./web/:/app
-            - static_files:/static_files
-        command: >
-            bash -c "python ./visualCSV/manage.py migrate
-            && python ./visualCSV/manage.py runserver 0.0.0.0:8000"
+  nginx:
+    ports:
+      - 8001:80
 
 volumes:
-    static_files:
-    django_data:
-    client_data:
-    client_test_data:
-
+  static_files:
+  django_data:
+  client_data:
+  client_test_data:
