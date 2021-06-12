@@ -47,4 +47,5 @@ echo DB_CLIENT_TEST_PASSWORD=postgres >> web/.web.env
 echo DB_CLIENT_TEST_PORT=5432 >> web/.web.env
 echo "ALLOWED_HOSTS=localhost|host.docker.internal|web" >> web/.web.env
 echo URL_PREFIX=/projects/visual-csv/site >> web/.web.env
+echo SUB_WEBSITE=1 >> web/.web.env
 echo "Done! Remember to update all .env with new values!"

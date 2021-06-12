@@ -1,0 +1,12 @@
+version: "3.2"
+
+services:
+  web:
+    ports:
+      - 8000:8000
+    command: >
+      bash -c "cd visualCSV
+      && rm -rf static/
+      && python manage.py migrate
+      && python manage.py collectstatic --noinput
+      && python manage.py runserver 0.0.0.0:8000"

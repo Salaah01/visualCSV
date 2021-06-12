@@ -68,6 +68,9 @@ MIDDLEWARE = [
     'django_url_prefixer.middleware.URLPrefixer'
 ]
 
+if bool(int(os.getenv('SUB_WEBSITE', 0))):
+    MIDDLEWARE.append('visualCSV.middleware.RedirectMiddleware')
+
 ROOT_URLCONF = 'visualCSV.urls'
 
 TEMPLATES = [
