@@ -6,9 +6,11 @@ services:
     volumes:
       - django_data:/var/lib/postgresql/data/
     environment:
+      - POSTGRES_DB_FILE=/run/secrets/django_db_name
       - POSTGRES_USER_FILE=/run/secrets/django_db_user
       - POSTGRES_PASSWORD_FILE=/run/secrets/django_db_password
     secrets:
+      - django_db_name
       - django_db_user
       - django_db_password
     networks:
@@ -20,9 +22,11 @@ services:
     volumes:
       - client_data:/var/lib/postgresql/data/
     environment:
+      - POSTGRES_DB_FILE=/run/secrets/client_db_name
       - POSTGRES_USER_FILE=/run/secrets/client_db_user
       - POSTGRES_PASSWORD_FILE=/run/secrets/client_db_password
     secrets:
+      - client_db_name
       - client_db_user
       - client_db_password
     networks:
@@ -34,9 +38,11 @@ services:
     volumes:
       - client_test_data:/var/lib/postgresql/data/
     environment:
+      - POSTGRES_DB_FILE=/run/secrets/client_test_db_name
       - POSTGRES_USER_FILE=/run/secrets/client_test_db_user
       - POSTGRES_PASSWORD_FILE=/run/secrets/client_test_db_password
     secrets:
+      - client_test_db_name
       - client_test_db_user
       - client_test_db_password
     networks:
@@ -81,18 +87,24 @@ volumes:
   client_test_data:
 
 secrets:
+  django_db_name:
+    file: django_db/env/.postgres_db_name.env
   django_db_user:
-    file: django_db/env/.postgres_user.env
+    file: django_db/env/.postgres_db_user.env
   django_db_password:
-    file: django_db/env/.postgres_password.env
+    file: django_db/env/.postgres_db_password.env
+  client_db_name:
+    file: client_db/env/client_db/.postgres_db_name.env
   client_db_user:
-    file: client_db/env/client_db/.postgres_user.env
+    file: client_db/env/client_db/.postgres_db_user.env
   client_db_password:
-    file: client_db/env/client_db/.postgres_password.env
+    file: client_db/env/client_db/.postgres_db_password.env
+  client_test_db_name:
+    file: client_db/env/client_db/.postgres_db_name.env
   client_test_db_user:
-    file: client_db/env/client_test_db/.postgres_user.env
+    file: client_db/env/client_test_db/.postgres_db_user.env
   client_test_db_password:
-    file: client_db/env/client_test_db/.postgres_password.env
+    file: client_db/env/client_test_db/.postgres_db_password.env
 
 networks:
   visual_csv:
