@@ -14,7 +14,7 @@ DB_ENV_DIRS=("${ROOT_DIR}/client_db/env/client_db" "${ROOT_DIR}/client_db/env/cl
 WEB_ENV_FILE="${ROOT_DIR}/web/.web.env"
 
 # Check if files can be overwritten.
-for dir in ${DB_dir_DIRS[@]}; do
+for dir in ${DB_ENV_DIRS[@]}; do
   mkdir -p "${dir}"
   if [[ "$(ls -A ${dir})" ]]; then
     read -p "Files exist in ${dir}, do you want to continue and override [Y/n]: " PROCEED

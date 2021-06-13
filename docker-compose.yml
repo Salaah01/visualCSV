@@ -3,6 +3,7 @@ version: "3.2"
 services:
   django_db:
     image: postgres:13.3
+    restart: always
     volumes:
       - django_data:/var/lib/postgresql/data/
     environment:
@@ -15,10 +16,10 @@ services:
       - django_db_password
     networks:
       - visual_csv
-    restart: always
 
   client_db:
     build: ./client_db/.
+    restart: always
     volumes:
       - client_data:/var/lib/postgresql/data/
     environment:
@@ -31,10 +32,10 @@ services:
       - client_db_password
     networks:
       - visual_csv
-    restart: always
 
   client_test_db:
     build: ./client_db/.
+    restart: always
     volumes:
       - client_test_data:/var/lib/postgresql/data/
     environment:
@@ -47,10 +48,10 @@ services:
       - client_test_db_password
     networks:
       - visual_csv
-    restart: always
 
   web:
     build: ./web/.
+    restart: always
     env_file: ./web/.web.env
     depends_on:
       - django_db
@@ -66,10 +67,10 @@ services:
       - static_files:/static_files
     networks:
       - visual_csv
-    restart: always
 
   nginx:
     build: ./nginx_dev/.
+    restart: always
     depends_on:
       - web
     volumes:
@@ -78,7 +79,6 @@ services:
       - visual_csv
     command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s
       reload; done & nginx -g "daemon off;"'''
-    restart: always
 
 volumes:
   static_files:
