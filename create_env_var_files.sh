@@ -14,7 +14,7 @@ DB_ENV_DIRS=("${ROOT_DIR}/client_db/env/client_db" "${ROOT_DIR}/client_db/env/cl
 WEB_ENV_FILE="${ROOT_DIR}/web/.web.env"
 
 # Check if files can be overwritten.
-for dir in ${DB_ENV_DIRS[@]}; do
+for dir in ${DB_dir_DIRS[@]}; do
   mkdir -p "${dir}"
   if [[ "$(ls -A ${dir})" ]]; then
     read -p "Files exist in ${dir}, do you want to continue and override [Y/n]: " PROCEED
@@ -36,7 +36,7 @@ fi
 
 # Prepare variables based on whether the user is running in PROD or DEV mode.
 if [[ $MODE == 'prod' ]]; then
-  echo -e "\033[92mEnvironment Variables Setup for Furlon.\033[0m"
+  echo -e "\033[92mEnvironment Variables Setup for visual-csv.\033[0m"
   echo "DB Settings:"
   read -p "Database Name: " POSTGRES_DB_NAME
   read -p "User: " POSTGRES_USER
@@ -54,7 +54,7 @@ fi
 # Write environment variables.
 # Website settings
 echo "SECRET_KEY=${SECRET_KEY}" >$WEB_ENV_FILE
-echo URL_PREFIX=/projects/furlon/site >>$WEB_ENV_FILE
+echo URL_PREFIX=/projects/visual-csv/site >>$WEB_ENV_FILE
 echo SUB_WEBSITE=1 >>$WEB_ENV_FILE
 if [[ $MODE == 'prod' ]]; then
   echo "ALLOWED_HOSTS=web|iamsalaah.com|www.iamsalaah.com" >>$WEB_ENV_FILE
