@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   django_db:
-    image: postgres:13.3
+    image: postgres:14.4-alpine
     restart: always
     volumes:
       - django_data:/var/lib/postgresql/data/
@@ -14,8 +14,6 @@ services:
       - django_db_name
       - django_db_user
       - django_db_password
-    networks:
-      - visual_csv
 
   client_db:
     build: ./client_db/.
@@ -30,8 +28,6 @@ services:
       - client_db_name
       - client_db_user
       - client_db_password
-    networks:
-      - visual_csv
 
   client_test_db:
     build: ./client_db/.
@@ -46,8 +42,6 @@ services:
       - client_test_db_name
       - client_test_db_user
       - client_test_db_password
-    networks:
-      - visual_csv
 
   web:
     build: ./web/.
@@ -62,26 +56,13 @@ services:
       && rm -rf static/
       && python manage.py migrate
       && python manage.py collectstatic --noinput
-      && gunicorn visualCSV.wsgi:application --bind 0.0.0.0:8000"
+      && gunicorn visualCSV.wsgi:application --bind 0.0.0.0:32771"
     volumes:
-      - static_files:/static_files
-    networks:
-      - visual_csv
-
-  nginx:
-    build: ./nginx_dev/.
-    restart: always
-    depends_on:
-      - web
-    volumes:
-      - static_files:/static_files
-    networks:
-      - visual_csv
-    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s
-      reload; done & nginx -g "daemon off;"'''
+      - /var/www/visual_csv/static/:/static_files
+    ports:
+      - 32771:32771
 
 volumes:
-  static_files:
   django_data:
   client_data:
   client_test_data:
@@ -105,6 +86,3 @@ secrets:
     file: client_db/env/client_test_db/.postgres_db_user.env
   client_test_db_password:
     file: client_db/env/client_test_db/.postgres_db_password.env
-
-networks:
-  visual_csv:
