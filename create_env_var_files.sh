@@ -2,6 +2,8 @@
 
 # Sets the environment variable files.
 
+set -e
+
 MODE="${1,,}"
 ROOT_DIR=$(dirname $(realpath ${BASH_SOURCE[0]}))
 
@@ -62,6 +64,7 @@ fi
 
 # DB settings
 for dir in ${DB_ENV_DIRS[@]}; do
+  mkdir -p "${dir}"
   echo "${POSTGRES_DB_NAME}" >"${dir}/.postgres_db_name.env"
   echo "${POSTGRES_USER}" >"${dir}/.postgres_db_user.env"
   echo "${POSTGRES_PASSWORD}" >"${dir}/.postgres_db_password.env"
